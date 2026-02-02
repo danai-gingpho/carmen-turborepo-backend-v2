@@ -1,0 +1,15 @@
+meta {
+  name: 28 - HttpCode
+  type: http
+  seq: 28
+}
+
+get {
+  url: {{host}}/api-system/business-unit/{{id}}/configs/{{key}}/exists
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

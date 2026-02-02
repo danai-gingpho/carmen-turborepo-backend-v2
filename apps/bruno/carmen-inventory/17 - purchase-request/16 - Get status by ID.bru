@@ -1,0 +1,15 @@
+meta {
+  name: 16 - UseGuards
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/purchase-request/{{id}}/status/{{status}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

@@ -1,0 +1,21 @@
+meta {
+  name: 02 - Update Good Received Note
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/good-received-note/00000000-0000-0000-0000-000000000000
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+
+  }
+}

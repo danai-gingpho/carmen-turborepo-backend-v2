@@ -1,0 +1,558 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions", "relationJoins"]
+  output          = "../generated/client"
+  binaryTargets   = ["native", "linux-arm64-openssl-1.1.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("SYSTEM_DATABASE_URL")
+  directUrl = env("SYSTEM_DIRECT_URL")
+}
+
+generator prismaTypesGenerator {
+  provider    = "prisma-types-generator"
+  modelSuffix = "Model"
+  prettier    = "true"
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
+model tb_application_role {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  business_unit_id String   @db.Uuid
+  name             String   @db.VarChar
+  description      String?
+  is_active        Boolean? @default(true) @db.Boolean
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_business_unit                                   tb_business_unit                    @relation(fields: [business_unit_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_application_role_created_by_idTotb_user tb_user?                            @relation("tb_application_role_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_application_role_updated_by_idTotb_user tb_user?                            @relation("tb_application_role_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_application_role_tb_permission                  tb_application_role_tb_permission[]
+  tb_user_tb_application_role                        tb_user_tb_application_role[]
+
+  @@unique([business_unit_id, name, deleted_at], map: "applicationrole_business_unit_name_deleted_at_u")
+  @@index([business_unit_id, name, deleted_at], map: "applicationrole_business_unit_name_deleted_at_idx")
+}
+
+model tb_application_role_tb_permission {
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  application_role_id String    @db.Uuid
+  permission_id       String    @db.Uuid
+  is_active           Boolean?  @default(true) @db.Boolean
+  created_at          DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id       String?   @db.Uuid
+  updated_at          DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id       String?   @db.Uuid
+  deleted_at          DateTime? @db.Timestamptz(6)
+  deleted_by_id       String?   @db.Uuid
+
+  tb_application_role                                              tb_application_role @relation(fields: [application_role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_application_role_tb_permission_created_by_idTotb_user tb_user?            @relation("tb_application_role_tb_permission_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_permission                                                    tb_permission       @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_application_role_tb_permission_updated_by_idTotb_user tb_user?            @relation("tb_application_role_tb_permission_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([application_role_id, permission_id, deleted_at], map: "applicationrole_permission_role_permission_deleted_at_u")
+}
+
+model tb_business_unit {
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cluster_id  String  @db.Uuid
+  code        String  @db.VarChar(30)
+  name        String
+  alias_name  String? @db.VarChar(3)
+  description String?
+  info        Json?
+
+  is_hq         Boolean? @default(true)
+  is_active     Boolean? @default(true)
+  db_connection Json?
+  config        Json?
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_application_role                             tb_application_role[]
+  tb_cluster                                      tb_cluster                   @relation(fields: [cluster_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_business_unit_created_by_idTotb_user tb_user?                     @relation("tb_business_unit_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_business_unit_updated_by_idTotb_user tb_user?                     @relation("tb_business_unit_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_business_unit_tb_module                      tb_business_unit_tb_module[]
+  tb_subscription_detail                          tb_subscription_detail[]
+  tb_user_tb_business_unit                        tb_user_tb_business_unit[]
+
+  @@unique([cluster_id, code, deleted_at], map: "business_unit_cluster_code_deleted_at_u")
+  @@index([cluster_id, deleted_at], map: "business_unit_cluster_deleted_at_idx")
+  @@index([code, deleted_at], map: "business_unit_code_deleted_at_idx")
+  @@index([cluster_id, code, deleted_at], map: "business_unit_cluster_code_deleted_at_idx")
+}
+
+model tb_business_unit_tb_module {
+  id               String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  business_unit_id String @db.Uuid
+  module_id        String @db.Uuid
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_business_unit                                          tb_business_unit @relation(fields: [business_unit_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_business_unit_tb_module_created_by_idTotb_user tb_user?         @relation("tb_business_unit_tb_module_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_module                                                 tb_module        @relation(fields: [module_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_business_unit_tb_module_updated_by_idTotb_user tb_user?         @relation("tb_business_unit_tb_module_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([business_unit_id, module_id, deleted_at], map: "businessunit_module_business_unit_module_deleted_at_idx")
+}
+
+model tb_cluster {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code       String   @db.VarChar(30)
+  name       String   @db.VarChar
+  alias_name String?  @db.VarChar(3)
+  logo_url   String?  @db.VarChar
+  is_active  Boolean? @default(true)
+  info       Json?    @db.Json
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_business_unit                          tb_business_unit[]
+  tb_user_tb_cluster_created_by_idTotb_user tb_user?           @relation("tb_cluster_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_cluster_updated_by_idTotb_user tb_user?           @relation("tb_cluster_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_cluster_user                           tb_cluster_user[]
+  tb_subscription                           tb_subscription[]
+
+  @@unique([code, name, deleted_at], map: "cluster_code_name_deleted_at_u")
+}
+
+model tb_cluster_user {
+  id         String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String?                @db.Uuid
+  cluster_id String                 @db.Uuid
+  is_active  Boolean?               @default(true)
+  role       enum_cluster_user_role @default(user)
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_cluster                                     tb_cluster @relation(fields: [cluster_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_cluster_user_created_by_idTotb_user tb_user?   @relation("tb_cluster_user_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_cluster_user_updated_by_idTotb_user tb_user?   @relation("tb_cluster_user_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_cluster_user_user_idTotb_user       tb_user?   @relation("tb_cluster_user_user_idTotb_user", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([user_id, cluster_id, deleted_at], map: "user_cluster_deleted_at_u")
+}
+
+model tb_currency_iso {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  iso_code String @db.VarChar
+  name     String @default("Unknown") @db.VarChar(255)
+  symbol   String @default("Unknown") @db.VarChar(10)
+
+  @@unique([iso_code], map: "currency_iso_iso_code_u")
+}
+
+model tb_message_format {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String   @db.VarChar
+  message   String?
+  is_email  Boolean  @default(false)
+  is_sms    Boolean? @default(false)
+  is_in_app Boolean? @default(true)
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_user_tb_message_format_created_by_idTotb_user tb_user? @relation("tb_message_format_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_message_format_updated_by_idTotb_user tb_user? @relation("tb_message_format_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([name, deleted_at], map: "messageformat_name_deleted_at_u")
+}
+
+model tb_module {
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String  @db.VarChar
+  description String?
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_business_unit_tb_module               tb_business_unit_tb_module[]
+  tb_user_tb_module_created_by_idTotb_user tb_user?                     @relation("tb_module_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_module_updated_by_idTotb_user tb_user?                     @relation("tb_module_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_subscription_detail                   tb_subscription_detail[]
+
+  @@unique([name, deleted_at], map: "module_name_deleted_at_u")
+}
+
+model tb_notification {
+  id           String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  from_user_id String? @db.Uuid
+  to_user_id   String? @db.Uuid
+  type         String  @default("SYS_INFO") @db.VarChar(255)
+  /**
+   * system = “SYS_INFO”,
+   * bu_info = “BU_INFO”,
+   * pr = “PR”,
+   * pr_comment = “PR_COMMENT”,
+   * sr = “SR”,
+   * sr_comment = “SR_COMMENT”
+   */
+
+  category String  @default("system") @db.VarChar(255) // 'system', 'user-to-user'
+  title    String?
+  message  String?
+  metadata Json?   @db.JsonB
+
+  is_read      Boolean?  @default(false)
+  is_sent      Boolean?  @default(false)
+  scheduled_at DateTime?
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_user_tb_notification_created_by_idTotb_user tb_user? @relation("tb_notification_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_notification_from_user_idTotb_user  tb_user? @relation("tb_notification_from_user_idTotb_user", fields: [from_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_notification_to_user_idTotb_user    tb_user? @relation("tb_notification_to_user_idTotb_user", fields: [to_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_notification_updated_by_idTotb_user tb_user? @relation("tb_notification_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tb_password {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String   @db.Uuid
+  hash       String
+  is_active  Boolean? @default(false)
+  expired_on DateTime @default(dbgenerated("(now() + '90 days'::interval)")) @db.Timestamptz(6)
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_user_tb_password_created_by_idTotb_user tb_user? @relation("tb_password_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_password_user_idTotb_user       tb_user  @relation("tb_password_user_idTotb_user", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([user_id], map: "password_user_idx")
+}
+
+model tb_permission {
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  resource    String  @db.VarChar
+  action      String  @db.VarChar
+  description String?
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_application_role_tb_permission            tb_application_role_tb_permission[]
+  tb_user_tb_permission_created_by_idTotb_user tb_user?                            @relation("tb_permission_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_permission_updated_by_idTotb_user tb_user?                            @relation("tb_permission_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([resource, action, deleted_at], map: "permission_resource_action_deleted_at_u")
+}
+
+model tb_subscription {
+  id                  String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cluster_id          String                   @db.Uuid
+  subscription_number String                   @db.VarChar
+  start_date          DateTime                 @db.Timestamptz(6)
+  end_date            DateTime                 @db.Timestamptz(6)
+  status              enum_subscription_status
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_cluster                                     tb_cluster               @relation(fields: [cluster_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_subscription_created_by_idTotb_user tb_user?                 @relation("tb_subscription_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_subscription_updated_by_idTotb_user tb_user?                 @relation("tb_subscription_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_subscription_detail                         tb_subscription_detail[]
+
+  @@unique([cluster_id, subscription_number, deleted_at], map: "subscription_cluster_subscription_number_deleted_at_u")
+}
+
+model tb_subscription_detail {
+  id               String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subscription_id  String @db.Uuid
+  business_unit_id String @db.Uuid
+  module_id        String @db.Uuid
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_business_unit                                      tb_business_unit @relation(fields: [business_unit_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_subscription_detail_created_by_idTotb_user tb_user?         @relation("tb_subscription_detail_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_module                                             tb_module        @relation(fields: [module_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_subscription                                       tb_subscription  @relation(fields: [subscription_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_subscription_detail_updated_by_idTotb_user tb_user?         @relation("tb_subscription_detail_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([subscription_id, business_unit_id, module_id, deleted_at], map: "subscriptiondetail_business_unit_module_deleted_at_u")
+}
+
+model tb_user {
+  id            String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username      String             @db.VarChar
+  email         String             @db.VarChar
+  platform_role enum_platform_role @default(user)
+  is_active     Boolean?           @default(false)
+  is_consent    Boolean?           @default(false)
+  socket_id     String?
+  is_online     Boolean            @default(false)
+  consent_at    DateTime?          @db.Timestamptz(6)
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_application_role_tb_application_role_created_by_idTotb_user                             tb_application_role[]               @relation("tb_application_role_created_by_idTotb_user")
+  tb_application_role_tb_application_role_updated_by_idTotb_user                             tb_application_role[]               @relation("tb_application_role_updated_by_idTotb_user")
+  tb_application_role_tb_permission_tb_application_role_tb_permission_created_by_idTotb_user tb_application_role_tb_permission[] @relation("tb_application_role_tb_permission_created_by_idTotb_user")
+  tb_application_role_tb_permission_tb_application_role_tb_permission_updated_by_idTotb_user tb_application_role_tb_permission[] @relation("tb_application_role_tb_permission_updated_by_idTotb_user")
+  tb_business_unit_tb_business_unit_created_by_idTotb_user                                   tb_business_unit[]                  @relation("tb_business_unit_created_by_idTotb_user")
+  tb_business_unit_tb_business_unit_updated_by_idTotb_user                                   tb_business_unit[]                  @relation("tb_business_unit_updated_by_idTotb_user")
+  tb_business_unit_tb_module_tb_business_unit_tb_module_created_by_idTotb_user               tb_business_unit_tb_module[]        @relation("tb_business_unit_tb_module_created_by_idTotb_user")
+  tb_business_unit_tb_module_tb_business_unit_tb_module_updated_by_idTotb_user               tb_business_unit_tb_module[]        @relation("tb_business_unit_tb_module_updated_by_idTotb_user")
+  tb_cluster_tb_cluster_created_by_idTotb_user                                               tb_cluster[]                        @relation("tb_cluster_created_by_idTotb_user")
+  tb_cluster_tb_cluster_updated_by_idTotb_user                                               tb_cluster[]                        @relation("tb_cluster_updated_by_idTotb_user")
+  tb_cluster_user_tb_cluster_user_created_by_idTotb_user                                     tb_cluster_user[]                   @relation("tb_cluster_user_created_by_idTotb_user")
+  tb_cluster_user_tb_cluster_user_updated_by_idTotb_user                                     tb_cluster_user[]                   @relation("tb_cluster_user_updated_by_idTotb_user")
+  tb_cluster_user_tb_cluster_user_user_idTotb_user                                           tb_cluster_user[]                   @relation("tb_cluster_user_user_idTotb_user")
+  tb_message_format_tb_message_format_created_by_idTotb_user                                 tb_message_format[]                 @relation("tb_message_format_created_by_idTotb_user")
+  tb_message_format_tb_message_format_updated_by_idTotb_user                                 tb_message_format[]                 @relation("tb_message_format_updated_by_idTotb_user")
+  tb_module_tb_module_created_by_idTotb_user                                                 tb_module[]                         @relation("tb_module_created_by_idTotb_user")
+  tb_module_tb_module_updated_by_idTotb_user                                                 tb_module[]                         @relation("tb_module_updated_by_idTotb_user")
+  tb_notification_tb_notification_created_by_idTotb_user                                     tb_notification[]                   @relation("tb_notification_created_by_idTotb_user")
+  tb_notification_tb_notification_from_user_idTotb_user                                      tb_notification[]                   @relation("tb_notification_from_user_idTotb_user")
+  tb_notification_tb_notification_to_user_idTotb_user                                        tb_notification[]                   @relation("tb_notification_to_user_idTotb_user")
+  tb_notification_tb_notification_updated_by_idTotb_user                                     tb_notification[]                   @relation("tb_notification_updated_by_idTotb_user")
+  tb_password_tb_password_created_by_idTotb_user                                             tb_password[]                       @relation("tb_password_created_by_idTotb_user")
+  tb_password_tb_password_user_idTotb_user                                                   tb_password[]                       @relation("tb_password_user_idTotb_user")
+  tb_permission_tb_permission_created_by_idTotb_user                                         tb_permission[]                     @relation("tb_permission_created_by_idTotb_user")
+  tb_permission_tb_permission_updated_by_idTotb_user                                         tb_permission[]                     @relation("tb_permission_updated_by_idTotb_user")
+  tb_subscription_tb_subscription_created_by_idTotb_user                                     tb_subscription[]                   @relation("tb_subscription_created_by_idTotb_user")
+  tb_subscription_tb_subscription_updated_by_idTotb_user                                     tb_subscription[]                   @relation("tb_subscription_updated_by_idTotb_user")
+  tb_subscription_detail_tb_subscription_detail_created_by_idTotb_user                       tb_subscription_detail[]            @relation("tb_subscription_detail_created_by_idTotb_user")
+  tb_subscription_detail_tb_subscription_detail_updated_by_idTotb_user                       tb_subscription_detail[]            @relation("tb_subscription_detail_updated_by_idTotb_user")
+  tb_user_tb_user_created_by_idTotb_user                                                     tb_user?                            @relation("tb_user_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_tb_user_tb_user_created_by_idTotb_user                                               tb_user[]                           @relation("tb_user_created_by_idTotb_user")
+  tb_user_tb_user_updated_by_idTotb_user                                                     tb_user?                            @relation("tb_user_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_tb_user_tb_user_updated_by_idTotb_user                                               tb_user[]                           @relation("tb_user_updated_by_idTotb_user")
+  tb_user_login_session                                                                      tb_user_login_session[]
+  tb_user_profile_tb_user_profile_created_by_idTotb_user                                     tb_user_profile[]                   @relation("tb_user_profile_created_by_idTotb_user")
+  tb_user_profile_tb_user_profile_updated_by_idTotb_user                                     tb_user_profile[]                   @relation("tb_user_profile_updated_by_idTotb_user")
+  tb_user_profile_tb_user_profile_user_idTotb_user                                           tb_user_profile[]                   @relation("tb_user_profile_user_idTotb_user")
+  tb_user_tb_application_role_tb_user_tb_application_role_created_by_idTotb_user             tb_user_tb_application_role[]       @relation("tb_user_tb_application_role_created_by_idTotb_user")
+  tb_user_tb_application_role_tb_user_tb_application_role_updated_by_idTotb_user             tb_user_tb_application_role[]       @relation("tb_user_tb_application_role_updated_by_idTotb_user")
+  tb_user_tb_application_role_tb_user_tb_application_role_user_idTotb_user                   tb_user_tb_application_role[]       @relation("tb_user_tb_application_role_user_idTotb_user")
+  tb_user_tb_business_unit_tb_user_tb_business_unit_created_by_idTotb_user                   tb_user_tb_business_unit[]          @relation("tb_user_tb_business_unit_created_by_idTotb_user")
+  tb_user_tb_business_unit_tb_user_tb_business_unit_updated_by_idTotb_user                   tb_user_tb_business_unit[]          @relation("tb_user_tb_business_unit_updated_by_idTotb_user")
+  tb_user_tb_business_unit_tb_user_tb_business_unit_user_idTotb_user                         tb_user_tb_business_unit[]          @relation("tb_user_tb_business_unit_user_idTotb_user")
+
+  @@unique([username, deleted_at], map: "user_username_deleted_at_u")
+  @@index([email], map: "user_email_idx")
+  @@index([username], map: "user_username_idx")
+}
+
+model tb_user_login_session {
+  id         String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  token      String          @db.VarChar
+  token_type enum_token_type @default(access_token)
+  user_id    String          @db.Uuid
+  expired_on DateTime        @default(dbgenerated("(now() + '1 day'::interval)")) @db.Timestamptz(6)
+  tb_user    tb_user         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([token], map: "user_login_session_token_u")
+}
+
+model tb_user_profile {
+  id         String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String? @db.Uuid
+  firstname  String  @default("") @db.VarChar(100)
+  middlename String? @default("") @db.VarChar(100)
+  lastname   String? @default("") @db.VarChar(100)
+  telephone  String? @db.VarChar(20)
+  bio        Json?   @default("{}") @db.Json
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_user_tb_user_profile_created_by_idTotb_user tb_user? @relation("tb_user_profile_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_user_profile_updated_by_idTotb_user tb_user? @relation("tb_user_profile_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_user_profile_user_idTotb_user       tb_user? @relation("tb_user_profile_user_idTotb_user", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([firstname, lastname], map: "userprofile_firstname_lastname_idx")
+  @@index([user_id], map: "userprofile_user_idx")
+}
+
+model tb_user_tb_application_role {
+  id                  String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id             String @db.Uuid
+  application_role_id String @db.Uuid
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_application_role                                        tb_application_role @relation(fields: [application_role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_user_tb_application_role_created_by_idTotb_user tb_user?            @relation("tb_user_tb_application_role_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_user_tb_application_role_updated_by_idTotb_user tb_user?            @relation("tb_user_tb_application_role_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_user_tb_application_role_user_idTotb_user       tb_user             @relation("tb_user_tb_application_role_user_idTotb_user", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([user_id, application_role_id, deleted_at], map: "user_applicationrole_user_application_role_deleted_at_u")
+}
+
+model tb_user_tb_business_unit {
+  id               String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String?                      @db.Uuid
+  business_unit_id String?                      @db.Uuid
+  role             enum_user_business_unit_role @default(user)
+  is_default       Boolean?                     @default(false)
+  is_active        Boolean?                     @default(true)
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_business_unit                                        tb_business_unit? @relation(fields: [business_unit_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_user_tb_business_unit_created_by_idTotb_user tb_user?          @relation("tb_user_tb_business_unit_created_by_idTotb_user", fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_user_tb_business_unit_updated_by_idTotb_user tb_user?          @relation("tb_user_tb_business_unit_updated_by_idTotb_user", fields: [updated_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tb_user_tb_user_tb_business_unit_user_idTotb_user       tb_user?          @relation("tb_user_tb_business_unit_user_idTotb_user", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([user_id, business_unit_id, deleted_at], map: "user_businessunit_user_business_unit_deleted_at_u")
+}
+
+model tb_shot_url {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  app_method     String   @db.VarChar(50) // 'invitation', 'vendor_pricelist',"promotion"
+  url_token      String   @db.VarChar //รหัสที่generatedมาให้สั้นๆ
+  token          String   @db.VarChar // JWT token สำหรับการ confim invitation
+  expired_at     DateTime @db.Timestamptz(6) // เวลาที่ลิ้งตาย
+  receiver_email String   @db.VarChar(255)
+
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+
+  @@unique([url_token, deleted_at], map: "shot_url_token_deleted_at_u")
+}
+
+model tb_temp_bu_user {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  business_unit_id String   @db.VarChar(255)
+  email            String   @db.VarChar(255)
+  role             String   @db.VarChar(50)
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+}
+
+enum enum_cluster_user_role {
+  admin
+  user
+}
+
+enum enum_platform_role {
+  super_admin
+  platform_admin
+  support_manager
+  support_staff
+  security_officer
+  integration_developer
+  user
+}
+
+enum enum_subscription_status {
+  active
+  inactive
+  expired
+}
+
+enum enum_token_type {
+  access_token
+  refresh_token
+}
+
+enum enum_user_business_unit_role {
+  admin
+  user
+}
+
+model tb_news {
+  id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title    String  @db.VarChar
+  contents String? @db.VarChar
+  url      String? @db.VarChar
+  image    String? @db.VarChar
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+}

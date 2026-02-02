@@ -1,0 +1,23 @@
+meta {
+  name: 04 - Update Cluster
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{host}}/api-system/cluster/c19f873e-9a8b-4ea0-97f9-e0d1059d3595
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "code": "C-001",
+    "name": "Cluster 01 Update",
+    "is_active": false
+  }
+}

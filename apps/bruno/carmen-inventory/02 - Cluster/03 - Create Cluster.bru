@@ -1,0 +1,23 @@
+meta {
+  name: 03 - Create Cluster
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api-system/cluster
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "code": "C-002",
+    "name": "Cluster 02",
+    "is_active": true
+  }
+}

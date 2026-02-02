@@ -1,0 +1,21 @@
+meta {
+  name: 06 - Create Execute
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/api/config/cronjobs/{{id}}/execute
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+
+  }
+}

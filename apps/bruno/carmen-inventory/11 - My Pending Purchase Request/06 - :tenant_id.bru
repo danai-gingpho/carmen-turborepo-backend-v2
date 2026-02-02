@@ -1,0 +1,21 @@
+meta {
+  name: 06 - Create {{tenant_id}}
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/api/my-pending/purchase-request/{{tenant_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+
+  }
+}

@@ -1,0 +1,21 @@
+meta {
+  name: 12 - UseGuards
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/purchase-order
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

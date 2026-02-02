@@ -1,0 +1,1 @@
+certbot certonly --standalone -d dev.blueledgers.com --non-interactive --agree-tos --email admin@blueledgers.com --preferred-challenges http

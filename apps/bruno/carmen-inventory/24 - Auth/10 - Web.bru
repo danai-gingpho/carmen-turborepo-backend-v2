@@ -1,0 +1,15 @@
+meta {
+  name: 10 - List Web
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{host}}/api/auth/web
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

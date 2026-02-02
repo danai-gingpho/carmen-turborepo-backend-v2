@@ -1,0 +1,21 @@
+meta {
+  name: 13 - Create Change Email
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{host}}/api/auth/change-email
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+
+  }
+}

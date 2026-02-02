@@ -1,0 +1,98 @@
+{
+  "data": {
+    "vendor_id": "vd1a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c",
+    "vendor_code": "VENDOR_01",
+    "vendor_name": "4 JOY SHOKUDO COMPANY LIMITED",
+    "currency_id": "cur1a2b3-4d5e-6f7a-8b9c-0d1e2f3a4b5c",
+    "currency_code": "THB",
+    "currency_name": "Thai Baht",
+    "exchange_rate": 1,
+    "details": [
+      {
+        "po_id": "po1a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c",
+        "po_no": "PO-2024-001",
+        "purchase_order_detail_id": "pod1a2b3-4d5e-6f7a-8b9c-0d1e2f3a4b5c",
+        "sequence_no": 1,
+        "product_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "product_name": "Beef Tenderloin",
+        "product_local_name": "เนื้อสันใน",
+        "product_description": null,
+        "sku": "PRODUCT_CODE_01",
+        "locations": [
+          {
+            "location_id": "550e8400-e29b-41d4-a716-446655440001",
+            "location_name": "Main Kitchen",
+            "order_unit_id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+            "order_unit_name": "ชิ้น",
+            "order_unit_conversion_factor": 1,
+            "sum_order_qty": "100.00000",
+            "sum_order_base_qty": "100.00000",
+            "PR_Detail": [
+              {
+                "purchase_request_detail_id": "550e8400-e29b-41d4-a716-446655440001",
+                "order_qty": 100.0,
+                "remain_qty": 100.0,
+                "received_qty": 0,
+                "foc_qty": 0,
+                "unit": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+              },
+              {
+                "purchase_request_detail_id": "550e8400-e29b-41d4-a716-446655440002",
+                "order_qty": 100.0,
+                "remain_qty": 100.0,
+                "received_qty": 0,
+                "foc_qty": 0,
+                "unit": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+              },
+              {
+                "purchase_request_detail_id": "550e8400-e29b-41d4-a716-446655440003",
+                "order_qty": 100.0,
+                "remain_qty": 100.0,
+                "received_qty": 0,
+                "foc_qty": 0,
+                "unit": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+              }
+            ],
+            "info": null
+          },
+          {
+            "location_id": "550e8400-e29b-41d4-a716-446655440002",
+            "location_name": "ABF Kitchen",
+            "order_unit_id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+            "order_unit_name": "ชิ้น",
+            "order_unit_conversion_factor": 1,
+            "sum_order_qty": "100.00000",
+            "sum_order_base_qty": "100.00000",
+            "PR_Detail": [
+              {
+                "purchase_request_detail_id": "550e8400-e29b-41d4-a716-446655440010",
+                "order_qty": 100.0,
+                "remain_qty": 100.0,
+                "received_qty": 0,
+                "foc_qty": 0,
+                "unit": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+              },
+              {
+                "purchase_request_detail_id": "550e8400-e29b-41d4-a716-446655440011",
+                "order_qty": 100.0,
+                "remain_qty": 100.0,
+                "received_qty": 0,
+                "foc_qty": 0,
+                "unit": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+              },
+              {
+                "purchase_request_detail_id": "550e8400-e29b-41d4-a716-446655440012",
+                "order_qty": 100.0,
+                "remain_qty": 100.0,
+                "received_qty": 0,
+                "foc_qty": 0,
+                "unit": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+              }
+            ],
+            "info": null
+          }
+        ]
+      }
+    ]
+  }
+}

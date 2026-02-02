@@ -1,0 +1,21 @@
+meta {
+  name: 01 - Create Default
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/business-unit/default
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+
+  }
+}

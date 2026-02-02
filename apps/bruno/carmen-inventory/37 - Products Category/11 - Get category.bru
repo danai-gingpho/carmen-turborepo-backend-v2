@@ -1,0 +1,15 @@
+meta {
+  name: 11 - UseGuards
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/products/category
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

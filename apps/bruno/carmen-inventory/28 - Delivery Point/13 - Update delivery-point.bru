@@ -1,0 +1,21 @@
+meta {
+  name: 13 - UseGuards
+  type: http
+  seq: 13
+}
+
+patch {
+  url: {{host}}/api/config/{{bu_code}}/delivery-point/{{id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

@@ -1,0 +1,15 @@
+meta {
+  name: 21 - UseGuards
+  type: http
+  seq: 21
+}
+
+delete {
+  url: {{host}}/api/my-pending/purchase-request/{{tenant_id}}/{{id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

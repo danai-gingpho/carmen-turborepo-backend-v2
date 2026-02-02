@@ -1,0 +1,21 @@
+meta {
+  name: 04 - Create Upload Excel
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/price-list/upload-excel
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+
+  }
+}

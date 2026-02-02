@@ -1,0 +1,15 @@
+meta {
+  name: 04 - List {{tenant_id}}
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/my-pending/store-requisition/{{tenant_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

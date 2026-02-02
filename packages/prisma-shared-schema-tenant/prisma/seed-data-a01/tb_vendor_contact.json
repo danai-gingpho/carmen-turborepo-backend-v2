@@ -1,0 +1,246 @@
+[
+  {
+    "id": "f2a3923e-7130-4d87-ba95-e8a89f51af67",
+    "vendor_id": "b8695db5-b773-4268-8751-a5a84c02b6f5",
+    "contact_type": "email_address",
+    "is_active": true,
+    "description": "voluptate aute occaecat Lorem et",
+    "info": [
+      {
+        "label": "laborum elit ipsum",
+        "value": "officia",
+        "data_type": "string"
+      },
+      {
+        "label": "mollit laborum",
+        "value": "proident esse dolore",
+        "data_type": "string"
+      }
+    ]
+  },
+  {
+    "id": "f6dd6619-7a82-4525-acce-9930ac111b10",
+    "vendor_id": "b8695db5-b773-4268-8751-a5a84c02b6f5",
+    "contact_type": "email_address",
+    "is_active": true,
+    "description": "velit anim ut labore",
+    "info": [
+      {
+        "label": "veniam ut cupida",
+        "value": "ut sed cillum aute",
+        "data_type": "datetime"
+      },
+      {
+        "label": "consequat elit aliqua et",
+        "value": "irure laborum",
+        "data_type": "date"
+      }
+    ]
+  },
+  {
+    "id": "f5fe8246-8284-4dca-9c8e-10847fca63c5",
+    "vendor_id": "1261703d-3602-46a0-9719-187e9a7870a3",
+    "contact_type": "email_address",
+    "is_active": true,
+    "description": "อีเมล์ฝ่ายขาย",
+    "info": [
+      {
+        "label": "อีเมล์",
+        "value": "sales@thaipremiumfood.co.th",
+        "data_type": "string"
+      },
+      {
+        "label": "ชื่อผู้ติดต่อ",
+        "value": "คุณสมชาย ใจดี",
+        "data_type": "string"
+      },
+      {
+        "label": "ตำแหน่ง",
+        "value": "Sales Manager",
+        "data_type": "string"
+      }
+    ]
+  },
+  {
+    "id": "ddf9b003-6470-4639-b5a5-d4ab51cd2beb",
+    "vendor_id": "1261703d-3602-46a0-9719-187e9a7870a3",
+    "contact_type": "phone_number",
+    "is_active": true,
+    "description": "เบอร์โทรศัพท์สำนักงาน",
+    "info": [
+      {
+        "label": "เบอร์โทรศัพท์",
+        "value": "+66-2-555-1234",
+        "data_type": "string"
+      },
+      {
+        "label": "เบอร์มือถือ",
+        "value": "+66-81-234-5678",
+        "data_type": "string"
+      },
+      {
+        "label": "เวลาทำการ",
+        "value": "08:00-17:00 น. (จันทร์-ศุกร์)",
+        "data_type": "string"
+      }
+    ]
+  },
+  {
+    "id": "47e4c6ec-a312-463c-81a5-2c69684177c0",
+    "vendor_id": "1261703d-3602-46a0-9719-187e9a7870a3",
+    "contact_type": "email_address",
+    "is_active": true,
+    "description": "อีเมล์ฝ่ายบัญชี",
+    "info": [
+      {
+        "label": "อีเมล์",
+        "value": "accounting@thaipremiumfood.co.th",
+        "data_type": "string"
+      },
+      {
+        "label": "ชื่อผู้ติดต่อ",
+        "value": "คุณวิไล การเงิน",
+        "data_type": "string"
+      },
+      {
+        "label": "ตำแหน่ง",
+        "value": "Accounting Manager",
+        "data_type": "string"
+      }
+    ]
+  },
+  {
+    "id": "2b71d191-7c3f-477f-8663-116325b5f23d",
+    "vendor_id": "3642a537-7f9b-419d-8744-5cdea1a34859",
+    "contact_type": "email_address",
+    "is_active": true,
+    "description": "อีเมล์ฝ่ายขาย",
+    "info": [
+      {
+        "label": "อีเมล์",
+        "value": "sales@thaipremiumfood.co.th",
+        "data_type": "string"
+      },
+      {
+        "label": "ชื่อผู้ติดต่อ",
+        "value": "คุณสมชาย ใจดี",
+        "data_type": "string"
+      },
+      {
+        "label": "ตำแหน่ง",
+        "value": "Sales Manager",
+        "data_type": "string"
+      }
+    ]
+  },
+  {
+    "id": "778fd253-49bb-4123-b9ca-75559f983950",
+    "vendor_id": "3642a537-7f9b-419d-8744-5cdea1a34859",
+    "contact_type": "phone_number",
+    "is_active": true,
+    "description": "เบอร์โทรศัพท์สำนักงาน",
+    "info": [
+      {
+        "label": "เบอร์โทรศัพท์",
+        "value": "+66-2-555-1234",
+        "data_type": "string"
+      },
+      {
+        "label": "เบอร์มือถือ",
+        "value": "+66-81-234-5678",
+        "data_type": "string"
+      },
+      {
+        "label": "เวลาทำการ",
+        "value": "08:00-17:00 น. (จันทร์-ศุกร์)",
+        "data_type": "string"
+      }
+    ]
+  },
+  {
+    "id": "4daa2f75-2a5c-4795-8ad9-3aec7f09cc20",
+    "vendor_id": "99eda39c-cb3a-48be-a4aa-8117f5209102",
+    "contact_type": "email_address",
+    "is_active": true,
+    "description": "อีเมล์ฝ่ายขาย",
+    "info": [
+      {
+        "label": "อีเมล์",
+        "value": "sales@thaipremiumfood.co.th",
+        "data_type": "string"
+      },
+      {
+        "label": "ชื่อผู้ติดต่อ",
+        "value": "คุณสมชาย ใจดี",
+        "data_type": "string"
+      },
+      {
+        "label": "ตำแหน่ง",
+        "value": "Sales Manager",
+        "data_type": "string"
+      }
+    ]
+  },
+  {
+    "id": "9d81f9f4-5c70-49b7-a5a4-e2023cbb7d21",
+    "vendor_id": "99eda39c-cb3a-48be-a4aa-8117f5209102",
+    "contact_type": "phone_number",
+    "is_active": true,
+    "description": "เบอร์โทรศัพท์สำนักงาน",
+    "info": [
+      {
+        "label": "เบอร์โทรศัพท์",
+        "value": "+66-2-555-1234",
+        "data_type": "string"
+      },
+      {
+        "label": "เบอร์มือถือ",
+        "value": "+66-81-234-5678",
+        "data_type": "string"
+      },
+      {
+        "label": "เวลาทำการ",
+        "value": "08:00-17:00 น. (จันทร์-ศุกร์)",
+        "data_type": "string"
+      }
+    ]
+  },
+  {
+    "id": "05a018b8-6447-452f-bf35-f05d5421d35e",
+    "vendor_id": null,
+    "contact_type": "phone_number",
+    "is_active": true,
+    "description": "do cupidatat tempor",
+    "info": [
+      {
+        "label": "laborum in id quis",
+        "value": "cupidatat Duis sit ipsum anim",
+        "data_type": "string"
+      },
+      {
+        "label": "sunt consequat qui",
+        "value": "exercitation sit proident",
+        "data_type": "number"
+      }
+    ]
+  },
+  {
+    "id": "9134bb59-462f-4d48-8208-7bd12bf9e8a2",
+    "vendor_id": null,
+    "contact_type": "email_address",
+    "is_active": true,
+    "description": "labore aute",
+    "info": [
+      {
+        "label": "ut quis culpa nulla",
+        "value": "eu ex mollit",
+        "data_type": "datetime"
+      },
+      {
+        "label": "Ut",
+        "value": "quis deserunt enim",
+        "data_type": "string"
+      }
+    ]
+  }
+]

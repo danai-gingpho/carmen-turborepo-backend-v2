@@ -1,0 +1,87 @@
+[
+  {
+    "id": "03d8b4bd-31f0-4e25-8188-a6478c5026b3",
+    "name": "Main",
+    "is_active": true
+  },
+  {
+    "id": "d328d53f-4d22-49c4-bd04-dc9f326f87c0",
+    "name": "Parcel Hub",
+    "is_active": true
+  },
+  {
+    "id": "c3c33363-4626-412e-8000-05a913109ba8",
+    "name": "速递坊",
+    "is_active": true
+  },
+  {
+    "id": "21b3e1c2-a7a1-4c05-aac5-e785ee3ce475",
+    "name": "빠른배송",
+    "is_active": true
+  },
+  {
+    "id": "f4b5e706-e755-4085-8203-17791a0a9998",
+    "name": "Boutique Colis",
+    "is_active": true
+  },
+  {
+    "id": "2db31c43-3f52-4d71-b444-8c59b6654631",
+    "name": "Paket",
+    "is_active": true
+  },
+  {
+    "id": "2aa9bdeb-a965-424c-96a9-e8893f122a27",
+    "name": "Tienda Express",
+    "is_active": true
+  },
+  {
+    "id": "c30a1244-c4c1-47a4-9b1d-de4ee763ded5",
+    "name": "Магазин доставки",
+    "is_active": true
+  },
+  {
+    "id": "b829d44e-c98b-4a90-b712-013522cd7fc7",
+    "name": "Kituo cha Uwasilishaji",
+    "is_active": true
+  },
+  {
+    "id": "d93a4874-d7bf-4189-aa9d-8da5a31934b2",
+    "name": "วุฒากาศ",
+    "is_active": true
+  },
+  {
+    "id": "fe3e0384-29af-4b89-b976-23d69661bb7f",
+    "name": "Kitchen",
+    "is_active": false
+  },
+  {
+    "id": "6edd57d3-98cf-400a-8a1c-436df236bb55",
+    "name": "Carmen Inventory",
+    "is_active": true
+  },
+  {
+    "id": "7aa3fbc0-1f5e-4928-867c-03b641bea40e",
+    "name": "front store",
+    "is_active": false
+  },
+  {
+    "id": "00f573de-9fb2-4fee-a9bc-e0beed3c0932",
+    "name": "Indawo Yokulethwa",
+    "is_active": false
+  },
+  {
+    "id": "03f877eb-b4f0-4292-a682-2c8a20cb7b5e",
+    "name": "متجر التوصيل",
+    "is_active": false
+  },
+  {
+    "id": "9592f894-8c33-48a9-bdac-a2fd95b5d16e",
+    "name": "Rooftop Pickup Point",
+    "is_active": false
+  },
+  {
+    "id": "7e9579ba-2af1-4465-8dc4-53e28ba26391",
+    "name": "宅配ステーション",
+    "is_active": false
+  }
+]

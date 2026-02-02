@@ -1,0 +1,65 @@
+[
+  {
+    "user_id": "34c0fac6-07af-4bbd-8543-aa380c1bdda8",
+    "firstname": "system-admin",
+    "middlename": "",
+    "lastname": "system-admin",
+    "bio": {}
+  },
+  {
+    "user_id": "a4152e9d-9771-4a88-b563-acf8c0df0fe4",
+    "firstname": "test",
+    "middlename": "",
+    "lastname": "test",
+    "bio": {}
+  },
+  {
+    "user_id": "a1273293-9445-49e7-a782-07e5f89400d4",
+    "firstname": "admin",
+    "middlename": "",
+    "lastname": "admin",
+    "bio": {}
+  },
+  {
+    "user_id": "16886b74-bd3a-49b5-8ec9-707b91d3b003",
+    "firstname": "user1",
+    "middlename": "",
+    "lastname": "staff",
+    "bio": {}
+  },
+  {
+    "user_id": "6770bb05-971a-4e3e-bb84-2972cd91247a",
+    "firstname": "user2",
+    "middlename": "",
+    "lastname": "department-manager",
+    "bio": {}
+  },
+  {
+    "user_id": "042520e2-3bbb-4d1f-bb7c-63a921d3659f",
+    "firstname": "user3",
+    "middlename": "",
+    "lastname": "purchasing-staff",
+    "bio": {}
+  },
+  {
+    "user_id": "3c821c17-bd40-4391-80f6-209c8f76ee2c",
+    "firstname": "user4",
+    "middlename": "",
+    "lastname": "finance-manager",
+    "bio": {}
+  },
+  {
+    "user_id": "da789684-b6f8-487c-b760-3808fa4084e4",
+    "firstname": "user5",
+    "middlename": "",
+    "lastname": "general-manager",
+    "bio": {}
+  },
+  {
+    "user_id": "b33c6500-b0c3-4e99-8467-db4a10de069e",
+    "firstname": "test2",
+    "middlename": "",
+    "lastname": "fromKeycloak",
+    "bio": {}
+  }
+]

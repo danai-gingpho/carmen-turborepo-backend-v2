@@ -1,0 +1,81 @@
+# กฎการเขียนโค้ดของโปรเจค Cursor
+
+## แนวทางการใช้ TypeScript ทั่วไป
+
+### หลักการพื้นฐาน
+- ใช้ภาษาอังกฤษสำหรับโค้ดและภาษาไทยสำหรับเอกสารทั้งหมด
+- กำหนดชนิดข้อมูลของตัวแปรและฟังก์ชัน (ทั้งพารามิเตอร์และค่าที่คืนกลับ) ทุกครั้ง
+- หลีกเลี่ยงการใช้ `any` และสร้างชนิดข้อมูลที่จำเป็น
+- ใช้ JSDoc สำหรับอธิบาย public class และ method
+- ห้ามเว้นบรรทัดว่างภายในฟังก์ชัน
+- ไฟล์หนึ่ง export ได้เพียงหนึ่งอย่าง
+- ใช้ `const` แทน `let` หากค่าไม่ถูกเปลี่ยนแปลง
+
+### การตั้งชื่อ
+- ใช้ PascalCase สำหรับชื่อคลาส
+- ใช้ camelCase สำหรับตัวแปร ฟังก์ชัน และเมธอด
+- ใช้ kebab-case สำหรับชื่อไฟล์และโฟลเดอร์
+- ใช้ตัวพิมพ์ใหญ่ทั้งหมด (UPPERCASE) สำหรับ environment variable
+- หลีกเลี่ยง magic number และกำหนดเป็นค่าคงที่
+- ชื่อฟังก์ชันต้องขึ้นต้นด้วยคำกริยา
+- ตัวแปร boolean ต้องใช้คำกริยา (เช่น isLoading, hasError, canDelete)
+- ใช้คำเต็มแทนการย่อ ยกเว้นตัวย่อมาตรฐานหรือที่รู้จักดี (i, j, err, ctx, req, res, next)
+
+### ฟังก์ชัน
+- เขียนฟังก์ชันสั้น ๆ ที่มีวัตถุประสงค์เดียว (ไม่เกิน 20 คำสั่ง)
+- ตั้งชื่อฟังก์ชันด้วยกริยาและสิ่งที่ทำ
+- ถ้าคืนค่า boolean ให้ใช้ isX, hasX, canX เป็นต้น
+- ถ้าไม่คืนค่า ให้ใช้ executeX, saveX เป็นต้น
+- หลีกเลี่ยงการซ้อนบล็อกโดยใช้ early return หรือแยกเป็น utility function
+- ใช้ higher-order function (map, filter, reduce) เพื่อลดการซ้อนฟังก์ชัน
+- ใช้ arrow function สำหรับฟังก์ชันง่าย ๆ (ไม่เกิน 3 คำสั่ง) ถ้าเกินให้ใช้ named function
+- ใช้ค่า default parameter แทนการเช็ค null/undefined
+- ลดจำนวนพารามิเตอร์โดยใช้ RO-RO (object สำหรับรับเข้า/คืนค่า)
+- ฟังก์ชันหนึ่งควรมีระดับ abstraction เดียว
+
+### ข้อมูล
+- ควรใช้ composite type แทน primitive type
+- หลีกเลี่ยงการตรวจสอบข้อมูลในฟังก์ชัน ให้ใช้ class ที่มี validation ภายใน
+- ควรใช้ข้อมูลแบบ immutable (readonly, as const)
+
+### คลาส
+- ปฏิบัติตามหลัก SOLID
+- ให้ความสำคัญกับ composition มากกว่า inheritance
+- ประกาศ interface เพื่อกำหนดสัญญา
+- เขียนคลาสขนาดเล็กที่มีวัตถุประสงค์เดียว (ไม่เกิน 200 คำสั่ง, 10 public method, 10 property)
+
+### ข้อยกเว้น (Exception)
+- ใช้ exception สำหรับข้อผิดพลาดที่ไม่คาดคิด
+- catch exception เฉพาะกรณีที่ต้องแก้ปัญหาที่คาดไว้หรือเพิ่ม context เท่านั้น นอกนั้นให้ใช้ global handler
+
+### การทดสอบ
+- ใช้รูปแบบ Arrange-Act-Assert สำหรับ unit test
+- ตั้งชื่อตัวแปรใน test ให้ชัดเจน (inputX, mockX, actualX, expectedX)
+- เขียน unit test สำหรับ public function ทุกตัว (mock dependency)
+- เขียน acceptance test สำหรับแต่ละ module (Given-When-Then)
+- เพิ่มเมธอด admin/test ในแต่ละ controller สำหรับ smoke test
+
+## แนวทางเฉพาะสำหรับ NestJS
+
+### สถาปัตยกรรม
+- ใช้สถาปัตยกรรมแบบโมดูลาร์
+- แยก API เป็นโมดูล (หนึ่งโมดูลต่อหนึ่งโดเมน/route หลัก)
+- หนึ่ง controller ต่อ route หลัก และ controller เพิ่มเติมสำหรับ route รอง
+- ใช้โฟลเดอร์ models สำหรับชนิดข้อมูล (DTO ตรวจสอบด้วย zod validator สำหรับ input, ชนิดข้อมูลง่าย ๆ สำหรับ output)
+- โมดูล service สำหรับ business logic และ persistence (entity ด้วย MikroORM, หนึ่ง service ต่อหนึ่ง entity)
+
+### Common Module
+- สร้าง common module (เช่น @app/common) สำหรับโค้ดที่ใช้ซ้ำ
+- ประกอบด้วย: config, decorator, DTO, guard, interceptor, notification, service, type, util, validator
+
+### Core Module Functionalities
+- กรองข้อยกเว้น (exception) ระดับ global
+- มิดเดิลแวร์ระดับ global สำหรับจัดการ request
+- guard สำหรับจัดการ permission
+- interceptor สำหรับประมวลผล request/response
+
+## แนวทางการใช้ agent ai
+- ใช้ agent ai สำหรับการสร้างโค้ดและเอกสาร
+- ใช้ agent ai สำหรับการตรวจสอบความถูกต้องของโค้ดและเอกสาร
+- ใช้ agent ai สำหรับการสร้างโค้ดและเอกสารใหม่ๆ ตามต้องการ
+- ถ้าไม่เข้าใจให้ถามเพื่อยืนยันก่อน

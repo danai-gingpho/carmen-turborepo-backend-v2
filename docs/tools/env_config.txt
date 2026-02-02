@@ -1,0 +1,29 @@
+# คัดลอกเนื้อหานี้ไปสร้างไฟล์ .env ในโฟลเดอร์ docs/tools/
+
+# PostgreSQL Database Configuration
+DB_HOST=dev.blueledgers.com
+DB_PORT=6432
+DB_NAME=postgres
+DB_USER=developer
+DB_PASSWORD=123456
+
+# Database URL (for applications that use DATABASE_URL)
+DATABASE_URL=postgresql://developer:123456@dev.blueledgers.com:6432/postgres
+
+# Backup Configuration
+BACKUP_DIR=./backups
+BACKUP_RETENTION_DAYS=30
+BACKUP_TYPE=full
+
+# Logging
+LOG_LEVEL=INFO
+LOG_FILE=./logs/backup.log
+
+# Notification (optional)
+ENABLE_NOTIFICATIONS=false
+SLACK_WEBHOOK_URL=
+EMAIL_SMTP_SERVER=
+EMAIL_SMTP_PORT=
+EMAIL_USERNAME=
+EMAIL_PASSWORD=
+EMAIL_TO= 

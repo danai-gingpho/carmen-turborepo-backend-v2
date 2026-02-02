@@ -1,0 +1,205 @@
+meta {
+  name: 08 - UseGuards
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/good-received-note
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "workflow_history": [
+      {
+        "status": "รอการอนุมัติ",
+        "timestamp": "2025-10-22T10:00:00.000Z",
+        "user": "สมชาย ใจดี"
+      },
+      {
+        "status": "อนุมัติแล้ว",
+        "timestamp": "2025-10-22T11:30:00.000Z",
+        "user": "สมศรี สวยงาม"
+      }
+    ],
+    "note": "ใบรับสินค้าสำหรับโครงการพัฒนาระบบ",
+    "info": {
+      "priority": "สูง",
+      "budget_code": "BUD-2025-001"
+    },
+    "dimension": {
+      "cost_center": "ฝ่ายจัดซื้อ",
+      "project": "โครงการพัฒนาระบบ ERP"
+    },
+    "invoice_no": "INV-2025-10-001",
+    "invoice_date": "2025-10-22T00:00:00.000Z",
+    "description": "รับสินค้าจากซัพพลายเออร์ ABC",
+    "doc_status": "completed",
+    "doc_type": "manual",
+    "is_consignment": false,
+    "is_cash": false,
+    "signature_image_url": "",
+    "received_by_id": "042520e2-3bbb-4d1f-bb7c-63a921d3659f",
+    "received_by_name": "user3",
+    "received_at": "2025-10-22T09:00:00.000Z",
+    "credit_term_id": "cde766fd-cbe4-44d6-9ced-de7616dbbe99",
+    "credit_term_name": "10 วัน",
+    "credit_term_days": 10,
+    "payment_due_date": "2025-11-21T00:00:00.000Z",
+    "is_active": true,
+    "grn_date": "2025-10-22T00:00:00.000Z",
+    "expired_date": "2025-12-31T00:00:00.000Z",
+    "vendor_id": "0a08bfb4-4e33-45e2-a5ef-a39379598c75",
+    "vendor_name": "บริษัท ไรท์ เฮียร์ จำกัด",
+    "approved_unit_conversion_factor": 1,
+    "requested_unit_conversion_factor": 1,
+    "currency_id": "5d5e29b1-c566-413c-93b3-ba2f16ce51d9",
+    "currency_name": "THB",
+    "exchange_rate": 11.809,
+    "exchange_rate_date": "2025-10-22T00:00:00.000Z",
+    "workflow_id": "ac710822-d422-4e29-8439-87327e960a0e",
+    "current_workflow_status": "อนุมัติแล้ว",
+    "workflow_name": "ขั้นตอนการอนุมัติรับสินค้า",
+    "workflow_next_stage": "ตรวจสอบคุณภาพ",
+    "workflow_previous_stage": "รอการอนุมัติ",
+    "workflow_current_stage": "อนุมัติแล้ว รอจัดเก็บ",
+    "user_action": "approved",
+    "last_action_date_at": "2025-10-22T11:30:00.000Z",
+    "last_action_by_id": "16886b74-bd3a-49b5-8ec9-707b91d3b003",
+    "last_action_by_name": "user1",
+    "last_action_name": "อนุมัติการรับสินค้า",
+    "created_at": "2025-10-22T08:00:00.000Z",
+    "created_by_id": "34c0fac6-07af-4bbd-8543-aa380c1bdda8",
+    "update_by_id": "34c0fac6-07af-4bbd-8543-aa380c1bdda8",
+    "updated_at": "2025-10-22T11:30:00.000Z",
+    "deleted_at": null,
+    "deleted_by_id": null,
+    "discount_rate": 5,
+    "discount_amount": 5000,
+    "is_discount_adjustment": false,
+    "base_discount_amount": 5000,
+    "good_received_note_detail": {
+      "add": [
+        {
+          "product_id": "0000d9e3-6505-473a-91b0-f7ab1e60ebe4",
+          
+          "product_name": "Cheese Cheddar sliced 12",
+          "requested_qty": 10,
+          "approved_qty": 10,
+          "price": 25000,
+          "total_price": 250000,
+          "price_without_vat": 233644.86,
+          "price_with_vat": 267500,
+          "base_price": 25000,
+          "base_total_price": 250000,
+          "extra_cost": 5000,
+          "total_cost": 255000,
+          "location_id": "071423ed-d7fc-4ef7-8f34-a7cb1f8c468e",
+          "location_name": "Exp - Engineering",
+          "requested_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "requested_unit_name": "FUT",
+          "approved_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "approved_unit_name": "FUT",
+          "requested_base_qty": 10,
+          "requested_base_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "requested_base_unit_name": "FUT",
+          "approved_base_qty": 10,
+          "approved_base_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "approved_base_unit_name": "FUT",
+          "foc_qty": 0,
+          "foc_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "foc_unit_name": "FUT",
+          "foc_base_qty": 0,
+          "foc_base_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "foc_base_unit_name": "FUT",
+          "foc_unit_conversion_rate": 1,
+          "foc_base_unit_conversion_rate": 1,
+          "inventory_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "inventory_unit_name": "FUT",
+          "inventory_unit_qty": 10,
+          "inventory_unit_conversion_rate": 1,
+          "requested_unit_conversion_rate": 1,
+          "approved_unit_conversion_rate": 1,
+          "unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "unit_name": "FUT",
+          "order_qty": 10,
+          "order_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "order_unit_name": "FUT",
+          "order_unit_conversion_rate": 1,
+          "order_base_qty": 10,
+          "order_base_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "order_base_unit_name": "FUT",
+          "received_qty": 10,
+          "received_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "received_unit_name": "FUT",
+          "received_unit_conversion_rate": 1,
+          "received_base_unit_conversion_rate": 1,
+          "received_base_qty": 10,
+          "received_base_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "received_base_unit_name": "FUT",
+          "base_qty": 10,
+          "return_qty": 0,
+          "return_unit_id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+          "return_unit_name": "FUT",
+          "return_conversion_rate": 1,
+          "return_base_qty": 0,
+          "tax_profile_id": "5840ede0-cb85-4c0e-b306-be118f5df614",
+          "tax_profile_name": "VAT 7%",
+          "tax_rate": 7,
+          "tax_amount": 17500,
+          "is_tax_adjustment": false,
+          "base_tax_amount": 17500,
+          "total_amount": 267500,
+          "delivery_date": "2025-10-22T00:00:00.000Z",
+          "delivery_date_id": "98a8a2fd-9ac3-39f7-0c07-ad48f30647b8",
+          "delivery_point_id": "21b3e1c2-a7a1-4c05-aac5-e785ee3ce475",
+          "delivery_point_name": "빠른배송"
+        }
+      ]
+    },
+    "extra_cost": {
+      "note": "ค่าใช้จ่ายเพิ่มเติมสำหรับการขนส่ง",
+      "info": {
+        "priority": "กลาง",
+        "budget_code": "EXTRA-2025-001"
+      },
+      "dimension": {
+        "cost_center": "ฝ่ายจัดซื้อ",
+        "project": "โครงการพัฒนาระบบ ERP"
+      },
+      "name": "ค่าขนส่งและติดตั้ง",
+      "allocate_extracost_type": "by_qty",
+      "extra_cost_detail": {
+        "add": [
+          {
+            "extra_cost_type_id": "9611281d-76dd-4fbd-ad95-ddf553368234",
+            "note": "ชาเขียว",
+            "info": {
+              "priority": "สูง",
+              "budget_code": "SHIP-2025-001"
+            },
+            "dimension": {
+              "cost_center": "ฝ่ายขนส่ง",
+              "project": "โครงการพัฒนาระบบ ERP"
+            },
+            "amount": 3000,
+            "tax_profile_id": "93542964-4dea-48f7-a6a6-3ab83c715d91",
+            "tax_profile_name": "VAT 10%",
+            "tax_rate": 10,
+            "tax_amount": 210,
+            "is_tax_adjustment": false,
+            "base_tax_amount": 210,
+            "total_amount": 3210,
+            "tax_type": "included"
+          }
+        ]
+      }
+    }
+  }
+}

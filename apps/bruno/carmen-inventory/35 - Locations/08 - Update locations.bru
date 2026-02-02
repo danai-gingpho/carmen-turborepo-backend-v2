@@ -1,0 +1,21 @@
+meta {
+  name: 08 - UseGuards
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{host}}/api/config/{{bu_code}}/locations/{{id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

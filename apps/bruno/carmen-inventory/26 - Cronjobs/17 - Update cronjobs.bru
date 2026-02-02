@@ -1,0 +1,21 @@
+meta {
+  name: 17 - ApiOperation
+  type: http
+  seq: 17
+}
+
+put {
+  url: {{host}}/api/config/cronjobs/{{id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

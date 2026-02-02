@@ -1,0 +1,15 @@
+meta {
+  name: 09 - getOrderUnitByProductId
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/products/order-unit/{{id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

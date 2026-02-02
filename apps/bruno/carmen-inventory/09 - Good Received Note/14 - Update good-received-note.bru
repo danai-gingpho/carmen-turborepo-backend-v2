@@ -1,0 +1,21 @@
+meta {
+  name: 14 - UseGuards
+  type: http
+  seq: 14
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/good-received-note/{{id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

@@ -1,0 +1,15 @@
+meta {
+  name: 14 - List Test Notification
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{host}}/api/auth/test-notification
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

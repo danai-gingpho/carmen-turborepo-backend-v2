@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "tb_news" ALTER COLUMN "url" DROP NOT NULL,
+ALTER COLUMN "image" DROP NOT NULL,
+ALTER COLUMN "contents" DROP NOT NULL;

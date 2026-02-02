@@ -1,0 +1,16 @@
+node_modules/
+dist/
+out/
+npm-debug.log
+Dockerfile
+.dockerignore
+.git
+.gitignore
+README.md
+.DS_Store
+.turbo
+*.log
+.env
+.env.*
+build
+coverage

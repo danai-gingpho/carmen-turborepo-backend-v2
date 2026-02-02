@@ -1,0 +1,215 @@
+import {
+  PrismaClient,
+} from '@repo/prisma-shared-schema-platform';
+
+const prisma_platform = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.SYSTEM_DIRECT_URL,
+    },
+  },
+});
+
+async function upsert_currency_iso() {
+  const full_currency_list = [
+    { iso_code: 'AED', symbol: 'د.إ', name: 'UAE Dirham' },
+    { iso_code: 'AFN', symbol: '؋', name: 'Afghan Afghani' },
+    { iso_code: 'ALL', symbol: 'L', name: 'Albanian Lek' },
+    { iso_code: 'AMD', symbol: '֏', name: 'Armenian Dram' },
+    { iso_code: 'ANG', symbol: 'ƒ', name: 'Netherlands Antillean Guilder' },
+    { iso_code: 'AOA', symbol: 'Kz', name: 'Angolan Kwanza' },
+    { iso_code: 'ARS', symbol: '$', name: 'Argentine Peso' },
+    { iso_code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
+    { iso_code: 'AWG', symbol: 'ƒ', name: 'Aruban Florin' },
+    { iso_code: 'AZN', symbol: '₼', name: 'Azerbaijani Manat' },
+    {
+      iso_code: 'BAM',
+      symbol: 'KM',
+      name: 'Bosnia-Herzegovina Convertible Mark',
+    },
+    { iso_code: 'BBD', symbol: '$', name: 'Barbadian Dollar' },
+    { iso_code: 'BDT', symbol: '৳', name: 'Bangladeshi Taka' },
+    { iso_code: 'BGN', symbol: 'лв', name: 'Bulgarian Lev' },
+    { iso_code: 'BHD', symbol: '.د.ب', name: 'Bahraini Dinar' },
+    { iso_code: 'BIF', symbol: 'FBu', name: 'Burundian Franc' },
+    { iso_code: 'BMD', symbol: '$', name: 'Bermudian Dollar' },
+    { iso_code: 'BND', symbol: '$', name: 'Brunei Dollar' },
+    { iso_code: 'BOB', symbol: 'Bs.', name: 'Bolivian Boliviano' },
+    { iso_code: 'BRL', symbol: 'R$', name: 'Brazilian Real' },
+    { iso_code: 'BSD', symbol: '$', name: 'Bahamian Dollar' },
+    { iso_code: 'BTN', symbol: 'Nu.', name: 'Bhutanese Ngultrum' },
+    { iso_code: 'BWP', symbol: 'P', name: 'Botswana Pula' },
+    { iso_code: 'BYN', symbol: 'Br', name: 'Belarusian Ruble' },
+    { iso_code: 'BZD', symbol: '$', name: 'Belize Dollar' },
+    { iso_code: 'CAD', symbol: 'C$', name: 'Canadian Dollar' },
+    { iso_code: 'CDF', symbol: 'FC', name: 'Congolese Franc' },
+    { iso_code: 'CHF', symbol: 'CHF', name: 'Swiss Franc' },
+    { iso_code: 'CLP', symbol: '$', name: 'Chilean Peso' },
+    { iso_code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
+    { iso_code: 'COP', symbol: '$', name: 'Colombian Peso' },
+    { iso_code: 'CRC', symbol: '₡', name: 'Costa Rican Colón' },
+    { iso_code: 'CUC', symbol: '$', name: 'Cuban Convertible Peso' },
+    { iso_code: 'CUP', symbol: '$', name: 'Cuban Peso' },
+    { iso_code: 'CVE', symbol: '$', name: 'Cape Verdean Escudo' },
+    { iso_code: 'CZK', symbol: 'Kč', name: 'Czech Koruna' },
+    { iso_code: 'DJF', symbol: 'Fdj', name: 'Djiboutian Franc' },
+    { iso_code: 'DKK', symbol: 'kr', name: 'Danish Krone' },
+    { iso_code: 'DOP', symbol: '$', name: 'Dominican Peso' },
+    { iso_code: 'DZD', symbol: 'د.ج', name: 'Algerian Dinar' },
+    { iso_code: 'EGP', symbol: '£', name: 'Egyptian Pound' },
+    { iso_code: 'ERN', symbol: 'Nkf', name: 'Eritrean Nakfa' },
+    { iso_code: 'ETB', symbol: 'Br', name: 'Ethiopian Birr' },
+    { iso_code: 'EUR', symbol: '€', name: 'Euro' },
+    { iso_code: 'FJD', symbol: '$', name: 'Fijian Dollar' },
+    { iso_code: 'FKP', symbol: '£', name: 'Falkland Islands Pound' },
+    { iso_code: 'FOK', symbol: 'kr', name: 'Faroese Króna' },
+    { iso_code: 'GBP', symbol: '£', name: 'British Pound Sterling' },
+    { iso_code: 'GEL', symbol: '₾', name: 'Georgian Lari' },
+    { iso_code: 'GGP', symbol: '£', name: 'Guernsey Pound' },
+    { iso_code: 'GHS', symbol: '₵', name: 'Ghanaian Cedi' },
+    { iso_code: 'GIP', symbol: '£', name: 'Gibraltar Pound' },
+    { iso_code: 'GMD', symbol: 'D', name: 'Gambian Dalasi' },
+    { iso_code: 'GNF', symbol: 'FG', name: 'Guinean Franc' },
+    { iso_code: 'GTQ', symbol: 'Q', name: 'Guatemalan Quetzal' },
+    { iso_code: 'GYD', symbol: '$', name: 'Guyanese Dollar' },
+    { iso_code: 'HKD', symbol: 'HK$', name: 'Hong Kong Dollar' },
+    { iso_code: 'HNL', symbol: 'L', name: 'Honduran Lempira' },
+    { iso_code: 'HRK', symbol: '€', name: 'Croatian Kuna (obsolete)' },
+    { iso_code: 'HTG', symbol: 'G', name: 'Haitian Gourde' },
+    { iso_code: 'HUF', symbol: 'Ft', name: 'Hungarian Forint' },
+    { iso_code: 'IDR', symbol: 'Rp', name: 'Indonesian Rupiah' },
+    { iso_code: 'ILS', symbol: '₪', name: 'Israeli New Shekel' },
+    { iso_code: 'IMP', symbol: '£', name: 'Isle of Man Pound' },
+    { iso_code: 'INR', symbol: '₹', name: 'Indian Rupee' },
+    { iso_code: 'IQD', symbol: 'ع.د', name: 'Iraqi Dinar' },
+    { iso_code: 'IRR', symbol: '﷼', name: 'Iranian Rial' },
+    { iso_code: 'ISK', symbol: 'kr', name: 'Icelandic Króna' },
+    { iso_code: 'JEP', symbol: '£', name: 'Jersey Pound' },
+    { iso_code: 'JMD', symbol: '$', name: 'Jamaican Dollar' },
+    { iso_code: 'JOD', symbol: 'د.ا', name: 'Jordanian Dinar' },
+    { iso_code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
+    { iso_code: 'KES', symbol: 'KSh', name: 'Kenyan Shilling' },
+    { iso_code: 'KGS', symbol: 'с', name: 'Kyrgyzstani Som' },
+    { iso_code: 'KHR', symbol: '៛', name: 'Cambodian Riel' },
+    { iso_code: 'KID', symbol: '$', name: 'Kiribati Dollar' },
+    { iso_code: 'KMF', symbol: 'CF', name: 'Comorian Franc' },
+    { iso_code: 'KRW', symbol: '₩', name: 'South Korean Won' },
+    { iso_code: 'KWD', symbol: 'د.ك', name: 'Kuwaiti Dinar' },
+    { iso_code: 'KYD', symbol: '$', name: 'Cayman Islands Dollar' },
+    { iso_code: 'KZT', symbol: '₸', name: 'Kazakhstani Tenge' },
+    { iso_code: 'LAK', symbol: '₭', name: 'Lao Kip' },
+    { iso_code: 'LBP', symbol: 'ل.ل', name: 'Lebanese Pound' },
+    { iso_code: 'LKR', symbol: 'Rs', name: 'Sri Lankan Rupee' },
+    { iso_code: 'LRD', symbol: '$', name: 'Liberian Dollar' },
+    { iso_code: 'LSL', symbol: 'L', name: 'Lesotho Loti' },
+    { iso_code: 'LYD', symbol: 'ل.د', name: 'Libyan Dinar' },
+    { iso_code: 'MAD', symbol: 'د.م.', name: 'Moroccan Dirham' },
+    { iso_code: 'MDL', symbol: 'L', name: 'Moldovan Leu' },
+    { iso_code: 'MGA', symbol: 'Ar', name: 'Malagasy Ariary' },
+    { iso_code: 'MKD', symbol: 'ден', name: 'Macedonian Denar' },
+    { iso_code: 'MNT', symbol: '₮', name: 'Mongolian Tögrög' },
+    { iso_code: 'MOP', symbol: 'P', name: 'Macanese Pataca' },
+    { iso_code: 'MRU', symbol: 'UM', name: 'Mauritanian Ouguiya' },
+    { iso_code: 'MUR', symbol: '₨', name: 'Mauritian Rupee' },
+    { iso_code: 'MVR', symbol: 'ރ.', name: 'Maldivian Rufiyaa' },
+    { iso_code: 'MWK', symbol: 'MK', name: 'Malawian Kwacha' },
+    { iso_code: 'MXN', symbol: '$', name: 'Mexican Peso' },
+    { iso_code: 'MYR', symbol: 'RM', name: 'Malaysian Ringgit' },
+    { iso_code: 'MZN', symbol: 'MT', name: 'Mozambican Metical' },
+    { iso_code: 'NAD', symbol: '$', name: 'Namibian Dollar' },
+    { iso_code: 'NGN', symbol: '₦', name: 'Nigerian Naira' },
+    { iso_code: 'NIO', symbol: 'C$', name: 'Nicaraguan Córdoba' },
+    { iso_code: 'NOK', symbol: 'kr', name: 'Norwegian Krone' },
+    { iso_code: 'NPR', symbol: '₨', name: 'Nepalese Rupee' },
+    { iso_code: 'NZD', symbol: 'NZ$', name: 'New Zealand Dollar' },
+    { iso_code: 'OMR', symbol: 'ر.ع.', name: 'Omani Rial' },
+    { iso_code: 'PAB', symbol: 'B/.', name: 'Panamanian Balboa' },
+    { iso_code: 'PEN', symbol: 'S/', name: 'Peruvian Sol' },
+    { iso_code: 'PGK', symbol: 'K', name: 'Papua New Guinean Kina' },
+    { iso_code: 'PHP', symbol: '₱', name: 'Philippine Peso' },
+    { iso_code: 'PKR', symbol: '₨', name: 'Pakistani Rupee' },
+    { iso_code: 'PLN', symbol: 'zł', name: 'Polish Zloty' },
+    { iso_code: 'PYG', symbol: '₲', name: 'Paraguayan Guaraní' },
+    { iso_code: 'QAR', symbol: 'ر.ق', name: 'Qatari Riyal' },
+    { iso_code: 'RON', symbol: 'lei', name: 'Romanian Leu' },
+    { iso_code: 'RSD', symbol: 'дин.', name: 'Serbian Dinar' },
+    { iso_code: 'RUB', symbol: '₽', name: 'Russian Ruble' },
+    { iso_code: 'RWF', symbol: 'FRw', name: 'Rwandan Franc' },
+    { iso_code: 'SAR', symbol: '﷼', name: 'Saudi Riyal' },
+    { iso_code: 'SBD', symbol: '$', name: 'Solomon Islands Dollar' },
+    { iso_code: 'SCR', symbol: '₨', name: 'Seychellois Rupee' },
+    { iso_code: 'SDG', symbol: '£', name: 'Sudanese Pound' },
+    { iso_code: 'SLE', symbol: 'Le', name: 'Sierra Leonean Leone' },
+    { iso_code: 'SOS', symbol: 'Sh', name: 'Somali Shilling' },
+    { iso_code: 'SRD', symbol: '$', name: 'Surinamese Dollar' },
+    { iso_code: 'SSP', symbol: '£', name: 'South Sudanese Pound' },
+    { iso_code: 'STN', symbol: 'Db', name: 'São Tomé and Príncipe Dobra' },
+    { iso_code: 'SYP', symbol: '£', name: 'Syrian Pound' },
+    { iso_code: 'SZL', symbol: 'L', name: 'Swazi Lilangeni' },
+    { iso_code: 'THB', symbol: '฿', name: 'Thai Baht' },
+    { iso_code: 'TJS', symbol: 'ЅМ', name: 'Tajikistani Somoni' },
+    { iso_code: 'TMT', symbol: 'm', name: 'Turkmenistani Manat' },
+    { iso_code: 'TND', symbol: 'د.ت', name: 'Tunisian Dinar' },
+    { iso_code: 'TOP', symbol: 'T$', name: 'Tongan Paʻanga' },
+    { iso_code: 'TRY', symbol: '₺', name: 'Turkish Lira' },
+    { iso_code: 'TTD', symbol: '$', name: 'Trinidad and Tobago Dollar' },
+    { iso_code: 'TVD', symbol: '$', name: 'Tuvaluan Dollar' },
+    { iso_code: 'TWD', symbol: 'NT$', name: 'New Taiwan Dollar' },
+    { iso_code: 'TZS', symbol: 'Sh', name: 'Tanzanian Shilling' },
+    { iso_code: 'UAH', symbol: '₴', name: 'Ukrainian Hryvnia' },
+    { iso_code: 'UGX', symbol: 'Sh', name: 'Ugandan Shilling' },
+    { iso_code: 'USD', symbol: '$', name: 'United States Dollar' },
+    { iso_code: 'UYU', symbol: '$', name: 'Uruguayan Peso' },
+    { iso_code: 'UZS', symbol: 'soʻm', name: 'Uzbekistani Soʻm' },
+    { iso_code: 'VES', symbol: 'Bs.S', name: 'Venezuelan Bolívar Soberano' },
+    { iso_code: 'VND', symbol: '₫', name: 'Vietnamese Đồng' },
+    { iso_code: 'VUV', symbol: 'Vt', name: 'Vanuatu Vatu' },
+    { iso_code: 'WST', symbol: 'T', name: 'Samoan Tālā' },
+    { iso_code: 'XAF', symbol: 'FCFA', name: 'Central African CFA Franc' },
+    { iso_code: 'XCD', symbol: '$', name: 'East Caribbean Dollar' },
+    { iso_code: 'XOF', symbol: 'CFA', name: 'West African CFA Franc' },
+    { iso_code: 'XPF', symbol: '₣', name: 'CFP Franc' },
+    { iso_code: 'YER', symbol: '﷼', name: 'Yemeni Rial' },
+    { iso_code: 'ZAR', symbol: 'R', name: 'South African Rand' },
+    { iso_code: 'ZMW', symbol: 'ZK', name: 'Zambian Kwacha' },
+    { iso_code: 'ZWL', symbol: '$', name: 'Zimbabwean Dollar' },
+  ];
+
+  for (const currency of full_currency_list) {
+    const currency_iso_code = await prisma_platform.tb_currency_iso.upsert({
+      where: {
+        iso_code: currency.iso_code,
+      },
+      update: {
+        symbol: currency.symbol,
+        name: currency.name,
+      },
+      create: {
+        iso_code: currency.iso_code,
+        symbol: currency.symbol,
+        name: currency.name,
+      },
+    });
+
+    console.log('Upserted currency iso code:', currency_iso_code);
+  }
+
+  return full_currency_list;
+}
+
+async function main() {
+  // Add your seed data here
+  console.log('Seeding database...');
+
+  const full_currency_list = await upsert_currency_iso();
+  console.log('Full currency list:', full_currency_list);
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma_platform.$disconnect();
+  });

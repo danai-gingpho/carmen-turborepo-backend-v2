@@ -1,0 +1,15 @@
+meta {
+  name: 17 - getByItemsGroup
+  type: http
+  seq: 17
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/products/by-item-group-id/{{id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

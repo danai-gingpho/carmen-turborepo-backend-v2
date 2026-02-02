@@ -1,0 +1,21 @@
+meta {
+  name: 21 - UseGuards
+  type: http
+  seq: 21
+}
+
+patch {
+  url: {{host}}/api/config/{{bu_code}}/products/{{id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

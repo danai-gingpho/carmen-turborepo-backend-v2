@@ -1,0 +1,209 @@
+version: '3.8'
+
+services:
+  api-micro-authen:
+    build:
+      context: .
+      dockerfile: ./apps/micro-authen/Dockerfile
+    container_name: carmen-api-micro-authen
+    ports:
+      - "5001:5001"
+      - "6001:6001"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - carmen-network
+
+  api-micro-cluster:
+    build:
+      context: .
+      dockerfile: ./apps/micro-cluster/Dockerfile
+    container_name: carmen-api-micro-cluster
+    ports:
+      - "5002:5002"
+      - "6002:6002"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - carmen-network
+
+  api-micro-file:
+    build:
+      context: .
+      dockerfile: ./apps/micro-file/Dockerfile
+    container_name: carmen-api-micro-file
+    ports:
+      - "5007:5007"
+      - "6007:6007"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - carmen-network
+
+  api-micro-license:
+    build:
+      context: .
+      dockerfile: ./apps/micro-license/Dockerfile
+    container_name: carmen-api-micro-license
+    ports:
+      - "5003:5003"
+      - "6003:6003"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - carmen-network
+
+  api-micro-notification:
+    build:
+      context: .
+      dockerfile: ./apps/micro-notification/Dockerfile
+    container_name: carmen-api-micro-notification
+    ports:
+      - "5006:5006"
+      - "6006:6006"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - carmen-network
+
+  api-micro-reports:
+    build:
+      context: .
+      dockerfile: ./apps/micro-reports/Dockerfile
+    container_name: carmen-api-micro-reports
+    ports:
+      - "5004:5004"
+      - "6004:6004"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - carmen-network
+
+  api-micro-tenant-inventory:
+    build:
+      context: .
+      dockerfile: ./apps/micro-tenant-inventory/Dockerfile
+    container_name: carmen-api-micro-tenant-inventory
+    ports:
+      - "5008:5008"
+      - "6008:6008"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - carmen-network
+
+  api-micro-tenant-master:
+    build:
+      context: .
+      dockerfile: ./apps/micro-tenant-master/Dockerfile
+    container_name: carmen-api-micro-tenant-master
+    ports:
+      - "5011:5011"
+      - "6011:6011"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - carmen-network
+
+  api-micro-tenant-procurement:
+    build:
+      context: .
+      dockerfile: ./apps/micro-tenant-procurement/Dockerfile
+    container_name: carmen-api-micro-tenant-procurement
+    ports:
+      - "5009:5009"
+      - "6009:6009"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - carmen-network
+
+  api-micro-tenant-recipe:
+    build:
+      context: .
+      dockerfile: ./apps/micro-tenant-recipe/Dockerfile
+    container_name: carmen-api-micro-tenant-recipe
+    ports:
+      - "5010:5010"
+      - "6010:6010"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - carmen-network
+
+  api-backend-gateway:
+    build:
+      context: .
+      dockerfile: ./apps/backend-gateway/Dockerfile
+    container_name: carmen-api-backend-gateway
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - carmen-network
+
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: carmen-db
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
+  #     - POSTGRES_DB=carmen
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - carmen-network
+
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: carmen-redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - carmen-network
+
+# volumes:
+#   postgres_data:
+#   # redis_data:
+
+networks:
+  carmen-network:
+    driver: bridge

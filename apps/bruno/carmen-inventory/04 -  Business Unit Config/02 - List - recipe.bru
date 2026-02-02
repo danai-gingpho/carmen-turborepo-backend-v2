@@ -1,0 +1,15 @@
+meta {
+  name: 02 - List | recipe
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/business-unit/configs/recipe
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

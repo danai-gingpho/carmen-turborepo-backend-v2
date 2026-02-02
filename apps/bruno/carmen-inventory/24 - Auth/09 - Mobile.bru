@@ -1,0 +1,15 @@
+meta {
+  name: 09 - List Mobile
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{host}}/api/auth/mobile
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

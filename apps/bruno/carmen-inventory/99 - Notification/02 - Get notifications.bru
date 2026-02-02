@@ -1,0 +1,15 @@
+meta {
+  name: 02 - proxyRoot
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/notifications/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

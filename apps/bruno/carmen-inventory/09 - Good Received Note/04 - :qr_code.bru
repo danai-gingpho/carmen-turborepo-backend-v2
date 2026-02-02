@@ -1,0 +1,15 @@
+meta {
+  name: 04 - List {{qr_code}}
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/good-received-note/scan-po/{{qr_code}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

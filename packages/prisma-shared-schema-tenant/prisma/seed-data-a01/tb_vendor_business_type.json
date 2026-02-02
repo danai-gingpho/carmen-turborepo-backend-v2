@@ -1,0 +1,107 @@
+[
+  {
+    "id": "34532270-a404-4bc6-a461-a1201ffac7b9",
+    "name": "E2E Test Business Type",
+    "description": "Business type created by E2E test",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "b0689243-f1e9-4b76-b427-4be42380586f",
+    "name": "View Test Business Type",
+    "description": "Test business type for viewing",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "5fc895ef-61af-4f1f-8a01-12571150676c",
+    "name": "Update Test Business Type",
+    "description": "Initial description",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "72a48cf1-47c5-4f2c-9865-1cef8b00346b",
+    "name": "Delete Test Business Type",
+    "description": "Business type to be deleted",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "125be0b8-1473-457e-8b14-d05c7b101c1d",
+    "name": "Corporation",
+    "description": "Corporate business entity",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "89114ca4-012f-47ab-b36b-735ebd56c918",
+    "name": "Test<script>",
+    "description": "",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "8f0aff55-c657-4778-924d-2fc991e84808",
+    "name": "Valid Business Type Name",
+    "description": "a",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "ba9be02c-24a6-4685-8ee7-12eef2099b76",
+    "name": "Mobile Test Business Type",
+    "description": "Testing mobile navigation",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "cc321cf2-f465-4db0-b9b3-e5b5ae616d2c",
+    "name": "Tablet Test Business Type",
+    "description": "Testing tablet interactions",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "28e3cd76-9373-4fa1-ab38-3210f286d2a1",
+    "name": "Performance Test Business Type 1",
+    "description": "Business type 1 for performance testing",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "0697f560-af23-4229-8c6f-d6336c4404e1",
+    "name": "Search Test Corp 2",
+    "description": "Corporation for search testing",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "639aa61e-72f5-4cdd-8cb4-73baf03e4b8a",
+    "name": "Test Business Type",
+    "description": "Test description",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "53ddb7b7-8ac6-4d27-bfd3-8a5a40313b4b",
+    "name": "Integration Test Business Type",
+    "description": "Business type for integration testing",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "1390f1f2-ed23-4709-80e1-062b0208ba6d",
+    "name": "Consistency Test Business Type",
+    "description": "Testing data consistency",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "5da3b2d5-e5e2-499f-a865-ae4da7bddf37",
+    "name": "Concurrent Test 1Concurrent Test 2Concurrent Test 3",
+    "description": "Created concurrently 1Created concurrently 2Created concurrently 3",
+    "is_active": true,
+    "doc_version": 0
+  }
+]

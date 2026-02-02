@@ -1,0 +1,15 @@
+meta {
+  name: 01 - List {{locationid}}
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/user/location/{{locationId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

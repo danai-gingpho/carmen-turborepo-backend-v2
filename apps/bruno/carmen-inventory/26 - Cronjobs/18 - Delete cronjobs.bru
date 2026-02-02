@@ -1,0 +1,15 @@
+meta {
+  name: 18 - ApiOperation
+  type: http
+  seq: 18
+}
+
+delete {
+  url: {{host}}/api/config/cronjobs/{{id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

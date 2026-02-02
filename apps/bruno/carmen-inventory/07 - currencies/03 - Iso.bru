@@ -1,0 +1,15 @@
+meta {
+  name: 03 - List Iso
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/api/iso
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

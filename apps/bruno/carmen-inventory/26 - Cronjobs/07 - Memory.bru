@@ -1,0 +1,15 @@
+meta {
+  name: 07 - List Memory
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{host}}/api/config/cronjobs/debug/memory
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

@@ -1,0 +1,15 @@
+meta {
+  name: 01 - Get Price List by ID
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/price-list/00000000-0000-0000-0000-000000000000/download-excel
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

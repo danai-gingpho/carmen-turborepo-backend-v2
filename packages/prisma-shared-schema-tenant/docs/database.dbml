@@ -1,0 +1,1567 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Project Carmen_Inventory {
+  database_type: 'PostgreSQL'
+  Note: 'Carmen Inventory Project 2024 (Tenant)'
+}
+
+enum enum_activity_action {
+  view [note: 'เหตุการณ์ดูข้อมูล']
+  create [note: 'เหตุการณ์สร้างข้อมูล']
+  update [note: 'เหตุการณ์แก้ไขข้อมูล']
+  delete [note: 'เหตุการณ์ลบข้อมูล']
+  login [note: 'เหตุการณ์เข้าสู่ระบบ']
+  other [note: 'เหตุการณ์อื่นๆ']
+}
+
+enum enum_activity_entity_type {
+  user [note: 'ผู้ใช้งาน']
+  business_unit [note: 'หน่วยธุรกิจ']
+  product [note: 'สินค้า']
+  location [note: 'สถานที่']
+  department [note: 'หน่วยงาน']
+  unit [note: 'หน่วยนับ']
+  currency [note: 'สกุลเงิน']
+  exchange_rate [note: 'อัตราแลกเปลี่ยน']
+  menu [note: 'เมนู']
+  delivery_point [note: 'จุดส่งสินค้า']
+  purchase_request [note: 'คำขอซื้อ']
+  purchase_request_item [note: 'รายการคำขอซื้อ']
+  purchase_order [note: 'ใบสั่งซื้อ']
+  purchase_order_item [note: 'รายการใบสั่งซื้อ']
+  good_received_note [note: 'ใบรับสินค้า']
+  good_received_note_item [note: 'รายการใบรับสินค้า']
+  inventory_transaction [note: 'รายการการเคลื่อนไหวสินค้า']
+  inventory_adjustment [note: 'รายการปรับปรุงสินค้า']
+  store_requisition [note: 'คำขอรับสินค้า']
+  store_requisition_item [note: 'รายการคำขอรับสินค้า']
+  stock_in [note: 'รายการนำสินค้าเข้า']
+  stock_out [note: 'รายการนำสินค้าออก']
+  stock_adjustment [note: 'รายการปรับปรุงสินค้า']
+  stock_transfer [note: 'รายการเคลื่อนไหวสินค้า']
+  stock_count [note: 'รายการนับสินค้า']
+  stock_take [note: 'รายการนับสินค้า']
+  stock_take_item [note: 'รายการนับสินค้า']
+  other [note: 'อื่นๆ']
+}
+
+TABLE tb_activity {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสกิจกรรม']
+  action enum_activity_action [note: 'การกระทำ']
+  entity_type enum_activity_entity_type [note: 'ประเภทของข้อมูล']
+  entity_id uuid [note: 'รหัสของข้อมูล']
+  actor_id uuid [note: 'รหัสผู้ใช้งาน']
+  meta_data json [null, note: 'ข้อมูลเสริม']
+  old_data json [null, note: 'ข้อมูลเก่า']
+  new_data json [null, note: 'ข้อมูลใหม่']
+  ip_address text [null, note: 'ที่อยู่ IP']
+  user_agent text [null, note: 'ตัวติดต่อ']
+  description text [note: 'คำอธิบาย']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (entity_type, entity_id) [name: 'activity_entitytype_entityid_idx']
+  }
+
+}
+
+TABLE tb_menu {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสเมนู']
+  module_id uuid [not null, note: 'รหัสโมดูล']
+  name varchar [not null, note: 'ชื่อเมนู']
+  url varchar [not null, note: 'ลิงค์']
+  description text [note: 'คำอธิบาย']
+
+  is_visible bool [default: true, note: 'แสดง']
+  is_active bool [default: true, note: 'เปิด']
+  is_lock bool [default: true, note: 'ล็อค']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "menu_name_u", note: 'ชื่อเมนู']
+  }
+}
+
+TABLE tb_currency {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสสกุลเงิน']
+  code varchar(3) [unique, not null, note: 'รหัสสกุลเงิน']
+  name varchar(100) [not null, note: 'ชื่อสกุลเงิน']
+  symbol varchar(5) [note: 'สัญลักษณ์']
+  description text [default: "", note: 'คำอธิบาย']
+  decimal_places integer [default: 2, note: 'จำนวนทศนิยม']
+
+  is_active bool [default: true, note: 'เปิด']
+  exchange_rate numeric(15,5) [default: 1, note: 'อัตราแลกเปลี่ยน']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    code [name: "currency_code_u", note: 'รหัสสกุลเงิน']
+  }
+}
+
+TABLE tb_exchange_rate {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสอัตราแลกเปลี่ยน']
+
+  at_date timestamptz [default: `now()`, note: 'วันที่']
+  currency_id uuid [ref: > tb_currency.id, note: 'รหัสสกุลเงิน']
+  exchange_rate numeric(15,5) [default: 1, note: 'อัตราแลกเปลี่ยน']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (at_date, currency_id) [unique, name: "exchangerate_at_date_currency_u", note: 'อัตราแลกเปลี่ยนวันที่สกุลเงิน']
+  }
+}
+
+enum enum_location_type {
+  inventory [note: 'สินค้าคงคลังนับสินค้า']
+  direct [note: 'สินค้าตรง']
+  consignment [note: 'สินค้าคลังชำระเมื่อใช้งาน']
+}
+
+enum enum_location_status_type {
+  active [note: 'เปิด']
+  inactive [note: 'ปิด']
+  maintenance [note: 'ซ่อมแซม']
+}
+
+TABLE tb_location {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสสถานที่']
+  name varchar [unique, not null, note: 'ชื่อสถานที่']
+
+  location_type enum_location_type [not null, note: 'ประเภทสถานที่']
+
+  description text [note: 'คำอธิบาย']
+  info json [null, note: 'ข้อมูลเสริม']
+
+  is_active bool [default: true, note: 'เปิด']
+
+  delivery_point_id uuid [ref: > tb_delivery_point.id, note: 'รหัสจุดส่งสินค้า']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "location_name_u", note: 'ชื่อสถานที่']
+  }
+}
+
+TABLE tb_delivery_point {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสจุดส่งสินค้า']
+  name varchar [unique, not null, note: 'ชื่อจุดส่งสินค้า']
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "deliverypoint_name_u", note: 'ชื่อจุดส่งสินค้า']
+  }
+}
+
+TABLE tb_unit {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสหน่วยนับ']
+  name varchar [unique, not null, note: 'ชื่อหน่วยนับ']
+  description text [note: 'คำอธิบาย']
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "unit_name_u", note: 'ชื่อหน่วยนับ']
+  }
+}
+
+enum enum_unit_type {
+  order_unit [note: 'หน่วยนับสำหรับสั่งซื้อ']
+  ingredient_unit [note: 'หน่วยนับสำหรับส่วนผสม']
+}
+
+TABLE tb_unit_conversion {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสการแปลงหน่วย']
+  product_id uuid [ref: > tb_product.id, note: 'รหัสสินค้า']
+  unit_type enum_unit_type [not null, note: 'ประเภทหน่วยนับ']
+  from_unit_id uuid [ref: > tb_unit.id, note: 'รหัสหน่วยนับจาก']
+  from_unit_name varchar [not null, note: 'ชื่อหน่วยนับจาก']
+  from_unit_qty numeric(20,5) [default: 1, note: 'จำนวนหน่วยนับจาก']
+  to_unit_id uuid [ref: > tb_unit.id, note: 'รหัสหน่วยนับไป']
+  to_unit_name varchar [not null, note: 'ชื่อหน่วยนับไป']
+  to_unit_qty numeric(20,5) [default: 1, note: 'จำนวนหน่วยนับไป']
+  is_default bool [default: false, note: 'เป็นค่าเริ่มต้น']
+  description json [null, note: 'คำอธิบาย']
+
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (product_id, unit_type, from_unit_id, to_unit_id) [name: "unitconversion_product_unit_type_from_unit_to_unit_u", note: 'การแปลงหน่วยสินค้า']
+  }
+}
+
+TABLE tb_department {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสหน่วยงาน']
+  name varchar [unique, not null, note: 'ชื่อหน่วยงาน']
+  description text [note: 'คำอธิบาย']
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "department_name_u", note: 'ชื่อหน่วยงาน']
+  }
+}
+
+TABLE tb_department_user {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสผู้ใช้งานหน่วยงาน']
+  user_id uuid [not null, note: 'รหัสผู้ใช้งาน']
+  department_id uuid [not null, ref: > tb_department.id, note: 'รหัสหน่วยงาน']
+  is_hod bool [default: false, note: 'เป็นหัวหน่วยงาน']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (department_id, user_id) [unique, name: "department_user_u", note: 'ผู้ใช้งานหน่วยงาน']
+  }
+}
+
+TABLE tb_user_location {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสผู้ใช้งานสถานที่']
+  user_id uuid [not null, note: 'รหัสผู้ใช้งาน']
+  location_id uuid [not null, ref: > tb_location.id, note: 'รหัสสถานที่']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (user_id, location_id) [unique, name: "user_location_u", note: 'ผู้ใช้งานสถานที่']
+  }
+}
+
+enum enum_product_status_type {
+  active [note: 'เปิด']
+  inactive [note: 'ปิด']
+}
+
+TABLE tb_product {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสสินค้า']
+  code varchar [unique, not null, note: 'รหัสสินค้า']
+  name varchar [unique, not null, note: 'ชื่อสินค้า']
+  local_name varchar [null, note: 'ชื่อสินค้าในภาษาท้องถิ่น']
+  description text [note: 'คำอธิบาย']
+
+  inventory_unit_id uuid [not null, ref: > tb_unit.id, note: 'รหัสหน่วยนับสินค้า']
+  inventory_unit_name varchar [not null, default: "", note: 'ชื่อหน่วยนับสินค้า']
+
+  product_status_type enum_product_status_type [not null, default: "active", note: 'สถานะสินค้า']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    code [name: "product_code_u", note: 'รหัสสินค้า']
+    name [name: "product_name_u", note: 'ชื่อสินค้า']
+
+  }
+}
+
+TABLE tb_product_info {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสข้อมูลสินค้า']
+  product_id uuid [unique, not null, ref: - tb_product.id, note: 'รหัสสินค้า']
+  product_item_group_id uuid [ref: > tb_product_item_group.id, note: 'รหัสกลุ่มสินค้า']
+
+  is_used_in_recipe bool [default: true, note: 'ใช้ในสูตร']
+  is_sold_directly bool [default: false, note: 'ขายตรง']
+
+  barcode varchar [null, note: 'บาร์โค้ด']
+
+  price_deviation_limit numeric(20,5) [default: 0, note: 'ความคลาดเคลื่อนราคา']
+  qty_deviation_limit numeric(20,5) [default: 0, note: 'ความคลาดเคลื่อนจำนวน']
+
+  info json [null, note: 'ข้อมูลเสริม']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    product_id [name: "productinfo_product_u", note: 'สินค้า']
+  }
+}
+
+Table tb_tax_type_inventory {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสประเภทภาษี']
+  name varchar [unique, not null, note: 'ชื่อประเภทภาษี']
+  description text [note: 'คำอธิบาย']
+
+  tax_type enum_tax_type [default: "none", note: 'ประเภทภาษี']
+  tax_rate numeric(15,5) [default: 0, note: 'อัตราภาษี']
+  decimal_places integer [default: 2, note: 'จำนวนทศนิยม']
+
+  account_code varchar [null, note: 'รหัสบัญชี']
+
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "tax_type_inventory_name_u", note: 'ชื่อประเภทภาษี']
+  }
+}
+
+enum enum_tax_type {
+  none [note: 'ไม่มี']
+  included [note: 'รวม']
+  add [note: 'บวก']
+}
+
+TABLE tb_product_location {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสสินค้าสถานที่']
+  product_id uuid [not null, ref: > tb_product.id, note: 'รหัสสินค้า']
+  location_id uuid [not null, ref: > tb_location.id, note: 'รหัสสถานที่']
+
+  min_qty numeric(20,5) [default: 0, note: 'จำนวนสินค้าขั้นต่ำ']
+  max_qty numeric(20,5) [default: 0, note: 'จำนวนสินค้าขั้นสูง']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (product_id, location_id) [name : "product_location_u", unique, note: 'สินค้าสถานที่']
+  }
+}
+
+TABLE tb_product_category {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสหมวดสินค้า']
+  code varchar [unique, not null, note: 'รหัสหมวดสินค้า']
+  name varchar [unique, not null, note: 'ชื่อหมวดสินค้า']
+  description text [note: 'คำอธิบาย']
+  is_active bool [default: true, note: 'เปิด']
+
+  price_deviation_limit numeric(20,5) [default: 0, note: 'ความคลาดเคลื่อนราคา']
+  qty_deviation_limit numeric(20,5) [default: 0, note: 'ความคลาดเคลื่อนจำนวน']
+
+  is_used_in_recipe bool [default: true, note: 'ใช้ในสูตร']
+  is_sold_directly bool [default: false, note: 'ขายตรง']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    code [name: "productcategory_code_u", note: 'รหัสหมวดสินค้า']
+    name [name: "productcategory_name_u", note: 'ชื่อหมวดสินค้า']
+  }
+}
+
+TABLE tb_product_sub_category {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสหมวดสินค้าย่อย']
+  code varchar [ not null, default: "", note: 'รหัสหมวดสินค้าย่อย']
+  name varchar [ not null, note: 'ชื่อหมวดสินค้าย่อย']
+  description text [note: 'คำอธิบาย']
+
+  price_deviation_limit numeric(20,5) [default: 0, note: 'ความคลาดเคลื่อนราคา']
+  qty_deviation_limit numeric(20,5) [default: 0, note: 'ความคลาดเคลื่อนจำนวน']
+
+  is_used_in_recipe bool [default: true, note: 'ใช้ในสูตร']
+  is_sold_directly bool [default: false, note: 'ขายตรง']
+
+  is_active bool [default: true, note: 'เปิด']
+
+  product_category_id uuid [not null,ref: > tb_product_category.id, note: 'รหัสหมวดสินค้า']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (code, name,product_category_id)  [ unique, name: "productsubcategory_code_name_product_category_u", note: 'หมวดสินค้าย่อย']
+  }
+}
+
+TABLE tb_product_item_group {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสกลุ่มสินค้า']
+  code varchar [ not null, default: "", note: 'รหัสกลุ่มสินค้า']
+  name varchar [ not null, note: 'ชื่อกลุ่มสินค้า']
+  description text [note: 'คำอธิบาย']
+
+  price_deviation_limit numeric(20,5) [default: 0, note: 'ความคลาดเคลื่อนราคา']
+  qty_deviation_limit numeric(20,5) [default: 0, note: 'ความคลาดเคลื่อนจำนวน']
+
+  is_used_in_recipe bool [default: true, note: 'ใช้ในสูตร']
+  is_sold_directly bool [default: false, note: 'ขายตรง']
+
+  is_active bool [default: true, note: 'เปิด']
+
+  product_subcategory_id uuid [not null, ref: > tb_product_sub_category.id, note: 'รหัสหมวดสินค้าย่อย']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (code, name, product_subcategory_id) [unique, name: "productitemgroup_code_name_product_subcategory_u", note: 'กลุ่มสินค้า']
+  }
+}
+
+enum enum_workflow_type {
+  purchase_request [note: 'การขอซื้อสินค้า']
+  purchase_order [note: 'การสั่งซื้อสินค้า']
+  store_requisition [note: 'การขอใช้สินค้า']
+}
+
+TABLE tb_workflow {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสกระบวนการ']
+  name varchar [unique, not null, note: 'ชื่อกระบวนการ']
+
+  workflow_type enum_workflow_type [not null, note: 'ประเภทกระบวนการ']
+
+  description text [note: 'คำอธิบาย']
+  data json [note: 'ข้อมูล']
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "workflow_name_u", note: 'ชื่อกระบวนการ']
+  }
+}
+
+enum enum_purchase_request_doc_status {
+  draft [note: 'ร่าง']
+  work_in_process [note: 'กำลังดำเนินการ']
+  complete [note: 'สำเร็จ']
+  complete_purchase_order [note: 'สำเร็จการสั่งซื้อ']
+}
+
+TABLE tb_purchase_request {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสการขอซื้อ']
+  reference_name varchar [unique, not null, note: 'รหัสการขอซื้อ']
+
+  purchase_request_date timestamptz [note: 'วันที่ขอซื้อ']
+  workflow_id uuid [ref: > tb_workflow.id, note: 'รหัสกระบวนการ']
+
+  workflow_obj json [note: 'ข้อมูลกระบวนการ']
+  workflow_history json [note: 'ประวัติการดำเนินการ']
+
+  current_workflow_status varchar [note: 'สถานะกระบวนการ']
+
+  purchase_request_status enum_purchase_request_doc_status [default: 'draft', note: 'สถานะการขอซื้อ']
+
+  requestor_id uuid [note: 'ผู้ขอซื้อ']
+  requestor_name varchar [note: 'ชื่อผู้ขอซื้อ']
+  department_id uuid [note: 'หน่วยงาน']
+  department_name varchar [note: 'ชื่อหน่วยงาน']
+
+  job_code varchar [note: 'รหัสตำแหน่ง']
+  budget_code varchar [note: 'รหัสงบประมาณ']
+  allocated_budget_amount numeric(20,5) [note: 'งบประมาณที่จัดสรร']
+
+  is_active bool [default: true, note: 'เปิด']
+
+  doc_version numeric [not null, default: 0, note: 'รุ่น']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    reference_name [name: "PR0_reference_name_u", note: 'รหัสการขอซื้อ']
+  }
+}
+
+TABLE tb_purchase_request_detail {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการขอซื้อ']
+  purchase_request_id uuid [ref: > tb_purchase_request.id, note: 'รหัสการขอซื้อ']
+
+  location_id uuid [ref: > tb_location.id, note: 'รหัสสถานที่']
+  location_name varchar [note: 'ชื่อสถานที่']
+
+  product_id uuid [not null, ref: > tb_product.id, note: 'รหัสสินค้า']
+  product_name varchar [note: 'ชื่อสินค้า']
+
+  vendor_id uuid [ref: > tb_vendor.id, note: 'รหัสผู้จัดจำหน่าย']
+  vendor_name varchar [note: 'ชื่อผู้จัดจำหน่าย']
+
+  price_list_id uuid [ref: > tb_price_list.id, note: 'รหัสราคาสินค้า']
+
+  description text [note: 'คำอธิบาย']
+
+  requested_qty numeric(20,5) [note: 'จำนวนขอซื้อ']
+  requested_unit_id uuid [ref: > tb_unit.id, note: 'รหัสหน่วยนับขอซื้อ']
+  requested_unit_name varchar [note: 'ชื่อหน่วยนับขอซื้อ']
+
+  approved_qty numeric(20,5) [note: 'จำนวนอนุมัติ']
+  approved_unit_id uuid [ref: > tb_unit.id, note: 'รหัสหน่วยนับอนุมัติ']
+  approved_unit_name varchar [note: 'ชื่อหน่วยนับอนุมัติ']
+
+  currency_id uuid [ref: > tb_currency.id, note: 'รหัสสกุลเงิน']
+  exchange_rate numeric(15,5) [note: 'อัตราแลกเปลี่ยน']
+  exchange_rate_date timestamptz [note: 'วันที่อัตราแลกเปลี่ยน']
+
+  price numeric(20,5) [note: 'ราคา']
+  total_price numeric(20,5) [note: 'ราคารวม']
+  foc_qty numeric(20,5) [note: 'จำนวของแถม']
+  foc_unit_id uuid [ref: > tb_unit.id, note: 'รหัสหน่วยนับแถม']
+  foc_unit_name varchar [note: 'ชื่อหน่วยนับแถม']
+
+  tax_type_inventory_id uuid [ref: > tb_tax_type_inventory.id]
+  tax_type enum_tax_type [default: "none"]
+  tax_rate numeric(15,5) [note: 'อัตราภาษี']
+  tax_amount numeric(20,5) [note: 'จำนวนภาษี']
+  is_tax_adjustment bool [default: false, note: 'ปรับภาษี']
+
+  is_discount bool [default: false, note: 'ส่วนลด']
+  discount_rate numeric(15,5) [default: 0, note: 'อัตราส่วนลด']
+  discount_amount numeric(20,5) [default: 0, note: 'จำนวนส่วนลด']
+  is_discount_adjustment bool [default: false, note: 'ปรับส่วนลด']
+
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (purchase_request_id, product_id, location_id) [unique, name: "PR1_purchase_request_product_location_u", note: 'รายการขอซื้อสินค้า']
+  }
+}
+
+enum enum_purchase_request_workflow_status {
+  draft [note: 'ร่าง']
+  pending [note: 'รอการตรวจสอบ']
+  review [note: 'กำลังตรวจสอบ']
+  accept [note: 'อนุมัติ']
+  reject [note: 'ปฏิเสธ']
+}
+
+enum enum_purchase_order_doc_status {
+  open [note: 'เปิด']
+  voided [note: 'ยกเลิก']
+  closed [note: 'ปิด']
+  draft [note: 'ร่าง']
+  sent [note: 'ส่ง']
+  partial [note: 'บางส่วน']
+  fully_received [note: 'รับสินค้าครบ']
+  cancelled [note: 'ยกเลิก']
+  deleted [note: 'ลบ']
+}
+
+table tb_credit_term {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสระยะเวลาชำระเงิน']
+  name varchar [unique, not null, note: 'ชื่อระยะเวลาชำระเงิน']
+  value numeric(15,5) [note: 'ค่าระยะเวลาชำระเงิน']
+  description text [note: 'คำอธิบาย']
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "credit_term_name_u", note: 'ชื่อระยะเวลาชำระเงิน']
+  }
+}
+
+TABLE tb_purchase_order {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสการสั่งซื้อ']
+  name varchar [unique, not null, note: 'รหัสการสั่งซื้อ']
+  purchase_order_status enum_purchase_order_doc_status [default: 'open', note: 'สถานะการสั่งซื้อ']
+
+  description text [note: 'คำอธิบาย']
+
+  order_date timestamptz [note: 'วันที่สั่งซื้อ']
+  delivery_date timestamptz [note: 'วันที่ส่งสินค้า']
+
+  vendor_id uuid [ref: > tb_vendor.id, note: 'รหัสผู้จัดจำหน่าย']
+  vendor_name varchar [note: 'ชื่อผู้จัดจำหน่าย']
+
+  currency_id uuid [ref: > tb_currency.id, note: 'รหัสสกุลเงิน']
+  currency_name varchar [note: 'ชื่อสกุลเงิน']
+  base_currency_id uuid [ref: > tb_currency.id, note: 'รหัสสกุลเงินหลัก']
+  base_currency_name varchar [note: 'ชื่อสกุลเงินหลัก']
+
+  exchange_rate numeric(15,5) [note: 'อัตราแลกเปลี่ยน']
+  notes text [note: 'หมายเหตุ']
+
+  approval_date timestamptz [null, note: 'วันที่อนุมัติ']
+
+  email varchar [note: 'อีเมล']
+
+  buyer_id uuid [note: 'รหัสผู้ซื้อ']
+  buyer_name varchar [note: 'ชื่อผู้ซื้อ']
+
+  credit_term_id uuid [ref: > tb_credit_term.id, note: 'ระยะเวลาชำระเงิน']
+  credit_term_name varchar [note: 'ชื่อระยะเวลาชำระเงิน']
+  credit_term_value numeric(15,5) [note: 'ค่าระยะเวลาชำระเงิน']
+
+  remarks text [note: 'หมายเหตุ']
+
+  info json [note: 'ข้อมูล']
+
+  history json [note: 'ประวัติ']
+
+  is_active bool [default: true, note: 'เปิด']
+
+  doc_version numeric [not null, default: 0, note: 'รุ่น']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "PO_name_u", note: 'รหัสการสั่งซื้อ']
+  }
+}
+
+TABLE tb_purchase_order_detail {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการสั่งซื้อ']
+
+  name varchar [unique, not null, note: 'รหัสรายการสั่งซื้อ']
+  description text [note: 'คำอธิบาย']
+  is_active bool [default: true, note: 'เปิด']
+
+  purchase_order_id uuid [ref: > tb_purchase_order.id, note: 'รหัสการสั่งซื้อ']
+
+  purchase_request_detail_id uuid [ref: > tb_purchase_request_detail.id, note: 'รหัสรายการขอซื้อ']
+
+  exchange_rate numeric(15,5) [note: 'อัตราแลกเปลี่ยน']
+  order_qty numeric(20,5) [note: 'จำนวนสั่งซื้อ']
+  order_unit_id uuid [ref: > tb_unit.id, note: 'รหัสหน่วยนับสั่งซื้อ']
+  order_unit_name varchar [note: 'ชื่อหน่วยนับสั่งซื้อ']
+
+  base_qty numeric(20,5) [note: 'จำนวนสั่งซื้อ']
+  base_unit_id uuid [ref: > tb_unit.id, note: 'รหัสหน่วยนับสั่งซื้อ']
+  base_unit_name varchar [note: 'ชื่อหน่วยนับสั่งซื้อ']
+
+  unit_price numeric(20,5) [note: 'ราคาต่อหน่วย']
+  sub_total_price numeric(20,5) [note: 'ราคารวม']
+  base_sub_total_price numeric(20,5) [note: 'ราคารวม']
+  is_foc bool [default: false, note: 'แถม']
+  is_tax_included bool [default: false, note: 'รวมภาษี']
+
+  tax_type_inventory_id uuid [ref: > tb_tax_type_inventory.id, note: 'รหัสประเภทภาษี']
+  tax_type enum_tax_type [default: "none", note: 'ประเภทภาษี']
+  tax_rate numeric(15,5) [note: 'อัตราภาษี']
+  tax_amount numeric(20,5) [note: 'จำนวนภาษี']
+  is_tax_adjustment bool [default: false, note: 'ปรับภาษี']
+
+  is_discount bool [default: false, note: 'ส่วนลด']
+  discount_rate numeric(15,5) [default: 0, note: 'อัตราส่วนลด']
+  discount_amount numeric(20,5) [default: 0, note: 'จำนวนส่วนลด']
+  is_discount_adjustment bool [default: false, note: 'ปรับส่วนลด']
+
+  net_amount numeric(20,5) [default: 0, note: 'ราคาสุทธิ']
+  base_net_amount numeric(20,5) [default: 0, note: 'ราคาสุทธิ']
+
+  total_price numeric(20,5) [note: 'ราคารวม']
+  base_total_price numeric(20,5) [note: 'ราคารวม']
+
+  info json [note: 'ข้อมูล']
+
+  history json [note: 'ประวัติ']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "PO1_name_u", note: 'รหัสรายการสั่งซื้อ']
+  }
+}
+
+Table tb_vendor_business_type {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสประเภทธุรกิจ']
+  name varchar [unique, not null, note: 'ชื่อประเภทธุรกิจ']
+  description text [note: 'คำอธิบาย']
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "vendor_business_type_name_u", note: 'ชื่อประเภทธุรกิจ']
+  }
+}
+
+TABLE tb_vendor {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสผู้จัดจำหน่าย']
+  name varchar [unique, not null, note: 'ชื่อผู้จัดจำหน่าย']
+  description text [note: 'คำอธิบาย']
+
+  business_type_id uuid [ref: > tb_vendor_business_type.id, note: 'รหัสประเภทธุรกิจ']
+  business_type_name varchar [note: 'ชื่อประเภทธุรกิจ']
+
+  info json [note: 'ข้อมูล']
+
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "vendor_name_u", note: 'ชื่อผู้จัดจำหน่าย']
+  }
+}
+
+TABLE tb_price_list{
+   id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสราคาสินค้า']
+   vendor_id uuid [ref: > tb_vendor.id, note: 'รหัสผู้จัดจำหน่าย']
+   from_date timestamptz [not null, default: `CURRENT_TIMESTAMP`, note: 'วันที่เริ่มต้น']
+   to_date timestamptz [not null, default: `CURRENT_TIMESTAMP`, note: 'วันที่สิ้นสุด']
+
+   product_id uuid [not null, ref: > tb_product.id, note: 'รหัสสินค้า']
+   product_name varchar [note: 'ชื่อสินค้า']
+
+   unit_id uuid [ref: > tb_unit.id, note: 'รหัสหน่วยนับ']
+   unit_name varchar [note: 'ชื่อหน่วยนับ']
+
+   price numeric(20,5) [note: 'ราคา']
+   price_without_tax numeric(20,5) [note: 'ราคาไม่รวมภาษี']
+   price_with_tax numeric(20,5) [note: 'ราคารวมภาษี']
+
+   tax_type enum_tax_type [default: "none", note: 'ประเภทภาษี']
+   tax_rate numeric(15,5) [note: 'อัตราภาษี']
+
+   created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+   created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+   updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+   updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+}
+
+enum enum_vendor_contact_type {
+  phone [note: 'เบอร์โทร']
+  email [note: 'อีเมล']
+}
+
+
+TABLE tb_vendor_contact {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสติดต่อ']
+  vendor_id uuid [ref: > tb_vendor.id, note: 'รหัสผู้จัดจำหน่าย']
+  contact_type enum_vendor_contact_type [not null, note: 'ประเภทติดต่อ']
+  description text [note: 'คำอธิบาย']
+  is_active bool [default: true, note: 'เปิด']
+
+  info json [null]
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (vendor_id, contact_type) [ name: "vendorcontact_vendor_contact_type_idx", note: 'ประเภทติดต่อ']
+  }
+}
+
+enum enum_vendor_address_type {
+  contact_address [note: 'ที่ติดต่อ']
+  mailing_address [note: 'ที่จัดส่ง']
+  register_address [note: 'ที่จดทะเบียน']
+}
+
+TABLE tb_vendor_address {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสที่ติดต่อ']
+  vendor_id uuid [ref: > tb_vendor.id, note: 'รหัสผู้จัดจำหน่าย']
+  address_type enum_vendor_address_type [note: 'ประเภทที่ติดต่อ']
+
+  data json [null, note: 'ข้อมูล']
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (vendor_id, address_type) [ name: "vendoraddress_vendor_address_type_idx", note: 'ประเภทที่ติดต่อ']
+  }
+}
+
+TABLE tb_product_tb_vendor {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสสินค้า']
+
+  product_id uuid [not null, ref: > tb_product.id, note: 'รหัสสินค้า']
+  product_name varchar [note: 'ชื่อสินค้า']
+  vendor_id uuid [ref: > tb_vendor.id, note: 'รหัสผู้จัดจำหน่าย']
+
+  vendor_product_code varchar [null, note: 'รหัสสินค้าของผู้จัดจำหน่าย']
+  vendor_product_name varchar [note: 'ชื่อสินค้าของผู้จัดจำหน่าย']
+
+  description text [note: 'คำอธิบาย']
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (vendor_id, product_id) [unique, name: "product_vendor_vendor_product_u", note: 'รหัสสินค้าของผู้จัดจำหน่าย']
+  }
+}
+
+enum enum_inventory_doc_type {
+  good_received_note [note: 'ใบรับสินค้า']
+  credit_note [note: 'ใบคืนเงินคืนสินค้า']
+  store_requisition [note: 'ใบขอซื้อ']
+  stock_in [note: 'ใบรับสินค้าเข้า']
+  stock_out [note: 'ใบรับสินค้าออก']
+  stock_take [note: 'ใบนับสินค้า']
+}
+
+TABLE tb_inventory_transaction {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการสินค้า']
+  // name varchar [unique, not null]
+  inventory_doc_type enum_inventory_doc_type [not null, note: 'ประเภทรายการสินค้า']
+  inventory_doc_no uuid [not null, note: 'รหัสรายการสินค้า']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    inventory_doc_no [name: "inventorytransaction_inventory_doc_no_idx", note: 'รหัสรายการสินค้า']
+  }
+
+}
+
+TABLE tb_inventory_transaction_detail {
+
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการสินค้า']
+  inventory_transaction_id uuid [not null, ref: > tb_inventory_transaction.id, note: 'รหัสรายการสินค้า']
+
+  from_lot_name varchar [note: 'รหัสล็อต']
+  current_lot_name varchar [note: 'รหัสล็อต']
+
+  qty numeric(20,5) [note: 'จำนวน']
+  unit_cost numeric(20,5) [note: 'ราคาต่อหน่วย']
+  total_cost numeric(20,5) [note: 'ราคารวม']
+
+  info json [null, note: 'ข้อมูล']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+}
+
+TABLE tb_inventory_transaction_closing_balance {
+
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการสินค้า']
+  inventory_transaction_detail_id uuid [ not null, ref: - tb_inventory_transaction_detail.id, note: 'รหัสรายการสินค้า']
+
+  lot_name varchar [note: 'รหัสล็อต']
+  lot_index integer [not null, default: 1, note: 'ลำดับล็อต']
+
+  qty numeric(20,5) [note: 'จำนวน']
+  cost numeric(20,5) [note: 'ราคา']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (lot_name, lot_index) [unique, name: "inventorytransactionclosingbalance_lotname_lot_index_u", note: 'รหัสล็อต']
+  }
+}
+
+enum enum_doc_status {
+  draft [note: 'ร่าง']
+  complete [note: 'สำเร็จ']
+  void [note: 'ยกเลิก']
+}
+
+enum enum_good_received_note_status {
+  draft [note: 'ร่าง']
+  complete [note: 'สำเร็จ']
+  void [note: 'ยกเลิก']
+}
+
+enum enum_good_received_note_type {
+  manual [note: 'มีการสร้างเอง']
+  purchase_order [note: 'ใบสั่งซื้อ']
+}
+
+TABLE tb_good_received_note {
+
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสใบรับสินค้า']
+
+  name varchar [note: 'ชื่อใบรับสินค้า']
+  ref_no varchar [note: 'รหัสใบรับสินค้า']
+
+  doc_status enum_good_received_note_status [not null,default: 'draft', note: 'สถานะใบรับสินค้า']
+  doc_type enum_good_received_note_type [not null,default: 'purchase_order', note: 'ประเภทใบรับสินค้า']
+
+  vendor_id uuid [null, ref: > tb_vendor.id, note: 'รหัสผู้จัดจำหน่าย']
+  vendor_name varchar [note: 'ชื่อผู้จัดจำหน่าย']
+
+  currency_id uuid [not null, ref: > tb_currency.id, note: 'รหัสสกุลเงิน']
+  currency_name varchar [note: 'ชื่อสกุลเงิน']
+  currency_rate numeric(15,5) [default: 1, note: 'อัตราแลกเปลี่ยน']
+
+  notes text [null, note: 'บันทึก']
+
+  workflow json [null, note: 'กระบวนการ']
+
+  signature_image_url varchar [null, note: 'ลิงค์รูปภาพ']
+  received_by_id uuid [note: 'รหัสผู้รับสินค้า']
+  received_by_name varchar [null, note: 'ชื่อผู้รับสินค้า']
+  received_at timestamptz [null, note: 'วันที่รับสินค้า']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+}
+
+TABLE tb_good_received_note_detail {
+
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการใบรับสินค้า']
+  inventory_transaction_id uuid [null, ref: - tb_inventory_transaction.id, note: 'รหัสรายการสินค้า']
+  good_received_note_id uuid [not null, ref: > tb_good_received_note.id, note: 'รหัสใบรับสินค้า']
+
+  purchase_order_detail_id uuid [null, ref: - tb_purchase_order_detail.id, note: 'รหัสรายการใบสั่งซื้อ']
+
+  sequence_no integer [not null, default: 1, note: 'ลำดับ']
+
+  location_id uuid [not null, ref: - tb_location.id, note: 'รหัสสถานที่']
+
+  product_id uuid [not null, ref: > tb_product.id, note: 'รหัสสินค้า']
+  product_name varchar [note: 'ชื่อสินค้า']
+
+  order_qty numeric(20,5) [note: 'จำนวนสั่งซื้อ']
+  order_unit_id uuid [not null, ref: - tb_unit.id, note: 'รหัสหน่วยนับ']
+  order_unit_name varchar [note: 'ชื่อหน่วยนับ']
+
+  received_qty numeric(20,5) [note: 'จำนวนรับ']
+  received_unit_id uuid [not null, ref: - tb_unit.id, note: 'รหัสหน่วยนับ']
+  received_unit_name varchar [note: 'ชื่อหน่วยนับ']
+
+  is_foc bool [default: false, note: 'สินค้า FOC']
+
+  foc_qty numeric(20,5) [note: 'จำนวน FOC']
+  foc_unit_id uuid [null, ref: - tb_unit.id, note: 'รหัสหน่วยนับ']
+  foc_unit_name varchar [note: 'ชื่อหน่วยนับ']
+
+  price numeric(20,5) [note: 'ราคา']
+
+  tax_type_inventory_id uuid [ref: > tb_tax_type_inventory.id, note: 'รหัสประเภทภาษี']
+  tax_type enum_tax_type [default: "none", note: 'ประเภทภาษี']
+  tax_rate numeric(15,5) [note: 'อัตราภาษี']
+  tax_amount numeric(20,5) [note: 'จำนวนภาษี']
+  is_tax_adjustment bool [default: false, note: 'ปรับปรุงภาษี']
+
+  total_amount numeric(20,5) [note: 'จำนวนเงิน']
+
+  delivery_point_id uuid [null, ref: - tb_delivery_point.id, note: 'รหัสจุดจัดส่ง']
+
+  base_price numeric(20,5) [note: 'ราคาฐาน']
+  base_qty numeric(20,5) [note: 'จำนวนฐาน']
+
+  extra_cost numeric(20,5) [note: 'ค่าใช้จ่ายพิเศษ']
+  total_cost numeric(20,5) [note: 'จำนวนเงิน']
+
+  is_discount bool [default: false, note: 'ส่วนลด']
+  discount_rate numeric(15,5) [default: 0, note: 'อัตราส่วนลด']
+  discount_amount numeric(20,5) [note: 'จำนวนส่วนลด']
+  is_discount_adjustment bool [default: false, note: 'ปรับปรุงส่วนลด']
+
+  lot_number varchar [note: 'รหัสล็อต']
+  expired_date timestamptz [note: 'วันที่หมดอายุ']
+
+  info json [null, note: 'ข้อมูล']
+
+  comment text [null, note: 'คำอธิบาย']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+}
+
+table tb_extra_cost_type {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสประเภทค่าใช้จ่าย']
+  name varchar [note: 'ชื่อประเภทค่าใช้จ่าย']
+  description text [null, note: 'คำอธิบาย']
+  is_active bool [default: true, note: 'เปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+}
+
+enum enum_allocate_extracost_type {
+  manual [note: 'มีการสร้างเอง']
+  by_value [note: 'ตามจำนวนเงิน']
+  by_qty [note: 'ตามจำนวนสินค้า']
+}
+
+table tb_extra_cost {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสค่าใช้จ่าย']
+  name varchar [note: 'ชื่อค่าใช้จ่าย']
+
+  good_received_note_id uuid [null, ref: > tb_good_received_note.id, note: 'รหัสใบรับสินค้า']
+  allocate_extracost_type enum_allocate_extracost_type [note: 'ประเภทการจัดสรร']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+}
+
+table tb_extra_cost_detail {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการค่าใช้จ่าย']
+  extra_cost_id uuid [not null, ref: > tb_extra_cost.id, note: 'รหัสค่าใช้จ่าย']
+
+  extra_cost_type_id uuid [not null, ref: > tb_extra_cost_type.id, note: 'รหัสประเภทค่าใช้จ่าย']
+  extra_cost_type_name varchar [note: 'ชื่อประเภทค่าใช้จ่าย']
+
+  amount numeric(20,5) [note: 'จำนวนเงิน']
+
+  is_tax bool [default: false, note: 'มีภาษี']
+  tax_type_inventory_id uuid [ref: > tb_tax_type_inventory.id, note: 'รหัสประเภทภาษี']
+  tax_type enum_tax_type [default: "none", note: 'ประเภทภาษี']
+  tax_rate numeric(15,5) [note: 'อัตราภาษี']
+  tax_amount numeric(20,5) [note: 'จำนวนภาษี']
+  is_tax_adjustment bool [default: false, note: 'ปรับปรุงภาษี']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+}
+
+TABLE tb_store_requisition {
+
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสใบขอซื้อ']
+
+  name varchar [note: 'ชื่อใบขอซื้อ']
+  ref_no varchar [note: 'รหัสใบขอซื้อ']
+  doc_status enum_doc_status [not null,default: 'draft', note: 'สถานะใบขอซื้อ']
+
+  workflow json [null, note: 'กระบวนการ']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+}
+
+TABLE tb_store_requisition_detail {
+
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการใบขอซื้อ']
+  inventory_transaction_id uuid [null, ref: - tb_inventory_transaction.id, note: 'รหัสรายการสินค้า']
+  store_requisition_id uuid [not null, ref: > tb_store_requisition.id, note: 'รหัสใบขอซื้อ']
+
+  name varchar [note: 'ชื่อรายการ']
+
+  product_id uuid [not null, ref: > tb_product.id, note: 'รหัสสินค้า']
+  product_name varchar [note: 'ชื่อสินค้า']
+  qty numeric(20,5) [note: 'จำนวน']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+}
+
+
+TABLE tb_stock_in {
+
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสใบรับสินค้าเข้า']
+
+  name varchar [note: 'ชื่อใบรับสินค้าเข้า']  
+  ref_no varchar [note: 'รหัสใบรับสินค้าเข้า']
+  doc_status enum_doc_status [not null,default: 'draft', note: 'สถานะใบรับสินค้าเข้า']
+
+  workflow json [null, note: 'กระบวนการ']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+}
+
+TABLE tb_stock_in_detail {
+
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการใบรับสินค้าเข้า']
+  inventory_transaction_id uuid [null, ref: - tb_inventory_transaction.id, note: 'รหัสรายการสินค้า']
+  stock_in_id uuid [not null, ref: > tb_stock_in.id, note: 'รหัสใบรับสินค้าเข้า']
+
+  name varchar [note: 'ชื่อรายการ']
+
+  product_id uuid [not null, ref: > tb_product.id, note: 'รหัสสินค้า']
+  product_name varchar [note: 'ชื่อสินค้า']
+  qty numeric(20,5) [note: 'จำนวน']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+}
+
+
+TABLE tb_stock_out {
+
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสใบรับสินค้าออก']
+
+  name varchar [note: 'ชื่อใบรับสินค้าออก']
+  ref_no varchar [note: 'รหัสใบรับสินค้าออก']
+  doc_status enum_doc_status [not null,default: 'draft', note: 'สถานะใบรับสินค้าออก']
+
+  workflow json [null, note: 'กระบวนการ']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+}
+
+TABLE tb_stock_out_detail {
+
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการใบรับสินค้าออก']
+  inventory_transaction_id uuid [null, ref: - tb_inventory_transaction.id, note: 'รหัสรายการสินค้า']
+  stock_out_id uuid [not null, ref: > tb_stock_out.id, note: 'รหัสใบรับสินค้าออก']
+
+  name varchar [note: 'ชื่อรายการ']
+
+  product_id uuid [not null, ref: > tb_product.id, note: 'รหัสสินค้า']
+  product_name varchar [note: 'ชื่อสินค้า']
+  qty numeric(20,5) [note: 'จำนวน']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+}
+
+TABLE tb_credit_note {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสใบเบิกสินค้า']
+
+  name varchar [note: 'ชื่อใบเบิกสินค้า']
+  ref_no varchar [note: 'รหัสใบเบิกสินค้า']
+  doc_status enum_doc_status [not null,default: 'draft', note: 'สถานะใบเบิกสินค้า']
+
+  workflow json [null, note: 'กระบวนการ']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    name [name: "creditnote_name_u", unique, note: 'ชื่อใบเบิกสินค้า']
+  }
+}
+
+TABLE tb_credit_note_detail {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการใบเบิกสินค้า']
+  inventory_transaction_id uuid [null, ref: - tb_inventory_transaction.id, note: 'รหัสรายการสินค้า']
+  credit_note_id uuid [not null, ref: > tb_credit_note.id, note: 'รหัสใบเบิกสินค้า']
+
+  name varchar [note: 'ชื่อรายการ']
+
+  product_id uuid [not null, ref: > tb_product.id, note: 'รหัสสินค้า']
+  product_name varchar [note: 'ชื่อสินค้า']
+  qty numeric(20,5) [note: 'จำนวน']
+  amount numeric(20,5) [note: 'จำนวนเงิน']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (credit_note_id, name) [unique, name: "creditnotedetail_credit_note_name_u", note: 'ชื่อใบเบิกสินค้า']
+  }
+}
+
+TABLE tb_stock_take {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสการตรวจนับสินค้า']
+
+  name varchar [note: 'ชื่อการตรวจนับสินค้า']
+  ref_no varchar [note: 'รหัสการตรวจนับสินค้า']
+  doc_status enum_doc_status [not null,default: 'draft', note: 'สถานะการตรวจนับสินค้า']
+
+  workflow json [null, note: 'กระบวนการ']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+}
+
+TABLE tb_stock_take_detail {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการการตรวจนับสินค้า']
+  inventory_transaction_id uuid [null, ref: - tb_inventory_transaction.id, note: 'รหัสรายการสินค้า']
+  stock_take_id uuid [not null, ref: > tb_stock_take.id, note: 'รหัสการตรวจนับสินค้า']
+
+  name varchar [note: 'ชื่อรายการ']
+
+  product_id uuid [not null, ref: > tb_product.id, note: 'รหัสสินค้า']
+  product_name varchar [note: 'ชื่อสินค้า']
+  qty numeric(20,5) [note: 'จำนวน']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+}
+
+enum  enum_count_stock_type {
+  physical [note: 'ตรวจนับจริง']
+  spot [note: 'ตรวจนับสด']
+}
+
+enum  enum_count_stock_status {
+  draft [note: 'ร่าง']
+  in_progress [note: 'กำลังดำเนินการ']
+  completed [note: 'เสร็จสิ้น']
+  cancelled [note: 'ยกเลิก']
+}
+
+
+TABLE tb_count_stock {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสการตรวจนับสินค้า']
+  start_date timestamptz [not null, default: `CURRENT_TIMESTAMP`, note: 'วันที่เริ่มต้น']
+  end_date timestamptz [ null, note: 'วันที่สิ้นสุด']
+  location_id uuid [not null, ref: > tb_location.id, note: 'รหัสสถานที่']
+  notes text [null, note: 'หมายเหตุ']
+
+  info json [null, note: 'ข้อมูล']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+}
+
+TABLE tb_count_stock_detail {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการการตรวจนับสินค้า']
+  count_stock_id uuid [not null, ref: > tb_count_stock.id, note: 'รหัสการตรวจนับสินค้า']
+  product_id uuid [not null, ref: > tb_product.id, note: 'รหัสสินค้า']
+  product_name varchar [note: 'ชื่อสินค้า']
+  qty numeric(20,5) [not null, note: 'จำนวน']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+}
+
+enum enum_jv_status {
+  draft [note: 'ร่าง']
+  posted [note: 'ตรวจสอบ']
+}
+
+TABLE tb_jv_header {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการบันทึกรายการ']
+
+  currency_id uuid [not null, ref: > tb_currency.id, note: 'รหัสสกุลเงิน']
+  exchange_rate numeric(15,5) [not null, note: 'อัตราแลกเปลี่ยน']
+  base_currency_id uuid [not null, ref: > tb_currency.id, note: 'รหัสสกุลเงินหลัก']
+
+  jv_type varchar(255) [not null, note: 'ประเภทรายการ']
+  jv_number varchar(255) [not null, note: 'รหัสรายการ']
+  jv_date timestamptz [not null, note: 'วันที่รายการ']
+  jv_description text [null, note: 'คำอธิบาย']
+  jv_status enum_jv_status [not null, note: 'สถานะ']
+
+  workflow json [null, note: 'กระบวนการ']
+  info json [null, note: 'ข้อมูล']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (jv_number, jv_date) [unique, name: "jv_header_jv_number_jv_date_u", note: 'รหัสรายการ']
+  }
+}
+
+TABLE tb_jv_detail {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสรายการบันทึกรายการ']
+  jv_header_id uuid [not null, ref: > tb_jv_header.id, note: 'รหัสรายการบันทึกรายการ']
+
+  // account_department_id uuid [not null, ref: > tb_account_department.id, note: 'รหัสหน่วยงาน']
+  account_code uuid [note: 'รหัสบัญชี']
+  account_name varchar [not null, note: 'ชื่อบัญชี']
+
+  currency_id uuid [not null, ref: > tb_currency.id, note: 'รหัสสกุลเงิน']
+  exchange_rate numeric(15,5) [not null, note: 'อัตราแลกเปลี่ยน']
+
+  debit numeric(20,5) [not null, default: 0.0, note: 'ยอดเงินคงเหลือ']
+  credit numeric(20,5) [not null, default: 0.0, note: 'ยอดเงินคงเหลือ']
+
+  base_currency_id uuid [not null, ref: > tb_currency.id, note: 'รหัสสกุลเงินหลัก']
+  base_debit numeric(20,5) [not null, default: 0.0, note: 'ยอดเงินคงเหลือ']
+  base_credit numeric(20,5) [not null, default: 0.0, note: 'ยอดเงินคงเหลือ']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+}
+
+enum enum_comment_type {
+  user [note: 'ผู้ใช้งาน']
+  system [note: 'ระบบ']
+}
+
+TABLE tb_attachment {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสแนบ']
+  filename varchar(255) [note: 'ชื่อแนบ']
+  filetype varchar(255) [note: 'ประเภทแนบ']
+  data bytea [note: 'ข้อมูลแนบ']
+  info json [note: 'ข้อมูล']
+}
+
+TABLE tb_config_running_code {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสการรันรหัส']
+  type varchar(255) [note: 'ประเภท']
+  config json [null, default: '{}', note: 'ข้อมูล']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+}
+
+TABLE tb_currency_comment {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสแนบ']
+  type enum_comment_type [not null, default: "user", note: 'ประเภท']
+
+  user_id uuid [null, note: 'รหัสผู้ใช้งาน']
+  message text [note: 'ข้อความ']
+  attachments json [null, default: '{}', note: 'แนบ']
+
+  info json [null, default: '{}', note: 'ข้อมูล']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (type, user_id) [name: "currency_comment_type_user_id_u", unique, note: 'ประเภทผู้ใช้งาน']
+  }
+}
+
+TABLE tb_unit_comment {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสแนบ']
+  type enum_comment_type [not null, default: "user", note: 'ประเภท']
+
+  user_id uuid [null, note: 'รหัสผู้ใช้งาน']
+  message text [note: 'ข้อความ']
+  attachments json [null, default: '{}', note: 'แนบ']
+
+  info json [null, default: '{}', note: 'ข้อมูล']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (type, user_id) [name: "unit_comment_type_user_id_u", unique, note: 'ประเภทผู้ใช้งาน']
+  }
+}
+
+enum enum_dimension_type {
+  string [note: 'ข้อความ']
+  number [note: 'ตัวเลข']
+  boolean [note: 'จริง/เท็จ']
+  date [note: 'วันที่']
+  datetime [note: 'วันที่เวลา']
+  json [note: 'json']
+  dataset [note: 'dataset']
+  lookup [note: 'lookup']
+  lookup_dataset [note: 'lookup_dataset']
+}
+
+table tb_dimension {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสขนาด']
+  key varchar [not null, note: 'คีย์']
+  type enum_dimension_type [not null, default: "string", note: 'ประเภท']
+  value json [null, note: 'ค่า']
+  description text [null, note: 'คำอธิบาย']
+  default_value json [null, note: 'ค่าเริ่มต้น']
+  is_active bool [default: true, note: 'เปิด/ปิด']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  indexes {
+    (key) [unique, name: "dimension_key_u", note: 'คีย์']
+  }
+}
+
+enum enum_dimension_display_in {
+  currency [note: 'สกุลเงิน']
+  exchange_rate [note: 'อัตราแลกเปลี่ยน']
+  delivery_point [note: 'จุดจัดส่ง']
+  department [note: 'หน่วยงาน']
+  product_category [note: 'หมวดสินค้า']
+  product_sub_category [note: 'หมวดสินค้าย่อย']
+  product_item_group [note: 'กลุ่มสินค้า']
+  product [note: 'สินค้า']
+  location [note: 'สถานที่']
+  vendor [note: 'ผู้จัดจำหน่าย']
+  price_list [note: 'ราคาขาย']
+  unit [note: 'หน่วยนับ']
+  purchase_request_header [note: 'ใบเบิกสินค้า']
+  purchase_request_detail [note: 'รายการใบเบิกสินค้า']
+  purchase_order_header [note: 'ใบสั่งซื้อ']
+  purchase_order_detail [note: 'รายการใบสั่งซื้อ']
+  goods_received_note_header [note: 'ใบรับสินค้า']
+  goods_received_note_detail [note: 'รายการใบรับสินค้า']
+  stock_take [note: 'การตรวจนับสินค้า']
+  stock_take_detail [note: 'รายการตรวจนับสินค้า']
+  transfer_header [note: 'ใบส่งสินค้า']
+  transfer_detail [note: 'รายการใบส่งสินค้า']
+  stock_in_header [note: 'ใบรับสินค้า']
+  stock_in_detail [note: 'รายการใบรับสินค้า']
+  stock_out_header [note: 'ใบรับสินค้าออก']
+  stock_out_detail [note: 'รายการใบรับสินค้าออก']
+}
+
+table tb_dimension_display_in {
+  id uuid [not null, pk, default: `gen_random_uuid()`, note: 'รหัสค่าขนาด']
+  dimension_id uuid [not null, ref: > tb_dimension.id, note: 'รหัสขนาด']
+  display_in enum_dimension_display_in [not null, note: 'แสดงใน']
+  default_value json [null, note: 'ค่าเริ่มต้น']
+  info json [null, note: 'ข้อมูล']
+
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`, note: 'วันที่สร้าง']
+  created_by_id uuid [note: 'รหัสผู้ใช้งาน']
+
+  updated_at timestamptz [null, default: `CURRENT_TIMESTAMP`, note: 'วันที่แก้ไข']
+  updated_by_id uuid [note: 'รหัสผู้ใช้งาน']
+}

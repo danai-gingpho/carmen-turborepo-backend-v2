@@ -1,0 +1,15 @@
+meta {
+  name: 10 - UseGuards
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{host}}/api/config/{{bu_code}}/running-code/{{id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

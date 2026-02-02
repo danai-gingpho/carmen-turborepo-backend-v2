@@ -1,0 +1,21 @@
+meta {
+  name: 13 - UseGuards
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{host}}/api-system/role/{{id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

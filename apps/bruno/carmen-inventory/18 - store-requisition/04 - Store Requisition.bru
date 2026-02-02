@@ -1,0 +1,15 @@
+meta {
+  name: 04 - List Store Requisition
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/store-requisition
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

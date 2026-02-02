@@ -1,0 +1,15 @@
+meta {
+  name: 23 - UseGuards
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{host}}/api-system/business-unit/{{id}}/configs
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

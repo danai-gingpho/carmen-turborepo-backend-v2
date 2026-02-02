@@ -1,0 +1,31 @@
+meta {
+  name: Login admin
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/realms/{{realm_master}}/protocol/openid-connect/token
+  body: formUrlEncoded
+  auth: none
+}
+
+body:form-urlencoded {
+  username: {{username_admin}}
+  password: {{password_admin}}
+  grant_type: password
+  client_id: admin-cli
+}
+
+body:multipart-form {
+  grant_type: password
+  username: {{username_admin}}
+  password: {{password_admin}}
+  client_id: admin-cli
+}
+
+script:post-response {
+  bru.setEnvVar('access_token',res.body.access_token);
+  bru.setEnvVar('refresh_token',res.body.refresh_token);
+  
+}

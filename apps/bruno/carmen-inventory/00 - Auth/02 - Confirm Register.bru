@@ -1,0 +1,23 @@
+meta {
+  name: 02 - Confirm Register
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/auth/register-confirm
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiaW52aXRlIiwidXNlcm5hbWUiOiJjYXJtZW5zb2Z0d2FyZS5kZXZAZ21haWwuY29tIiwiZW1haWwiOiJjYXJtZW5zb2Z0d2FyZS5kZXZAZ21haWwuY29tIiwiaWF0IjoxNzYxNTQyNDQwfQ.5dCxKUDmiNgnVhhj9C-5qiqzcav7tmn_yH6Ue299Rug",
+    "password": "12345678",
+    "user_info": {
+      "first_name" : "test carmen",
+      "middle_name" : "(DEVELOPER)",
+      "last_name": "CARMEN SOFTWARE"
+    }
+  }
+}

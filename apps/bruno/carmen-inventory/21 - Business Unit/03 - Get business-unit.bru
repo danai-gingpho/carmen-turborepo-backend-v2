@@ -1,0 +1,15 @@
+meta {
+  name: 03 - ApiVersionMinRequest
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/api/business-unit
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

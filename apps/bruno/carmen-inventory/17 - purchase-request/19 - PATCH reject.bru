@@ -1,0 +1,21 @@
+meta {
+  name: 19 - UseGuards
+  type: http
+  seq: 19
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/purchase-request/{{id}}/reject
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

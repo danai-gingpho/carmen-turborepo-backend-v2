@@ -1,0 +1,15 @@
+meta {
+  name: 04 - UseGuards
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/workflow/type/{{type}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

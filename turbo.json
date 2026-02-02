@@ -1,0 +1,122 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["db:generate", "^db:generate", "^build:package", "^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**"]
+    },
+    "build:package": {
+      "dependsOn": ["db:generate", "^db:generate", "^build:package", "^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "dev": {
+      "dependsOn": ["^db:generate", "^build:package"],
+      "cache": false,
+      "persistent": true
+    },
+    "dev:gateway": {
+      "cache": false
+    },
+    "dev:authen": {
+      "cache": false
+    },
+    "dev:cluster": {
+      "cache": false
+    },
+    "dev:file": {
+      "cache": false
+    },
+    "dev:license": {
+      "cache": false
+    },
+    "dev:notification": {
+      "cache": false
+    },
+    "dev:report": {
+      "cache": false
+    },
+    "dev:tenant:inventory": {
+      "cache": false
+    },
+    "dev:tenant:master": {
+      "cache": false
+    },
+    "dev:tenant:procurement": {
+      "cache": false
+    },
+    "dev:tenant:recipe": {
+      "cache": false
+    },
+    "dev:keycloak-api": {
+      "cache": false
+    },
+    "dev:business": {
+      "cache": false
+    },
+    "dev:base": {
+      "dependsOn": [
+        "^db:generate",
+        "^build:package",
+        "dev:authen",
+        "dev:cluster",
+        "dev:gateway",
+        "dev:keycloak-api"
+      ],
+      "cache": false,
+      "persistent": true
+    },
+    "prod:base": {
+      "dependsOn": [
+        "^db:generate",
+        "^build:package",
+        "prod:authen",
+        "prod:cluster",
+        "prod:gateway"
+      ],
+      "cache": true,
+      "persistent": true
+    },
+    "dev:tenant": {
+      "dependsOn": [
+        "dev:tenant:master",
+        "dev:tenant:inventory",
+        "dev:tenant:procurement"
+      ],
+      "cache": false,
+      "persistent": true
+    },
+    "dev:prod": {
+      "dependsOn": ["^db:generate", "^build:package"],
+      "cache": true,
+      "persistent": true
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:migrate:reset": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:deploy": {
+      "cache": false
+    },
+    "start:prod": {
+      "dependsOn": ["^db:generate", "^build:package"],
+      "cache": true,
+      "persistent": true
+    }
+  }
+}

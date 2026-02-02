@@ -1,0 +1,15 @@
+meta {
+  name: 02 - List Roles
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api-system/role-permission/permission/{{permissionId}}/roles
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

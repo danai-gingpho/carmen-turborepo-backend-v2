@@ -1,0 +1,15 @@
+meta {
+  name: 14 - UseGuards
+  type: http
+  seq: 14
+}
+
+delete {
+  url: {{host}}/api-system/permission/{{id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

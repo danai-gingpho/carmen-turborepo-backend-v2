@@ -1,0 +1,15 @@
+meta {
+  name: 02 - List Inventory
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/locations/{{location_id}}/product/{{product_id}}/inventory
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

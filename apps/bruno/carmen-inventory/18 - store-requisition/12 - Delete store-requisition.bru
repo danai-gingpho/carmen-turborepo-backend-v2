@@ -1,0 +1,15 @@
+meta {
+  name: 12 - UseGuards
+  type: http
+  seq: 12
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/store-requisition/{{id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

@@ -1,0 +1,32 @@
+meta {
+  name: create user
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/admin/realms/{{realm}}/users
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+      "username": "test",
+      "emailVerified": true,
+      "email": "test@example.com",
+      "firstName": "test",
+      "lastName": "developer",
+      "enabled": true,
+      "credentials" : [
+          {
+              "type" : "password",
+              "value" : "1234"
+          }
+      ]
+  }
+}

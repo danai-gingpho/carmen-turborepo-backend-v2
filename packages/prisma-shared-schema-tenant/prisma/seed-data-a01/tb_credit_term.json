@@ -1,0 +1,26 @@
+[
+  {
+    "id": "cde766fd-cbe4-44d6-9ced-de7616dbbe99",
+    "name": "10 วัน",
+    "value": 10,
+    "description": "",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "16e80e75-9dc7-491c-b55c-bb5a33423aeb",
+    "name": "30 วัน",
+    "value": 30,
+    "description": "",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "be61802d-a87c-4ae6-b007-46a5126d7ba5",
+    "name": "90 วัน",
+    "value": 90,
+    "description": "",
+    "is_active": true,
+    "doc_version": 0
+  }
+]

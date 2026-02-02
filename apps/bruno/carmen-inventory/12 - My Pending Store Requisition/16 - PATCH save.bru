@@ -1,0 +1,21 @@
+meta {
+  name: 16 - UseGuards
+  type: http
+  seq: 16
+}
+
+patch {
+  url: {{host}}/api/my-pending/store-requisition/{{tenant_id}}/{{id}}/save
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

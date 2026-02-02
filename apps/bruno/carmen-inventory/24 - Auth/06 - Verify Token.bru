@@ -1,0 +1,21 @@
+meta {
+  name: 06 - Create Verify Token
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/api/auth/verify-token
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+
+  }
+}

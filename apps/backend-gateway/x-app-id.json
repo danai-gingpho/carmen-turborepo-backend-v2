@@ -1,0 +1,44 @@
+[
+  {
+    "id": "9c83fd4b-ce3f-4de2-a522-349ad1280b10",
+    "name": "website",
+    "allow": "*"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "mobile-app",
+    "allow": [
+      "auth.login",
+      "news.findAll",
+      "user.getProfile",
+      "user.updateUserById",
+      "currencies.default",
+      "documents.upload",
+      "documents.list",
+      "documents.get",
+      "documents.info",
+      "documents.presignedUrl",
+      "documents.delete",
+      "my-pending.purchaseRequest",
+      "my-pending.purchaseRequest.findAll",
+      "my-pending.purchaseRequest.findAllPending.count",
+      "my-pending.storeRequisition",
+      "my-pending.storeRequisition.findAll",
+      "my-pending.storeRequisition.findAllPending.count",
+      "purchaseRequest.findOne",
+      "storeRequisition.findOne",
+      "purchaseRequest.detail.findDimensions",
+      "purchaseRequest.detail.findhistory",
+      "purchaseRequest.approve",
+      "purchaseRequest.reject",
+      "purchaseRequest.review",
+      "purchaseRequest.save",
+      "goodReceivedNote.findAllPending.count",
+      "physicalCount.findAllPending.count",
+      "spotCheck.findAllPending.count",
+      "locations.findAll",
+      "product.findAll",
+      "currencies.findAllActive"
+    ]
+  }
+]

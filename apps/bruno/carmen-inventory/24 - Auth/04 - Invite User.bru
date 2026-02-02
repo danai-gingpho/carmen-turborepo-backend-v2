@@ -1,0 +1,21 @@
+meta {
+  name: 04 - Create Invite User
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api/auth/invite-user
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+
+  }
+}

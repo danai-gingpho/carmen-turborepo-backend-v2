@@ -1,0 +1,131 @@
+services:
+  api-backend-gateway:
+    build:
+      context: .
+      dockerfile: ./apps/backend-gateway/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-backend-gateway:${IMAGE_TAG:-latest}
+    container_name: carmen-api-backend-gateway
+    restart: unless-stopped
+    volumes:
+      - ./apps/backend-gateway/src/cert:/app/apps/backend-gateway/src/cert
+    ports:
+      - "4000:4000"
+      - "4001:4001"
+    env_file:
+      - ./apps/backend-gateway/.env
+    environment:
+      - NODE_ENV=production
+    networks:
+      - carmen-network
+    healthcheck:
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:4000/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  api-micro-reports:
+    build:
+      context: .
+      dockerfile: ./apps/micro-reports/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-reports:${IMAGE_TAG:-latest}
+    container_name: carmen-api-micro-reports
+    restart: unless-stopped
+    ports:
+      - "5004:5004"
+      - "6004:6004"
+    env_file:
+      - ./apps/micro-reports/.env
+    environment:
+      - NODE_ENV=production
+    networks:
+      - carmen-network
+    depends_on:
+      - api-backend-gateway
+
+  api-micro-file:
+    build:
+      context: .
+      dockerfile: ./apps/micro-file/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-file:${IMAGE_TAG:-latest}
+    container_name: carmen-api-micro-file
+    restart: unless-stopped
+    ports:
+      - "5007:5007"
+      - "6007:6007"
+    env_file:
+      - ./apps/micro-file/.env
+    environment:
+      - NODE_ENV=production
+    networks:
+      - carmen-network
+    depends_on:
+      - api-backend-gateway
+
+  api-micro-cronjob:
+    build:
+      context: .
+      dockerfile: ./apps/micro-cronjob/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-cronjob:${IMAGE_TAG:-latest}
+    container_name: carmen-api-micro-cronjob
+    restart: unless-stopped
+    ports:
+      - "5012:5012"
+      - "6012:6012"
+    env_file:
+      - ./apps/micro-cronjob/.env
+    environment:
+      - NODE_ENV=production
+    networks:
+      - carmen-network
+    depends_on:
+      - api-backend-gateway
+
+  api-micro-keycloak-api:
+    build:
+      context: .
+      dockerfile: ./apps/micro-keycloak-api/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-keycloak-api:${IMAGE_TAG:-latest}
+    container_name: carmen-api-micro-keycloak-api
+    restart: unless-stopped
+    ports:
+      - "5013:5013"
+      - "6013:6013"
+    env_file:
+      - ./apps/micro-keycloak-api/.env
+    environment:
+      - NODE_ENV=production
+    networks:
+      - carmen-network
+    depends_on:
+      - api-backend-gateway
+
+  # Consolidated business service (combines authen, cluster, license, log, notification, inventory, master, procurement, recipe)
+  api-micro-business:
+    build:
+      context: .
+      dockerfile: ./apps/micro-business/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-business:${IMAGE_TAG:-latest}
+    container_name: carmen-api-micro-business
+    restart: unless-stopped
+    ports:
+      - "5020:5020"
+      - "6020:6020"
+    env_file:
+      - ./apps/micro-business/.env
+    environment:
+      - NODE_ENV=production
+    networks:
+      - carmen-network
+    depends_on:
+      - api-backend-gateway
+    healthcheck:
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:6020/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  carmen-network:
+    driver: bridge

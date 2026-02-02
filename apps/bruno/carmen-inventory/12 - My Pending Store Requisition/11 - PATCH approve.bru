@@ -1,0 +1,21 @@
+meta {
+  name: 11 - UseGuards
+  type: http
+  seq: 11
+}
+
+patch {
+  url: {{host}}/api/my-pending/store-requisition/{{tenant_id}}/{{id}}/approve
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

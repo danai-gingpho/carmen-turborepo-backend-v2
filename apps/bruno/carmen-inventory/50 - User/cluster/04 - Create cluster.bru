@@ -1,0 +1,21 @@
+meta {
+  name: 04 - UseGuards
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api-system/user/cluster
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

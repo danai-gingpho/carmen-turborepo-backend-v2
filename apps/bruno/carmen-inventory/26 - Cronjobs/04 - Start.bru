@@ -1,0 +1,21 @@
+meta {
+  name: 04 - Create Start
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api/config/cronjobs/{{id}}/start
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+
+  }
+}

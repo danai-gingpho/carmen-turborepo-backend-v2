@@ -1,0 +1,15 @@
+meta {
+  name: 02 - List | amount
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/business-unit/configs/amount
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

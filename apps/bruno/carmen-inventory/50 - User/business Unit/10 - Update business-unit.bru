@@ -1,0 +1,21 @@
+meta {
+  name: 10 - UseGuards
+  type: http
+  seq: 10
+}
+
+patch {
+  url: {{host}}/api-system/user/business-unit/{{id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

@@ -1,0 +1,90 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
+
+# Build Outputs
+.next/
+out/
+build
+dist
+
+# TypeScript compiled output (outside dist)
+**/src/**/*.js
+**/src/**/*.d.ts
+**/prisma/**/*.js
+**/prisma/**/*.d.ts
+**/shared-dtos/**/*.js
+**/shared-dtos/**/*.d.ts
+**/const/**/*.js
+**/const/**/*.d.ts
+*.tsbuildinfo
+
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dev-prod.log
+
+# Misc
+.DS_Store
+*.pem
+
+packages/prisma-shared-schema-platform/generated
+packages/prisma-shared-schema-tenant/generated
+packages/prisma-shared-schema-platform/generated/client
+packages/prisma-shared-schema-tenant/generated/client
+
+tsconfig.tsbuildinfo
+swagger-spec.json
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+
+# Backup files
+backups/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

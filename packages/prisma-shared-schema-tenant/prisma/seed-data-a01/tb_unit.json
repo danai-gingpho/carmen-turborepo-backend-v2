@@ -1,0 +1,266 @@
+[
+  {
+    "id": "566c45dd-d5fa-4820-99d6-29b24ef06289",
+    "name": "BAG",
+    "description": "BAG",
+    "is_active": true
+  },
+  {
+    "id": "6b24d5b6-b051-47cf-9abe-a0e40eb9390a",
+    "name": "BOOK",
+    "description": "BOOK",
+    "is_active": true
+  },
+  {
+    "id": "473175cb-6e73-4498-9def-cc31c0737e12",
+    "name": "BOX",
+    "description": "BOX",
+    "is_active": true
+  },
+  {
+    "id": "07b0e62c-e026-4d9f-b463-f0f45ae58f1b",
+    "name": "BOX5",
+    "description": "BOX5",
+    "is_active": true
+  },
+  {
+    "id": "90fb9fee-f153-4801-92a9-617f6cb71565",
+    "name": "BOX12",
+    "description": "BOX12",
+    "is_active": true
+  },
+  {
+    "id": "d8523864-9739-4606-8a64-ea69a1e7ff47",
+    "name": "BOX24",
+    "description": "BOX24",
+    "is_active": true
+  },
+  {
+    "id": "7273e018-b551-40d7-8f1f-1e90d64e53fc",
+    "name": "BOX25",
+    "description": "BOX25",
+    "is_active": true
+  },
+  {
+    "id": "db76d19c-40af-4b54-bfa8-6da446aac7f3",
+    "name": "BTL",
+    "description": "BTL",
+    "is_active": true
+  },
+  {
+    "id": "da45e8b0-9336-4a27-b8fd-407911a9ea6e",
+    "name": "CAN",
+    "description": "CAN",
+    "is_active": true
+  },
+  {
+    "id": "4442857f-36c9-4ed2-bb6e-cca8ccfd0e32",
+    "name": "CUP",
+    "description": "CUP",
+    "is_active": true
+  },
+  {
+    "id": "b5c5d320-17ca-4f9d-815f-92e6cb1eefec",
+    "name": "CARTON",
+    "description": "CARTON",
+    "is_active": true
+  },
+  {
+    "id": "2a743b2e-e450-43af-8bea-4acbd751eb64",
+    "name": "CASE",
+    "description": "CASE",
+    "is_active": true
+  },
+  {
+    "id": "76f0b37e-f704-4afc-9290-98a0d69b0bce",
+    "name": "DRUM",
+    "description": "DRUM",
+    "is_active": true
+  },
+  {
+    "id": "07c2a58c-af38-4e61-b8a1-ce0d0a830c23",
+    "name": "FUT",
+    "description": "FUT",
+    "is_active": true
+  },
+  {
+    "id": "402012ee-ea6b-452c-ab80-b8070be33540",
+    "name": "GAL",
+    "description": "GAL",
+    "is_active": true
+  },
+  {
+    "id": "d3c04977-a9ca-482f-abdd-22aa1af01a44",
+    "name": "GAL2",
+    "description": "GAL2",
+    "is_active": true
+  },
+  {
+    "id": "e1efa522-ae62-4c92-9e70-44ced901b7bc",
+    "name": "GM",
+    "description": "GM",
+    "is_active": true
+  },
+  {
+    "id": "8787c88d-9d7b-428f-8005-cca2f6ec4d47",
+    "name": "HAND",
+    "description": "HAND",
+    "is_active": true
+  },
+  {
+    "id": "9d72d62b-fa12-439b-a518-b6c328f1783e",
+    "name": "JOB",
+    "description": "JOB",
+    "is_active": true
+  },
+  {
+    "id": "a944b693-3a71-4275-9d6a-ddca551533d7",
+    "name": "KG",
+    "description": "KG",
+    "is_active": true
+  },
+  {
+    "id": "459107fc-0cd2-4c46-b7db-364405cc5024",
+    "name": "LOAF",
+    "description": "LOAF",
+    "is_active": true
+  },
+  {
+    "id": "8f176503-11c3-45a9-9283-f4309e0ad31e",
+    "name": "LT",
+    "description": "LT",
+    "is_active": true
+  },
+  {
+    "id": "e115bdcf-fdf5-4c0b-8615-d2075600cb28",
+    "name": "METERS",
+    "description": "METERS",
+    "is_active": true
+  },
+  {
+    "id": "c5b76ed5-5ddc-4c3f-8000-3932ee993a95",
+    "name": "ML",
+    "description": "ML",
+    "is_active": true
+  },
+  {
+    "id": "92850418-9a14-469e-befd-1a4cb13dfa93",
+    "name": "PACK",
+    "description": "PACK",
+    "is_active": true
+  },
+  {
+    "id": "e3e02f99-1fbd-4bb4-b25a-6ed81dbfe74b",
+    "name": "PACK6",
+    "description": "PACK6",
+    "is_active": true
+  },
+  {
+    "id": "2a9a8bbf-59e2-413b-a265-7e016ef8e02b",
+    "name": "PACK12",
+    "description": "PACK12",
+    "is_active": true
+  },
+  {
+    "id": "8b7f680b-ed84-441a-8429-87d363e41ecd",
+    "name": "PACK16",
+    "description": "PACK16",
+    "is_active": true
+  },
+  {
+    "id": "35a5b987-ae4c-4e24-8dce-548c039e9760",
+    "name": "PAIR",
+    "description": "PAIR",
+    "is_active": true
+  },
+  {
+    "id": "22356348-b7fc-4566-a890-e7f3ae307836",
+    "name": "PCS",
+    "description": "PCS",
+    "is_active": true
+  },
+  {
+    "id": "3826f5e4-a3a1-43b1-945f-06ce7c37f045",
+    "name": "POND",
+    "description": "POND",
+    "is_active": true
+  },
+  {
+    "id": "eec2348c-7e18-46e3-89f8-fef3c3204bea",
+    "name": "REAM",
+    "description": "REAM",
+    "is_active": true
+  },
+  {
+    "id": "e7aa330e-2a10-4167-ad66-05ddec85fa43",
+    "name": "SACK",
+    "description": "SACK",
+    "is_active": true
+  },
+  {
+    "id": "c27c907b-edb6-48c0-9127-59efb47d747f",
+    "name": "STICK",
+    "description": "STICK",
+    "is_active": true
+  },
+  {
+    "id": "3e17566e-fe79-4216-a3c7-88ca30a41c60",
+    "name": "SET",
+    "description": "SET",
+    "is_active": true
+  },
+  {
+    "id": "00900cb6-fafa-4d92-a174-fcacd1db466e",
+    "name": "ROLL",
+    "description": "ROLL 3",
+    "is_active": true
+  },
+  {
+    "id": "8752db1c-608c-4df4-8489-c31576906904",
+    "name": "ROOM",
+    "description": "ROOM",
+    "is_active": false
+  },
+  {
+    "id": "69393ed7-88eb-4bbb-b156-0ff539807176",
+    "name": "SACK40",
+    "description": "SACK40",
+    "is_active": true
+  },
+  {
+    "id": "8394fe86-2798-4c1f-9d3a-a18732f39885",
+    "name": "TANK",
+    "description": "TANK",
+    "is_active": true
+  },
+  {
+    "id": "b003f0b1-a6bc-4637-a4ca-1b0d22e6ab5e",
+    "name": "TRAY24",
+    "description": "TRAY24",
+    "is_active": true
+  },
+  {
+    "id": "80493db6-4d66-4e9b-9674-c7ded17b914e",
+    "name": "TRUCK",
+    "description": "TRUCK",
+    "is_active": true
+  },
+  {
+    "id": "5ccce7ef-36ed-4606-9b88-af4b60424dd3",
+    "name": "UNIT",
+    "description": "UNIT",
+    "is_active": true
+  },
+  {
+    "id": "951e75bd-e0a8-47c1-9896-ede59bfeb6d7",
+    "name": "TRAY",
+    "description": "TRAY",
+    "is_active": true
+  },
+  {
+    "id": "cf307f5d-161c-4265-b57c-f69af9ef97f8",
+    "name": "แก้ว",
+    "description": "แก้วพลาสติก",
+    "is_active": true
+  }
+]

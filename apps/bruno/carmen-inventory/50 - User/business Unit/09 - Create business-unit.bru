@@ -1,0 +1,21 @@
+meta {
+  name: 09 - UseGuards
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{host}}/api-system/user/business-unit
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

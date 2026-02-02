@@ -1,0 +1,21 @@
+meta {
+  name: 11 - UseGuards
+  type: http
+  seq: 11
+}
+
+put {
+  url: {{host}}/api/{{bu_code}}/store-requisition/{{id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    
+  }
+}

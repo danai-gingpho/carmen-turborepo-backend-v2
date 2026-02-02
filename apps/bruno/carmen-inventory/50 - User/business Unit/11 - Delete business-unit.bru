@@ -1,0 +1,15 @@
+meta {
+  name: 11 - UseGuards
+  type: http
+  seq: 11
+}
+
+delete {
+  url: {{host}}/api-system/user/business-unit/{{id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

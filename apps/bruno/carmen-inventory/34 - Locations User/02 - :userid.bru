@@ -1,0 +1,21 @@
+meta {
+  name: 02 - Update {{userid}}
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{host}}/api/config/{{bu_code}}/locations/user/{{userId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+
+  }
+}

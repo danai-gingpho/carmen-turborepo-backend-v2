@@ -1,0 +1,80 @@
+[
+  {
+    "id": "fce04015-11c1-43b2-bfe6-06a674eae76d",
+    "vendor_id": "b8695db5-b773-4268-8751-a5a84c02b6f5",
+    "address_type": "contact_address",
+    "data": {},
+    "is_active": true,
+    "description": null
+  },
+  {
+    "id": "6d9091e0-eabb-4ec0-ac8b-f29ef416c6be",
+    "vendor_id": "b8695db5-b773-4268-8751-a5a84c02b6f5",
+    "address_type": "mailing_address",
+    "data": {},
+    "is_active": true,
+    "description": null
+  },
+  {
+    "id": "984e1b99-e9fb-4a58-98c1-d131c0ce9d51",
+    "vendor_id": "1261703d-3602-46a0-9719-187e9a7870a3",
+    "address_type": "contact_address",
+    "data": {
+      "address_line1": "123/45 ซอยสุขุมวิท 101",
+      "address_line2": "แขวงบางจาก",
+      "district": "พระโขนง",
+      "province": "กรุงเทพมหานคร",
+      "postal_code": "10260",
+      "country": "ประเทศไทย"
+    },
+    "is_active": true,
+    "description": null
+  },
+  {
+    "id": "d1c92285-ea6a-4c89-a12a-68411e9f9f38",
+    "vendor_id": "1261703d-3602-46a0-9719-187e9a7870a3",
+    "address_type": "mailing_address",
+    "data": {
+      "address_line1": "เลขที่ 456 อาคารเอ็มไพร์ทาวเวอร์ ชั้น 15",
+      "address_line2": "ถนนสาทรใต้",
+      "district": "ยานนาวา",
+      "province": "กรุงเทพมหานคร",
+      "postal_code": "10120",
+      "country": "ประเทศไทย"
+    },
+    "is_active": true,
+    "description": null
+  },
+  {
+    "id": "1520dd51-8caa-4d19-8b45-02f95f28463d",
+    "vendor_id": "3642a537-7f9b-419d-8744-5cdea1a34859",
+    "address_type": null,
+    "data": null,
+    "is_active": true,
+    "description": null
+  },
+  {
+    "id": "e5313302-48ec-46e2-9fbd-b81457ee6085",
+    "vendor_id": "99eda39c-cb3a-48be-a4aa-8117f5209102",
+    "address_type": null,
+    "data": null,
+    "is_active": true,
+    "description": null
+  },
+  {
+    "id": "f742f769-e173-4f43-92b2-8ab29b5911db",
+    "vendor_id": null,
+    "address_type": "contact_address",
+    "data": {},
+    "is_active": true,
+    "description": null
+  },
+  {
+    "id": "a960a78a-7a60-46cf-b6e4-9e10ea078714",
+    "vendor_id": null,
+    "address_type": "contact_address",
+    "data": {},
+    "is_active": true,
+    "description": null
+  }
+]

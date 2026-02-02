@@ -1,0 +1,23 @@
+[
+  {
+    "id": "a0ed8626-1c4a-4d1b-a128-ff9897b63415",
+    "name": "Transportation",
+    "description": "Transportation cost for delivery",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "d8803f3f-0892-4d3a-beaa-903f7b64e818",
+    "name": "Delivery cost",
+    "description": "Delivery cost for orders",
+    "is_active": true,
+    "doc_version": 0
+  },
+  {
+    "id": "9611281d-76dd-4fbd-ad95-ddf553368234",
+    "name": "Extra Packaging",
+    "description": "Extra packaging materials for orders",
+    "is_active": false,
+    "doc_version": 0
+  }
+]

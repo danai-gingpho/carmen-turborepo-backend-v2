@@ -1,0 +1,16 @@
+export { MapperLogic } from './mapper.logic';
+export { DepartmentMapper } from './department.mapper';
+export { WorkflowMapper } from './workflow.mapper';
+export { UserMapper } from './user.mapper';
+export { ProductMapper } from './product.mapper';
+export { LocationMapper } from './localtion.mapper';
+export { PriceListMapper } from './price-list.mapper';
+export { VendorMapper } from './vendor.mapper';
+export { CurrencyMapper } from './currency.mapper';
+export { UnitMapper } from './unit.mapper';
+export { InventoryTransactionMapper } from './inventory-transaction.mapper';
+export { GoodReceivedNoteMapper } from './good-received-note.mapper';
+export { CreditNoteReasonMapper } from './cnReasonMapper';
+export { PriceListDetailMapper } from './price-list-detail.mapper';
+export { DeliveryPointMapper } from './delivery-point.mapper';
+export { TaxProfileMapper } from './tax-profile.mapper';

@@ -1,0 +1,21 @@
+meta {
+  name: 04 - Create Assign Permission
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api-system/role-permission/assign-permission
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+
+  }
+}
