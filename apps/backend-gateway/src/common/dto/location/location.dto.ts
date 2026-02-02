@@ -2,17 +2,6 @@ import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 import { enum_location_type, PrismaClient } from '@repo/prisma-shared-schema-tenant';
 
-// Import validate functions
-import {
-  validateDeliveryPointIdExists,
-  validateDeliveryPointIdsExist,
-} from '../../validate/delivery-point.validate';
-
-import {
-  validateProductIdExists,
-  validateProductIdsExist,
-} from '../../validate/product.validate';
-
 export const location_info = z.object({
   floor: z.number().optional(),
   building: z.string().optional(),

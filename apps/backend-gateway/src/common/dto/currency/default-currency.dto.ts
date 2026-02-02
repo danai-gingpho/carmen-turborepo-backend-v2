@@ -1,12 +1,6 @@
 import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 
-// Re-export validate functions for use with Currency
-export {
-  validateCurrencyIdExists,
-  validateCurrencyIdsExist,
-} from '../../validate/currency.validate';
-
 export const DefaultCurrencyObject = z.object({
   currency_id: z.string(),
   name: z.string(),

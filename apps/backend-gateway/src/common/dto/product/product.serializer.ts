@@ -1,5 +1,7 @@
 import { z } from 'zod';
-import { decimalField, decimalFieldRequired } from '../../common/validation/zod-helpers';
+
+const decimalField = z.number().or(z.string()).pipe(z.coerce.number()).nullable().optional();
+const decimalFieldRequired = z.number().or(z.string()).pipe(z.coerce.number());
 
 // Embedded schemas for nested objects
 const UnitEmbeddedSchema = z.object({

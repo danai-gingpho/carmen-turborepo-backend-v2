@@ -3,50 +3,6 @@ import { createZodDto } from 'nestjs-zod';
 import { enum_allocate_extra_cost_type, enum_doc_status, enum_good_received_note_type, enum_tax_type, PrismaClient } from '@repo/prisma-shared-schema-tenant';
 import { EmbeddedCurrencySchema, EmbeddedDiscountSchema, EmbeddedLocationSchema, EmbeddedProductSchema, EmbeddedTaxSchema, EmbeddedVendorSchema, EmbeddedWorkflowSchema, FocSchema, InfoSchema, ReceivedQuantityAndUnitSchema } from '../embedded.dto';
 
-// Import validate functions
-import {
-  validateCreditTermIdExists,
-  validateCreditTermIdsExist,
-} from '../../validate/credit-term.validate';
-
-import {
-  validateVendorIdExists,
-  validateVendorIdsExist,
-} from '../../validate/vendor.validate';
-
-import {
-  validateCurrencyIdExists,
-  validateCurrencyIdsExist,
-} from '../../validate/currency.validate';
-
-import {
-  validateWorkflowIdExists,
-  validateWorkflowIdsExist,
-} from '../../validate/workflow.validate';
-
-import {
-  validateProductIdExists,
-  validateProductIdsExist,
-} from '../../validate/product.validate';
-
-import {
-  validateLocationIdExists,
-  validateLocationIdsExist,
-} from '../../validate/location.validate';
-
-import {
-  validateTaxProfileIdExists,
-  validateTaxProfileIdsExist,
-} from '../../validate/tax-profile.validate';
-
-import {
-  toISOString,
-  toISOStringOrThrow,
-  isValidDate,
-  toDate,
-  toDateOrThrow,
-} from '../../validate/datetime.validate';
-
 export const GoodReceivedNoteSchema = z.object({
   id: z.string().uuid(),
   grn_no: z.string(),

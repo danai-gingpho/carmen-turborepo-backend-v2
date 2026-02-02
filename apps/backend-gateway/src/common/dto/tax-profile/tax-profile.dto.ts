@@ -1,12 +1,6 @@
 import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 
-// Re-export validate functions for use with TaxProfile
-export {
-  validateTaxProfileIdExists,
-  validateTaxProfileIdsExist,
-} from '../../validate/tax-profile.validate';
-
 export const TaxProfileCreate = z.object({
   name: z.string(),
   tax_rate: z.number().optional(),

@@ -1,3 +1,4 @@
+export { MapperModule } from './mapper.module';
 export { MapperLogic } from './mapper.logic';
 export { DepartmentMapper } from './department.mapper';
 export { WorkflowMapper } from './workflow.mapper';

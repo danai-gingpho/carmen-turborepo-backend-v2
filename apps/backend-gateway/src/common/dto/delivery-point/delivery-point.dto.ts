@@ -1,12 +1,6 @@
 import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 
-// Re-export validate functions for use with DeliveryPoint
-export {
-  validateDeliveryPointIdExists,
-  validateDeliveryPointIdsExist,
-} from '../../validate/delivery-point.validate';
-
 export const DeliveryPointCreate = z.object({
   name: z.string(),
   is_active: z.boolean().default(true).nullable().optional(),

@@ -1,15 +1,8 @@
 import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
-import { datetimeField } from '../../common/validation/zod-helpers';
 
-// Re-export datetime validate functions for use with Notification
-export {
-  toISOString,
-  toISOStringOrThrow,
-  isValidDate,
-  toDate,
-  toDateOrThrow,
-} from '../../validate/datetime.validate';
+// Inline datetime field definition
+const datetimeField = z.string().datetime().nullable();
 
 /**
  * Notification Types - ประเภทของ notification

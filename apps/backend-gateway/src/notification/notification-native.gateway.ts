@@ -3,12 +3,13 @@ import { BackendLogger } from '../common/helpers/backend.logger';
 import { envConfig } from 'src/libs/config.env';
 import WebSocket from 'ws';
 import * as http from 'http';
+import { io, Socket as SocketIOClient } from 'socket.io-client';
 
 @Injectable()
 export class NotificationNativeGateway implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new BackendLogger(NotificationNativeGateway.name);
   private wss: WebSocket.Server;
-  private notificationServiceClient: WebSocket;
+  private notificationServiceClient: SocketIOClient;
   private readonly clientConnections = new Map<WebSocket, string>(); // WebSocket -> userId
   private readonly userIdToClient = new Map<string, WebSocket>(); // userId -> WebSocket
   private httpServer: http.Server;
@@ -25,7 +26,7 @@ export class NotificationNativeGateway implements OnModuleInit, OnModuleDestroy 
   onModuleDestroy() {
     this.logger.log('Shutting down WebSocket gateway...');
     if (this.notificationServiceClient) {
-      this.notificationServiceClient.close();
+      this.notificationServiceClient.disconnect();
     }
     if (this.wss) {
       this.wss.close();
@@ -86,11 +87,8 @@ export class NotificationNativeGateway implements OnModuleInit, OnModuleDestroy 
       this.logger.log(`User registered: ${user_id}`);
 
       // Forward registration to notification service
-      if (this.notificationServiceClient && this.notificationServiceClient.readyState === WebSocket.OPEN) {
-        this.notificationServiceClient.send(JSON.stringify({
-          type: 'register',
-          user_id: user_id,
-        }));
+      if (this.notificationServiceClient?.connected) {
+        this.notificationServiceClient.emit('register', { user_id });
       }
 
       // Send confirmation
@@ -100,8 +98,8 @@ export class NotificationNativeGateway implements OnModuleInit, OnModuleDestroy 
       }));
     } else if (message.type === 'markAsRead') {
       // Forward to notification service
-      if (this.notificationServiceClient && this.notificationServiceClient.readyState === WebSocket.OPEN) {
-        this.notificationServiceClient.send(JSON.stringify(message));
+      if (this.notificationServiceClient?.connected) {
+        this.notificationServiceClient.emit('markAsRead', { notificationId: message.notificationId });
       }
     }
   }
@@ -114,69 +112,56 @@ export class NotificationNativeGateway implements OnModuleInit, OnModuleDestroy 
       this.userIdToClient.delete(user_id);
 
       // Notify notification service
-      if (this.notificationServiceClient && this.notificationServiceClient.readyState === WebSocket.OPEN) {
-        this.notificationServiceClient.send(JSON.stringify({
-          type: 'disconnect',
-          user_id: user_id,
-        }));
+      if (this.notificationServiceClient?.connected) {
+        this.notificationServiceClient.emit('disconnect_user', { user_id });
       }
     }
   }
 
   private connectToNotificationService() {
-    const notificationServiceUrl = `ws://${envConfig.NOTIFICATION_SERVICE_HOST}:${envConfig.NOTIFICATION_SERVICE_PORT}/ws`;
+    const notificationServiceUrl = `http://${envConfig.NOTIFICATION_SERVICE_HOST}:${envConfig.NOTIFICATION_SERVICE_HTTP_PORT}/ws`;
 
     this.logger.log(`Connecting to notification service at ${notificationServiceUrl}`);
 
-    const ws = new WebSocket(notificationServiceUrl);
-
-    ws.on('open', () => {
-      this.logger.log('✅ Connected to notification service WebSocket');
+    const socket = io(notificationServiceUrl, {
+      transports: ['websocket'],
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 5000,
     });
 
-    ws.on('message', (data: any) => {
-      try {
-        const message = JSON.parse(data.toString());
-        this.logger.debug('Received from notification service:', message);
+    socket.on('connect', () => {
+      this.logger.log('Connected to notification service Socket.IO');
+    });
 
-        // Forward notification to specific user or broadcast
-        if (message.type === 'notification') {
-          if (message.data?.user_id) {
-            // Send to specific user
-            const client = this.userIdToClient.get(message.data.user_id);
-            if (client && client.readyState === WebSocket.OPEN) {
-              client.send(JSON.stringify(message));
-            }
-          } else {
-            // Broadcast to all connected clients
-            this.wss?.clients.forEach((client) => {
-              if (client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify(message));
-              }
-            });
-          }
-        } else {
-          // Forward other message types to all clients
-          this.wss?.clients.forEach((client) => {
-            if (client.readyState === WebSocket.OPEN) {
-              client.send(JSON.stringify(message));
-            }
-          });
+    socket.on('notification', (message: any) => {
+      this.logger.debug('Received notification from service:', message);
+
+      // Forward notification to specific user or broadcast
+      if (message.data?.user_id) {
+        // Send to specific user
+        const client = this.userIdToClient.get(message.data.user_id);
+        if (client && client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify(message));
         }
-      } catch (error) {
-        this.logger.error('Error processing notification service message:', error);
+      } else {
+        // Broadcast to all connected clients
+        this.wss?.clients.forEach((client) => {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(message));
+          }
+        });
       }
     });
 
-    ws.on('error', (error: any) => {
-      this.logger.error('Notification service WebSocket error:', error);
+    socket.on('connect_error', (error: any) => {
+      this.logger.error('Notification service Socket.IO connection error:', error.message);
     });
 
-    ws.on('close', () => {
-      this.logger.warn('Disconnected from notification service, attempting to reconnect in 5s...');
-      setTimeout(() => this.connectToNotificationService(), 5000);
+    socket.on('disconnect', (reason: string) => {
+      this.logger.warn(`Disconnected from notification service: ${reason}`);
     });
 
-    this.notificationServiceClient = ws;
+    this.notificationServiceClient = socket;
   }
 }

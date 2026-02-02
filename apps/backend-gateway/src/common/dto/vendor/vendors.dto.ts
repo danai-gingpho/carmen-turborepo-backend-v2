@@ -1,15 +1,9 @@
-import { optional, z } from 'zod';
+import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 import {
   enum_data_type,
   enum_vendor_address_type,
 } from '@repo/prisma-shared-schema-tenant';
-
-// Re-export validate functions for use with Vendor
-export {
-  validateVendorIdExists,
-  validateVendorIdsExist,
-} from '../../validate/vendor.validate';
 
 const vendor_business_type = z.object({
   id: z.string(),

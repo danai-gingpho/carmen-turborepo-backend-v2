@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { decimalField } from '../../common/validation/zod-helpers';
+
+const decimalField = z.number().or(z.string()).pipe(z.coerce.number()).nullable().optional();
 
 // Currency response schema (for findOne and list items)
 export const CurrencyResponseSchema = z.object({

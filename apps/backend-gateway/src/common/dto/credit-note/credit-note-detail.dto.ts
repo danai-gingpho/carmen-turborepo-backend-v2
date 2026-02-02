@@ -2,22 +2,6 @@ import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 import { EmbeddedLocationSchema, EmbeddedTaxSchema, InfoSchema, PriceSchema, ValidateSchema } from '../embedded.dto';
 
-// Import validate functions
-import {
-  validateLocationIdExists,
-  validateLocationIdsExist,
-} from '../../validate/location.validate';
-
-import {
-  validateTaxProfileIdExists,
-  validateTaxProfileIdsExist,
-} from '../../validate/tax-profile.validate';
-
-import {
-  validateUnitIdExists,
-  validateUnitIdsExist,
-} from '../../validate/unit.validate';
-
 export const CreditNoteDetailSchema = z
   .object({
     id: z.string().uuid(),

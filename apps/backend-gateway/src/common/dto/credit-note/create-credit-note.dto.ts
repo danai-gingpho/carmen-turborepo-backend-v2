@@ -4,37 +4,6 @@ import { PrismaClient } from '@repo/prisma-shared-schema-tenant'
 import { CreditNoteSchema } from './credit-note.dto'
 import { CreditNoteDetailSchema } from './credit-note-detail.dto'
 
-// Import validate functions
-import {
-  validateVendorIdExists,
-  validateVendorIdsExist,
-} from '../../validate/vendor.validate';
-
-import {
-  validateCurrencyIdExists,
-  validateCurrencyIdsExist,
-} from '../../validate/currency.validate';
-
-import {
-  validateWorkflowIdExists,
-  validateWorkflowIdsExist,
-} from '../../validate/workflow.validate';
-
-import {
-  validateLocationIdExists,
-  validateLocationIdsExist,
-} from '../../validate/location.validate';
-
-import {
-  validateTaxProfileIdExists,
-  validateTaxProfileIdsExist,
-} from '../../validate/tax-profile.validate';
-
-import {
-  validateUnitIdExists,
-  validateUnitIdsExist,
-} from '../../validate/unit.validate';
-
 export const CreateCreditNoteSchema = CreditNoteSchema.omit({
   id: true,
 })

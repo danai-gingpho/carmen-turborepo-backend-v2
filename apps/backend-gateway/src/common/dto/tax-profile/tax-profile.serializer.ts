@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { decimalFieldRequired } from '../../common/validation/zod-helpers';
+
+const decimalFieldRequired = z.number().or(z.string()).pipe(z.coerce.number());
 
 // Tax profile response schema (for findOne)
 export const TaxProfileResponseSchema = z.object({

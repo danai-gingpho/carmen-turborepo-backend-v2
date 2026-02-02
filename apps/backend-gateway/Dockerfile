@@ -40,6 +40,13 @@ COPY packages ./packages
 COPY --from=builder /app/apps/backend-gateway/package.json ./apps/backend-gateway/
 COPY --from=builder /app/apps/backend-gateway/dist ./apps/backend-gateway/dist
 
+# Copy x-app-id.json for API access control
+COPY apps/backend-gateway/x-app-id.json ./apps/backend-gateway/
+
+# Copy SSL certificates (use .prod versions)
+COPY apps/backend-gateway/src/cert/key.pem.prod ./apps/backend-gateway/src/cert/key.pem
+COPY apps/backend-gateway/src/cert/cert.pem.prod ./apps/backend-gateway/src/cert/cert.pem
+
 # Install production dependencies
 ENV NODE_ENV=production
 RUN bun install --no-save --ignore-scripts
@@ -76,7 +83,12 @@ ENV KEYCLOAK_API_SERVICE_HOST=api-micro-keycloak-api
 ENV KEYCLOAK_API_SERVICE_PORT=5013
 ENV KEYCLOAK_API_SERVICE_HTTP_PORT=6013
 
+# Notification service
+ENV NOTIFICATION_SERVICE_HOST=api-micro-notification
+ENV NOTIFICATION_SERVICE_PORT=5006
+ENV NOTIFICATION_SERVICE_HTTP_PORT=6006
+
 EXPOSE 4000
 EXPOSE 4001
 
-CMD ["bun", "start"]
+CMD ["bun", "run", "start:prod"]

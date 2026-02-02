@@ -2,30 +2,6 @@ import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 import { enum_purchase_order_doc_status, PrismaClient } from '@repo/prisma-shared-schema-tenant';
 
-// Import validate functions
-import {
-  validateVendorIdExists,
-  validateVendorIdsExist,
-} from '../../validate/vendor.validate';
-
-import {
-  validateCurrencyIdExists,
-  validateCurrencyIdsExist,
-} from '../../validate/currency.validate';
-
-import {
-  validateUnitIdExists,
-  validateUnitIdsExist,
-} from '../../validate/unit.validate';
-
-import {
-  toISOString,
-  toISOStringOrThrow,
-  isValidDate,
-  toDate,
-  toDateOrThrow,
-} from '../../validate/datetime.validate';
-
 export const purchaseOrderDetail = z.object({
   name: z.string().optional(),
   description: z.string().optional(),

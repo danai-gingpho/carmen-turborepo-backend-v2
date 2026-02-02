@@ -1,7 +1,15 @@
 import { ApproveQuantityAndUnitSchema, EmbeddedCurrencySchema, EmbeddedDiscountSchema, EmbeddedInventorySchema, EmbeddedLocationSchema, EmbeddedPriceListSchema, EmbeddedProductSchema, EmbeddedTaxSchema, EmbeddedVendorSchema, FocSchema, PriceSchema, RequestedQuantityAndUnitSchema, ValidateSchema } from '@/common/dto/embedded.dto';
 import { z } from 'zod'
-import { state_status } from './state_role/purchase-request.state-role.dto';
 import { PrismaClient } from '@repo/prisma-shared-schema-tenant';
+
+// Define state_status here to avoid circular dependency
+export enum state_status {
+  submit = 'submit',
+  pending = 'pending',
+  approve = 'approve',
+  reject = 'reject',
+  review = 'review',
+}
 
 // Import validate functions
 import {

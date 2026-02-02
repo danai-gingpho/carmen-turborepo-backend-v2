@@ -1,47 +1,14 @@
 import { ApproveQuantityAndUnitSchema, EmbeddedCurrencySchema, EmbeddedDiscountSchema, EmbeddedInventorySchema, EmbeddedLocationSchema, EmbeddedPriceListSchema, EmbeddedProductSchema, EmbeddedTaxSchema, EmbeddedVendorSchema, FocSchema, PriceSchema, RequestedQuantityAndUnitSchema, ValidateSchema } from '../embedded.dto';
 import { z } from 'zod'
-import { state_status } from './state_role/purchase-request.state-role.dto';
 
-// Import validate functions
-import {
-  validateProductIdExists,
-  validateProductIdsExist,
-} from '../../validate/product.validate';
-
-import {
-  validateLocationIdExists,
-  validateLocationIdsExist,
-} from '../../validate/location.validate';
-
-import {
-  validateDeliveryPointIdExists,
-  validateDeliveryPointIdsExist,
-} from '../../validate/delivery-point.validate';
-
-import {
-  validateUnitIdExists,
-  validateUnitIdsExist,
-} from '../../validate/unit.validate';
-
-import {
-  validateCurrencyIdExists,
-  validateCurrencyIdsExist,
-} from '../../validate/currency.validate';
-
-import {
-  validateTaxProfileIdExists,
-  validateTaxProfileIdsExist,
-} from '../../validate/tax-profile.validate';
-
-import {
-  validateVendorIdExists,
-  validateVendorIdsExist,
-} from '../../validate/vendor.validate';
-
-import {
-  validatePriceListIdExists,
-  validatePriceListIdsExist,
-} from '../../validate/price-list.validate';
+// Moved here to avoid circular dependency
+export enum state_status {
+  submit = 'submit',
+  pending = 'pending',
+  approve = 'approve',
+  reject = 'reject',
+  review = 'review',
+}
 
 /* create pr's detail */
 

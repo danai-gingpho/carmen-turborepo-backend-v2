@@ -2,22 +2,6 @@ import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 import { InfoSchema, EmbeddedProductSchema } from '../embedded.dto';
 
-// Import validate functions
-import {
-  validateProductIdExists,
-  validateProductIdsExist,
-} from '../../validate/product.validate';
-
-import {
-  validateCurrencyIdExists,
-  validateCurrencyIdsExist,
-} from '../../validate/currency.validate';
-
-import {
-  validateUnitIdExists,
-  validateUnitIdsExist,
-} from '../../validate/unit.validate';
-
 export const PriceListTemplateStatusEnum = z.enum(['draft', 'active', 'inactive']);
 
 export const PriceListTemplateSchema = z.object({

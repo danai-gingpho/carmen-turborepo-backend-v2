@@ -1,14 +1,6 @@
 import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 
-// Import validate functions
-import {
-  validateProductItemGroupIdExists,
-  validateProductItemGroupIdsExist,
-} from '../../validate/product-item-group.validate';
-import { validateProductSubCategoryIdExists } from '../../validate/product-sub-category.validate';
-import { validateTaxProfileIdExists } from '../../validate/tax-profile.validate';
-
 export const ProductItemGroupCreate = z.object({
   code: z.string(),
   name: z.string(),

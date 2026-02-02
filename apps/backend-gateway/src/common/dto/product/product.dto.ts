@@ -2,37 +2,6 @@ import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 import { enum_data_type, enum_product_status_type, PrismaClient } from '@repo/prisma-shared-schema-tenant';
 
-// Import validate functions
-import {
-  validateUnitIdExists,
-  validateUnitIdsExist,
-} from '../../validate/unit.validate';
-
-import {
-  validateProductItemGroupIdExists,
-  validateProductItemGroupIdsExist,
-} from '../../validate/product-item-group.validate';
-
-import {
-  validateTaxProfileIdExists,
-  validateTaxProfileIdsExist,
-} from '../../validate/tax-profile.validate';
-
-import {
-  validateLocationIdExists,
-  validateLocationIdsExist,
-} from '../../validate/location.validate';
-
-import {
-  validateProductCategoryIdExists,
-  validateProductCategoryIdsExist,
-} from '../../validate/product-category.validate';
-
-import {
-  validateProductSubCategoryIdExists,
-  validateProductSubCategoryIdsExist,
-} from '../../validate/product-sub-category.validate';
-
 export const ProductCreate = z.object({
   name: z.string(),
   code: z.string(),

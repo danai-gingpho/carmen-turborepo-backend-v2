@@ -1,16 +1,11 @@
 import { enum_stage_role } from '@repo/prisma-shared-schema-tenant'
 import { z } from 'zod'
-import { ApprovePurchaseRequestDetailSchema, PurchaseRoleApprovePurchaseRequestDetailSchema } from '../purchase-request-detail.dto'
+import { ApprovePurchaseRequestDetailSchema, PurchaseRoleApprovePurchaseRequestDetailSchema, state_status } from '../purchase-request-detail.dto'
 import { ValidateSchema } from '../../embedded.dto'
 import { createZodDto } from 'nestjs-zod';
 
-export enum state_status {
-  submit = 'submit',
-  pending = 'pending',
-  approve = 'approve',
-  reject = 'reject',
-  review = 'review',
-}
+// Re-export for backward compatibility
+export { state_status };
 
 const ApproveByStateRoleApproveSchema = z.object({
   state_role: z.literal(enum_stage_role.approve),

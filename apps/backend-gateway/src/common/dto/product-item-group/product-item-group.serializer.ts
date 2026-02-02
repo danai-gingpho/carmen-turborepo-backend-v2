@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { dateField } from '../../common/validation/zod-helpers';
+
+const dateField = z.coerce.date().nullable();
 
 // Base schema for ProductItemGroup
 const ProductItemGroupBaseSchema = z.object({

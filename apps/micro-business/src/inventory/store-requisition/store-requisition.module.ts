@@ -7,19 +7,12 @@ import { PrismaClient_TENANT } from '@repo/prisma-shared-schema-tenant';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { envConfig } from '@/libs/config.env';
 import { StoreRequisitionLogic } from './logic/store-requisition.logic';
-import { NotificationModule } from '@/common';
-import {
-  MapperLogic,
-  DepartmentMapper,
-  WorkflowMapper,
-  UserMapper,
-  ProductMapper,
-  LocationMapper,
-} from '@/common/mapper';
+import { NotificationModule, MapperModule } from '@/common';
 
 @Module({
   imports: [
     TenantModule,
+    MapperModule,
     ClientsModule.register([
       {
         name: 'AUTH_SERVICE',
@@ -37,6 +30,14 @@ import {
           port: Number(envConfig.MASTER_SERVICE_PORT),
         },
       },
+      {
+        name: 'PROCUREMENT_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: envConfig.PROCUREMENT_SERVICE_HOST,
+          port: Number(envConfig.PROCUREMENT_SERVICE_PORT),
+        },
+      },
     ]),
     NotificationModule.forRoot({
       host: envConfig.NOTIFICATION_SERVICE_HOST,
@@ -47,12 +48,6 @@ import {
   providers: [
     StoreRequisitionService,
     StoreRequisitionLogic,
-    MapperLogic,
-    DepartmentMapper,
-    WorkflowMapper,
-    UserMapper,
-    ProductMapper,
-    LocationMapper,
     {
       provide: 'PRISMA_TENANT',
       useValue: PrismaClient_TENANT,

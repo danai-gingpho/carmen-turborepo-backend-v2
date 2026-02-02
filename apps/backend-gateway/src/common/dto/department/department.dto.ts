@@ -1,9 +1,5 @@
-import { de } from "zod/v4/locales";
 import { z } from "zod";
 import { createZodDto } from "nestjs-zod";
-
-// Re-export validate functions for use with Department
-export { validateDepartmentIdExists, validateDepartmentIdsExist } from "../../validate/department.validate";
 
 export const DepartmentsCreate = z.object({
   code: z.string(),

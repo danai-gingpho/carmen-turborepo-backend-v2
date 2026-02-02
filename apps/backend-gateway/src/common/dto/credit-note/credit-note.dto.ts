@@ -4,30 +4,6 @@ import { EmbeddedCurrencySchema, EmbeddedVendorSchema, EmbeddedWorkflowSchema, I
 import { GoodReceivedNoteSchema } from '../good-receive-note/good-received-note.dto'
 import { enum_credit_note_doc_status, enum_credit_note_type, PrismaClient } from '@repo/prisma-shared-schema-tenant'
 
-// Import validate functions
-import {
-  validateVendorIdExists,
-  validateVendorIdsExist,
-} from '../../validate/vendor.validate';
-
-import {
-  validateCurrencyIdExists,
-  validateCurrencyIdsExist,
-} from '../../validate/currency.validate';
-
-import {
-  validateWorkflowIdExists,
-  validateWorkflowIdsExist,
-} from '../../validate/workflow.validate';
-
-import {
-  toISOString,
-  toISOStringOrThrow,
-  isValidDate,
-  toDate,
-  toDateOrThrow,
-} from '../../validate/datetime.validate';
-
 export const CreditNoteSchema = z.object({
   id: z.string().uuid().optional( ),
   cn_no: z.string().optional(),

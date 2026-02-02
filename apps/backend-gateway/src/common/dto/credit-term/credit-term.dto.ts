@@ -1,12 +1,6 @@
 import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 
-// Re-export validate functions for use with CreditTerm
-export {
-  validateCreditTermIdExists,
-  validateCreditTermIdsExist,
-} from '../../validate/credit-term.validate';
-
 export const CreditTermCreate = z.object({
   name: z.string(),
   value: z.number().optional(),

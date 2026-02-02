@@ -2,6 +2,7 @@ generator client {
   provider        = "prisma-client-js"
   output          = "../generated/client"
   previewFeatures = ["postgresqlExtensions", "relationJoins"]
+  binaryTargets   = ["native", "linux-arm64-openssl-1.1.x", "debian-openssl-1.1.x"]
 }
 
 datasource db {
@@ -3067,7 +3068,7 @@ model tb_store_requisition_detail {
   /**
    * [
    * {"seq" : 1, "name" : "stage1", "status": "submit"},
-   * {"seq" : 2, "name" : "stage2", "status
+   * {"seq" : 2, "name" : "stage2", "status}
    * {"seq" : 3, "name" : "stage3", "status": null},
    * {"seq" : 4, "name" : "stage4", "status": null},
    * ]

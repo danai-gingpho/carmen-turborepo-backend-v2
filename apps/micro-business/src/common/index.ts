@@ -10,3 +10,4 @@ export * from './modules/index';
 export * from './decorators/index';
 export * from './validate/index';
 export * from './enum/index';
+export * from './mapper/index';

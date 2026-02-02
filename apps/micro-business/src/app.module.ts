@@ -24,8 +24,7 @@ import { NewsModule } from './cluster/news/news.module';
 // Log modules
 import { ActivityLogModule } from './log/activity-log/activity-log.module';
 
-// Notification module
-import { NotificationModule } from './notification/notification.module';
+// Notification module removed - now runs as separate micro-notification service
 
 // Inventory modules
 import { GoodReceivedNoteModule } from './inventory/good-received-note/good-received-note.module';
@@ -99,8 +98,7 @@ import { CommonModule } from './common/common.module';
     // Log modules (from micro-log)
     ActivityLogModule,
 
-    // Notification module (converted from micro-notification Elysia to NestJS)
-    NotificationModule,
+    // Notification module removed - now runs as separate micro-notification service on port 5006
 
     // Inventory modules (from micro-tenant-inventory)
     GoodReceivedNoteModule,

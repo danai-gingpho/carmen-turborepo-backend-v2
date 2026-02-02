@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { datetimeField } from '../../common/validation/zod-helpers';
+
+const datetimeField = z.string().datetime().nullable();
 
 // ==================== Transfer Detail Response ====================
 export const TransferDetailResponseSchema = z.object({
