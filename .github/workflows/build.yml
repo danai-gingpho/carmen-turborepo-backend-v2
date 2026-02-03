@@ -117,11 +117,14 @@ jobs:
 
             # Clone repo if not exists, otherwise pull latest
             if [ ! -d ~/carmen-turborepo-backend-v2 ]; then
-              git clone https://github.com/${{ github.repository }}.git ~/carmen-turborepo-backend-v2
+              git clone https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git ~/carmen-turborepo-backend-v2
             fi
 
             # Navigate to project directory
             cd ~/carmen-turborepo-backend-v2
+
+            # Configure git credentials for pull
+            git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git
 
             # Pull latest code
             git checkout -- .
