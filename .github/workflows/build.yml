@@ -97,7 +97,7 @@ jobs:
             aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
 
             # Manage Project Directory
-            PROJECT_DIR="~/carmen-turborepo-backend-v2"
+            PROJECT_DIR="$HOME/carmen-turborepo-backend-v2"
             if [ ! -d "$PROJECT_DIR" ]; then
               git clone https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git $PROJECT_DIR
             fi
