@@ -137,14 +137,14 @@ jobs:
             docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-reports:latest
 
             # Stop and remove existing containers
-            docker-compose -f docker-compose.yml down --remove-orphans || true
+            docker compose -f docker-compose.yml down --remove-orphans || true
 
             # Start services with new images
-            docker-compose -f docker-compose.yml up -d
+            docker compose -f docker-compose.yml up -d
 
             # Clean up old images
             docker image prune -af --filter "until=24h"
 
             # Show running containers
             echo "=== Deployment Complete ==="
-            docker-compose -f docker-compose.yml ps
+            docker compose -f docker-compose.yml ps
