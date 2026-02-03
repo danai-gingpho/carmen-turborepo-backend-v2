@@ -91,7 +91,7 @@ jobs:
             export AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }}
             export ECR_REGISTRY=${{ secrets.AWS_ECR_REGISTRY }}
             export IMAGE_PREFIX=${{ secrets.DOCKER_IMAGE_PREFIX }}
-            export IMAGE_TAG=${{ github.sha }} 
+            export IMAGE_TAG=$(echo "${{ github.sha }}" | cut -c1-7) 
 
             # Login to ECR
             aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
