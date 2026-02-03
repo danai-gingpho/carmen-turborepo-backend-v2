@@ -115,8 +115,13 @@ jobs:
             # Login to ECR
             aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}
 
+            # Clone repo if not exists, otherwise pull latest
+            if [ ! -d ~/carmen-turborepo-backend-v2 ]; then
+              git clone https://github.com/${{ github.repository }}.git ~/carmen-turborepo-backend-v2
+            fi
+
             # Navigate to project directory
-            cd ~/carmen-turborepo-backend
+            cd ~/carmen-turborepo-backend-v2
 
             # Pull latest code
             git checkout -- .
