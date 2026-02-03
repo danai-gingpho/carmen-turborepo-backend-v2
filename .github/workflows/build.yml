@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [main, develop-for-ec2]
+    branches: [main]
   workflow_dispatch:
 
 env:
@@ -38,56 +38,23 @@ jobs:
       - name: Build
         run: bun run build
 
-  # ===========================================
-  # Deploy to VM (main branch)
-  # ===========================================
-  deploy-vm:
+  build-docker:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main'
     environment: production
-
-    steps:
-      - name: Deploy to VM Server
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
-          port: 2206
-          script: |
-            cd ~/carmen-turborepo-backend
-            git checkout -- .
-            git pull origin main
-            ./start.sh
-
-  # ===========================================
-  # Build Docker Images in Parallel (develop-for-ec2 branch)
-  # ===========================================
-  build-docker:
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/develop-for-ec2'
-    environment: ec2-webservice
 
     strategy:
       fail-fast: false
       matrix:
         service:
           - backend-gateway
-          - micro-authen
-          - micro-cluster
+          - micro-business
           - micro-cronjob
           - micro-file
           - micro-keycloak-api
-          - micro-license
-          - micro-log
           - micro-notification
           - micro-reports
-          - micro-tenant-inventory
-          - micro-tenant-master
-          - micro-tenant-procurement
-          - micro-tenant-recipe
 
     steps:
       - name: Checkout repository
@@ -127,8 +94,8 @@ jobs:
   deploy-ec2:
     runs-on: ubuntu-latest
     needs: build-docker
-    if: github.ref == 'refs/heads/develop-for-ec2'
-    environment: ec2-webservice
+    if: github.ref == 'refs/heads/main'
+    environment: production
 
     steps:
       - name: Deploy to EC2
@@ -153,7 +120,7 @@ jobs:
 
             # Pull latest code
             git checkout -- .
-            git pull origin develop-for-ec2
+            git pull origin main
 
             # Set environment variables for docker-compose
             export IMAGE_TAG=latest
@@ -162,29 +129,22 @@ jobs:
 
             # Pull latest images
             docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-backend-gateway:latest
-            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-authen:latest
-            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-cluster:latest
-            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-license:latest
-            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-reports:latest
+            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-business:latest
+            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-cronjob:latest
             docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-file:latest
             docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-keycloak-api:latest
-            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-tenant-inventory:latest
-            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-tenant-master:latest
-            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-tenant-procurement:latest
-            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-tenant-recipe:latest
-            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-log:latest
             docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-notification:latest
-            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-cronjob:latest
+            docker pull ${ECR_REGISTRY}/${IMAGE_PREFIX}-micro-reports:latest
 
             # Stop and remove existing containers
-            docker-compose -f docker-compose.prod.yml down --remove-orphans || true
+            docker-compose -f docker-compose.yml down --remove-orphans || true
 
             # Start services with new images
-            docker-compose -f docker-compose.prod.yml up -d
+            docker-compose -f docker-compose.yml up -d
 
             # Clean up old images
             docker image prune -af --filter "until=24h"
 
             # Show running containers
             echo "=== Deployment Complete ==="
-            docker-compose -f docker-compose.prod.yml ps
+            docker-compose -f docker-compose.yml ps

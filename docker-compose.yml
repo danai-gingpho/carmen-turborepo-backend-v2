@@ -1,208 +1,156 @@
-version: '3.8'
-
 services:
-  api-micro-authen:
+  api-backend-gateway:
     build:
       context: .
-      dockerfile: ./apps/micro-authen/Dockerfile
-    container_name: carmen-api-micro-authen
-    ports:
-      - "5001:5001"
-      - "6001:6001"
-    environment:
-      - NODE_ENV=development
+      dockerfile: ./apps/backend-gateway/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-backend-gateway:${IMAGE_TAG:-latest}
+    container_name: carmen-api-backend-gateway
+    restart: unless-stopped
     volumes:
-      - .:/app
-      - /app/node_modules
+      - ./apps/backend-gateway/src/cert:/app/apps/backend-gateway/src/cert
+    ports:
+      - "4000:4000"
+      - "4001:4001"
+    env_file:
+      - ./apps/backend-gateway/.env
+    environment:
+      - NODE_ENV=production
     networks:
       - carmen-network
-
-  api-micro-cluster:
-    build:
-      context: .
-      dockerfile: ./apps/micro-cluster/Dockerfile
-    container_name: carmen-api-micro-cluster
-    ports:
-      - "5002:5002"
-      - "6002:6002"
-    environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
-    networks:
-      - carmen-network
-
-  api-micro-file:
-    build:
-      context: .
-      dockerfile: ./apps/micro-file/Dockerfile
-    container_name: carmen-api-micro-file
-    ports:
-      - "5007:5007"
-      - "6007:6007"
-    environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
-    networks:
-      - carmen-network
-
-  api-micro-license:
-    build:
-      context: .
-      dockerfile: ./apps/micro-license/Dockerfile
-    container_name: carmen-api-micro-license
-    ports:
-      - "5003:5003"
-      - "6003:6003"
-    environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
-    networks:
-      - carmen-network
-
-  api-micro-notification:
-    build:
-      context: .
-      dockerfile: ./apps/micro-notification/Dockerfile
-    container_name: carmen-api-micro-notification
-    ports:
-      - "5006:5006"
-      - "6006:6006"
-    environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
-    networks:
-      - carmen-network
+    healthcheck:
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:4000/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   api-micro-reports:
     build:
       context: .
       dockerfile: ./apps/micro-reports/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-reports:${IMAGE_TAG:-latest}
     container_name: carmen-api-micro-reports
+    restart: unless-stopped
     ports:
       - "5004:5004"
       - "6004:6004"
+    env_file:
+      - ./apps/micro-reports/.env
     environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
+      - NODE_ENV=production
     networks:
       - carmen-network
+    depends_on:
+      - api-backend-gateway
 
-  api-micro-tenant-inventory:
+  api-micro-file:
     build:
       context: .
-      dockerfile: ./apps/micro-tenant-inventory/Dockerfile
-    container_name: carmen-api-micro-tenant-inventory
+      dockerfile: ./apps/micro-file/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-file:${IMAGE_TAG:-latest}
+    container_name: carmen-api-micro-file
+    restart: unless-stopped
     ports:
-      - "5008:5008"
-      - "6008:6008"
+      - "5007:5007"
+      - "6007:6007"
+    env_file:
+      - ./apps/micro-file/.env
     environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
+      - NODE_ENV=production
     networks:
       - carmen-network
+    depends_on:
+      - api-backend-gateway
 
-  api-micro-tenant-master:
+  api-micro-cronjob:
     build:
       context: .
-      dockerfile: ./apps/micro-tenant-master/Dockerfile
-    container_name: carmen-api-micro-tenant-master
+      dockerfile: ./apps/micro-cronjob/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-cronjob:${IMAGE_TAG:-latest}
+    container_name: carmen-api-micro-cronjob
+    restart: unless-stopped
     ports:
-      - "5011:5011"
-      - "6011:6011"
+      - "5012:5012"
+      - "6012:6012"
+    env_file:
+      - ./apps/micro-cronjob/.env
     environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
+      - NODE_ENV=production
     networks:
       - carmen-network
+    depends_on:
+      - api-backend-gateway
 
-  api-micro-tenant-procurement:
+  api-micro-keycloak-api:
     build:
       context: .
-      dockerfile: ./apps/micro-tenant-procurement/Dockerfile
-    container_name: carmen-api-micro-tenant-procurement
+      dockerfile: ./apps/micro-keycloak-api/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-keycloak-api:${IMAGE_TAG:-latest}
+    container_name: carmen-api-micro-keycloak-api
+    restart: unless-stopped
     ports:
-      - "5009:5009"
-      - "6009:6009"
+      - "5013:5013"
+      - "6013:6013"
+    env_file:
+      - ./apps/micro-keycloak-api/.env
     environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
+      - NODE_ENV=production
     networks:
       - carmen-network
+    depends_on:
+      - api-backend-gateway
 
-  api-micro-tenant-recipe:
+  # Notification service (separated from micro-business)
+  api-micro-notification:
     build:
       context: .
-      dockerfile: ./apps/micro-tenant-recipe/Dockerfile
-    container_name: carmen-api-micro-tenant-recipe
+      dockerfile: ./apps/micro-notification/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-notification:${IMAGE_TAG:-latest}
+    container_name: carmen-api-micro-notification
+    restart: unless-stopped
     ports:
-      - "5010:5010"
-      - "6010:6010"
+      - "5006:5006"
+      - "6006:6006"
+    env_file:
+      - ./apps/micro-notification/.env
     environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
+      - NODE_ENV=production
     networks:
       - carmen-network
+    depends_on:
+      - api-backend-gateway
+    healthcheck:
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:6006/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
-  api-backend-gateway:
+  # Consolidated business service (combines authen, cluster, license, log, inventory, master, procurement, recipe)
+  api-micro-business:
     build:
       context: .
-      dockerfile: ./apps/backend-gateway/Dockerfile
-    container_name: carmen-api-backend-gateway
+      dockerfile: ./apps/micro-business/Dockerfile
+    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-business:${IMAGE_TAG:-latest}
+    container_name: carmen-api-micro-business
+    restart: unless-stopped
     ports:
-      - "4000:4000"
+      - "5020:5020"
+      - "6020:6020"
+    env_file:
+      - ./apps/micro-business/.env
     environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
+      - NODE_ENV=production
     networks:
       - carmen-network
-
-  # db:
-  #   image: postgres:15-alpine
-  #   container_name: carmen-db
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
-  #     - POSTGRES_DB=carmen
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
-  #   networks:
-  #     - carmen-network
-
-  # redis:
-  #   image: redis:7-alpine
-  #   container_name: carmen-redis
-  #   ports:
-  #     - "6379:6379"
-  #   volumes:
-  #     - redis_data:/data
-  #   networks:
-  #     - carmen-network
-
-# volumes:
-#   postgres_data:
-#   # redis_data:
+    depends_on:
+      - api-backend-gateway
+    healthcheck:
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:6020/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
 networks:
   carmen-network:
