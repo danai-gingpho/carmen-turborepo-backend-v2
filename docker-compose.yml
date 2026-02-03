@@ -6,8 +6,6 @@ services:
     image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-backend-gateway:${IMAGE_TAG:-latest}
     container_name: carmen-api-backend-gateway
     restart: unless-stopped
-    volumes:
-      - ./apps/backend-gateway/src/cert:/app/apps/backend-gateway/src/cert
     ports:
       - "4000:4000"
       - "4001:4001"
