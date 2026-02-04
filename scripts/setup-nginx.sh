@@ -32,7 +32,7 @@ if [ ! -f /etc/nginx/ssl/carmen-api.crt ]; then
     sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout /etc/nginx/ssl/carmen-api.key \
         -out /etc/nginx/ssl/carmen-api.crt \
-        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=ec2-15-134-223-241.ap-southeast-2.compute.amazonaws.com"
+        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=15.134.223.241"
 fi
 
 # Backup original nginx.conf if not already backed up
