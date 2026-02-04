@@ -2,6 +2,9 @@ FROM node:22-slim AS builder
 
 WORKDIR /app
 
+# Install OpenSSL for Prisma
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+
 # Install bun for dependency management
 RUN npm install -g bun
 
@@ -25,6 +28,9 @@ RUN npm run build
 FROM node:22-slim AS runner
 
 WORKDIR /app
+
+# Install OpenSSL for Prisma
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
 # Install bun for runtime
 RUN npm install -g bun
