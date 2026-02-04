@@ -82,7 +82,7 @@ sudo rm -f /etc/nginx/sites-enabled/default
 
 # Copy nginx config to conf.d (Amazon Linux style)
 echo "Copying nginx configuration..."
-sudo cp ~/carmen-turborepo-backend/nginx/carmen-api.conf /etc/nginx/conf.d/carmen-api.conf
+sudo cp ~/carmen-turborepo-backend-v2/nginx/carmen-api.conf /etc/nginx/conf.d/carmen-api.conf
 
 # Test nginx config
 echo "Testing nginx configuration..."
