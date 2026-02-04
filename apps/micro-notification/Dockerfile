@@ -1,4 +1,4 @@
-FROM node:22-slim AS builder
+FROM node:22-bookworm-slim AS builder
 
 WORKDIR /app
 
@@ -25,7 +25,7 @@ RUN bun install
 WORKDIR /app/apps/micro-notification
 RUN npm run build
 
-FROM node:22-slim AS runner
+FROM node:22-bookworm-slim AS runner
 
 WORKDIR /app
 
