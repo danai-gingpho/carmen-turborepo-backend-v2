@@ -1,5 +1,5 @@
 #!/bin/bash
-export ECR_REGISTRY=123456789012.dkr.ecr.ap-southeast-2.amazonaws.com                                                                                                                                                                                        
+export ECR_REGISTRY=697697503013.dkr.ecr.ap-southeast-2.amazonaws.com
 export IMAGE_TAG=latest  
 cd ~/carmen-turborepo-backend-v2
 git pull origin main
