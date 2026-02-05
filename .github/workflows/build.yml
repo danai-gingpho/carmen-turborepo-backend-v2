@@ -85,6 +85,10 @@ jobs:
           port: 22
           command_timeout: 30m
           script: |
+            # Load shell profile for PATH
+            source ~/.bashrc 2>/dev/null || source ~/.bash_profile 2>/dev/null || true
+            export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
+
             # Set Variables
             export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
             export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
