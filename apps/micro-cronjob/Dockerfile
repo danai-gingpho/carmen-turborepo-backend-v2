@@ -44,15 +44,18 @@ COPY tsconfig.json .
 # Copy built packages from builder (including their dist folders)
 COPY --from=builder /app/packages ./packages
 
-# Copy app tsconfig for path resolution
+# Copy app files from builder
 COPY --from=builder /app/apps/micro-cronjob/tsconfig.json ./apps/micro-cronjob/
 COPY --from=builder /app/apps/micro-cronjob/package.json ./apps/micro-cronjob/
 COPY --from=builder /app/apps/micro-cronjob/dist ./apps/micro-cronjob/dist
-COPY --from=builder /app/apps/micro-cronjob/generated ./apps/micro-cronjob/generated
+COPY --from=builder /app/apps/micro-cronjob/prisma ./apps/micro-cronjob/prisma
 
 # Install production dependencies
 ENV NODE_ENV=production
 RUN bun install --no-save --ignore-scripts
+
+# Copy generated Prisma client from builder (since --ignore-scripts skips generation)
+COPY --from=builder /app/apps/micro-cronjob/node_modules/.prisma ./apps/micro-cronjob/node_modules/.prisma
 
 WORKDIR /app/apps/micro-cronjob
 
