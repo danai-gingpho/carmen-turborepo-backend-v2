@@ -22,6 +22,11 @@ COPY apps/micro-reports ./apps/micro-reports
 
 # Install dependencies and build
 RUN bun install
+
+# Generate Prisma clients in builder stage (has all dependencies)
+RUN bunx prisma generate --schema=packages/prisma-shared-schema-platform/prisma/schema.prisma
+RUN bunx prisma generate --schema=packages/prisma-shared-schema-tenant/prisma/schema.prisma
+
 WORKDIR /app/apps/micro-reports
 RUN npm run build
 
@@ -51,10 +56,6 @@ COPY --from=builder /app/apps/micro-reports/dist ./apps/micro-reports/dist
 # Install production dependencies
 ENV NODE_ENV=production
 RUN bun install --no-save --ignore-scripts
-
-# Generate Prisma client for ARM64
-RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-platform/prisma/schema.prisma
-RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-tenant/prisma/schema.prisma
 
 WORKDIR /app/apps/micro-reports
 

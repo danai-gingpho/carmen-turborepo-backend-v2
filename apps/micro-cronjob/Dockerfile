@@ -22,6 +22,12 @@ COPY apps/micro-cronjob ./apps/micro-cronjob
 
 # Install dependencies and build
 RUN bun install
+
+# Generate Prisma clients in builder stage (has all dependencies)
+RUN bunx prisma generate --schema=packages/prisma-shared-schema-platform/prisma/schema.prisma
+RUN bunx prisma generate --schema=packages/prisma-shared-schema-tenant/prisma/schema.prisma
+RUN bunx prisma generate --schema=apps/micro-cronjob/prisma/schema.prisma
+
 WORKDIR /app/apps/micro-cronjob
 RUN npm run build
 
@@ -47,15 +53,11 @@ COPY --from=builder /app/packages ./packages
 COPY --from=builder /app/apps/micro-cronjob/tsconfig.json ./apps/micro-cronjob/
 COPY --from=builder /app/apps/micro-cronjob/package.json ./apps/micro-cronjob/
 COPY --from=builder /app/apps/micro-cronjob/dist ./apps/micro-cronjob/dist
+COPY --from=builder /app/apps/micro-cronjob/generated ./apps/micro-cronjob/generated
 
 # Install production dependencies
 ENV NODE_ENV=production
 RUN bun install --no-save --ignore-scripts
-
-# Generate Prisma client for ARM64
-RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-platform/prisma/schema.prisma
-RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-tenant/prisma/schema.prisma
-RUN cd /app/apps/micro-cronjob && bunx prisma generate
 
 WORKDIR /app/apps/micro-cronjob
 

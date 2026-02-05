@@ -22,6 +22,11 @@ COPY apps/micro-keycloak-api ./apps/micro-keycloak-api
 
 # Install dependencies and build
 RUN bun install
+
+# Generate Prisma clients in builder stage (has all dependencies)
+RUN bunx prisma generate --schema=packages/prisma-shared-schema-platform/prisma/schema.prisma
+RUN bunx prisma generate --schema=packages/prisma-shared-schema-tenant/prisma/schema.prisma
+
 WORKDIR /app/apps/micro-keycloak-api
 RUN npm run build
 
@@ -51,10 +56,6 @@ COPY --from=builder /app/apps/micro-keycloak-api/dist ./apps/micro-keycloak-api/
 # Install production dependencies
 ENV NODE_ENV=production
 RUN bun install --no-save --ignore-scripts
-
-# Generate Prisma client for ARM64
-RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-platform/prisma/schema.prisma
-RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-tenant/prisma/schema.prisma
 
 WORKDIR /app/apps/micro-keycloak-api
 

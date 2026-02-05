@@ -22,6 +22,11 @@ COPY apps/micro-notification ./apps/micro-notification
 
 # Install dependencies and build
 RUN bun install
+
+# Generate Prisma clients in builder stage (has all dependencies)
+RUN bunx prisma generate --schema=packages/prisma-shared-schema-platform/prisma/schema.prisma
+RUN bunx prisma generate --schema=packages/prisma-shared-schema-tenant/prisma/schema.prisma
+
 WORKDIR /app/apps/micro-notification
 RUN npm run build
 
@@ -39,8 +44,10 @@ RUN npm install -g bun
 COPY package.json .
 COPY bun.lock .
 
-# Copy packages
+# Copy packages and Prisma generated clients from builder
 COPY packages ./packages
+COPY --from=builder /app/packages/prisma-shared-schema-platform/generated ./packages/prisma-shared-schema-platform/generated
+COPY --from=builder /app/packages/prisma-shared-schema-tenant/generated ./packages/prisma-shared-schema-tenant/generated
 
 # Copy app
 COPY --from=builder /app/apps/micro-notification/tsconfig.json ./apps/micro-notification/
@@ -50,10 +57,6 @@ COPY --from=builder /app/apps/micro-notification/dist ./apps/micro-notification/
 # Install production dependencies
 ENV NODE_ENV=production
 RUN bun install --no-save --ignore-scripts
-
-# Generate Prisma client for ARM64
-RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-platform/prisma/schema.prisma
-RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-tenant/prisma/schema.prisma
 
 WORKDIR /app/apps/micro-notification
 
