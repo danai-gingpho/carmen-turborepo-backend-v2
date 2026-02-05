@@ -57,6 +57,10 @@ COPY apps/backend-gateway/src/cert/cert.pem.prod ./apps/backend-gateway/src/cert
 ENV NODE_ENV=production
 RUN bun install --no-save --ignore-scripts
 
+# Generate Prisma client for ARM64
+RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-platform/prisma/schema.prisma
+RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-tenant/prisma/schema.prisma
+
 WORKDIR /app/apps/backend-gateway
 
 # Service ports

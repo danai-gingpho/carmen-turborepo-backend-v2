@@ -52,6 +52,10 @@ COPY --from=builder /app/apps/micro-file/dist ./apps/micro-file/dist
 ENV NODE_ENV=production
 RUN bun install --no-save --ignore-scripts
 
+# Generate Prisma client for ARM64
+RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-platform/prisma/schema.prisma
+RUN cd /app && bunx prisma generate --schema=packages/prisma-shared-schema-tenant/prisma/schema.prisma
+
 WORKDIR /app/apps/micro-file
 
 EXPOSE 5007
