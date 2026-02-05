@@ -55,7 +55,8 @@ ENV NODE_ENV=production
 RUN bun install --no-save --ignore-scripts
 
 # Copy generated Prisma client from builder (since --ignore-scripts skips generation)
-COPY --from=builder /app/apps/micro-cronjob/node_modules/.prisma ./apps/micro-cronjob/node_modules/.prisma
+# The .prisma directory is in root node_modules due to monorepo hoisting
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 WORKDIR /app/apps/micro-cronjob
 
