@@ -20,13 +20,8 @@ COPY packages ./packages
 # Copy app
 COPY apps/micro-business ./apps/micro-business
 
-# Install dependencies and build
+# Install dependencies (turbo postinstall generates Prisma clients)
 RUN bun install
-
-# Generate Prisma clients in builder stage (has all dependencies)
-ENV PATH="/app/node_modules/.bin:$PATH"
-RUN prisma generate --schema=packages/prisma-shared-schema-platform/prisma/schema.prisma
-RUN prisma generate --schema=packages/prisma-shared-schema-tenant/prisma/schema.prisma
 
 WORKDIR /app/apps/micro-business
 RUN npm run build
