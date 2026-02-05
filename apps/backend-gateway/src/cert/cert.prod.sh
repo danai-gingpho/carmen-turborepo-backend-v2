@@ -17,7 +17,7 @@ generate_self_signed() {
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout "$CERT_DIR/key.pem" \
         -out "$CERT_DIR/cert.pem" \
-        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=ec2-15-134-223-241.ap-southeast-2.compute.amazonaws.com"
+        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=ec2-15-135-75-230.ap-southeast-2.compute.amazonaws.com"
 
     echo "Self-signed certificate generated:"
     echo "  - $CERT_DIR/cert.pem"
@@ -26,7 +26,7 @@ generate_self_signed() {
 
 # Option 2: Let's Encrypt certificate (for production)
 generate_letsencrypt() {
-    DOMAIN="ec2-15-134-223-241.ap-southeast-2.compute.amazonaws.com"
+    DOMAIN="ec2-15-135-75-230.ap-southeast-2.compute.amazonaws.com"
     EMAIL="admin@blueledgers.com"
 
     echo "Generating Let's Encrypt certificate for $DOMAIN..."
