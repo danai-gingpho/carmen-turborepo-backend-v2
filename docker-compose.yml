@@ -22,25 +22,6 @@ services:
       retries: 3
       start_period: 40s
 
-  api-micro-reports:
-    build:
-      context: .
-      dockerfile: ./apps/micro-reports/Dockerfile
-    image: ${ECR_REGISTRY:-local}/${IMAGE_PREFIX:-carmen}-micro-reports:${IMAGE_TAG:-latest}
-    container_name: carmen-api-micro-reports
-    restart: unless-stopped
-    ports:
-      - "5004:5004"
-      - "6004:6004"
-    env_file:
-      - ./apps/micro-reports/.env
-    environment:
-      - NODE_ENV=production
-    networks:
-      - carmen-network
-    depends_on:
-      - api-backend-gateway
-
   api-micro-file:
     build:
       context: .

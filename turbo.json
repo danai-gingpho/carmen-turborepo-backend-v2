@@ -41,9 +41,6 @@
     "dev:notification": {
       "cache": false
     },
-    "dev:report": {
-      "cache": false
-    },
     "dev:tenant:inventory": {
       "cache": false
     },

@@ -130,7 +130,6 @@ main() {
         "micro-file"
         "micro-license"
         "micro-notification"
-        "micro-reports"
         "micro-tenant-inventory"
         "micro-tenant-master"
         "micro-tenant-procurement"

@@ -21,7 +21,6 @@ jobs:
           - micro-file
           - micro-keycloak-api
           - micro-notification
-          - micro-reports
 
     steps:
       - name: Checkout repository

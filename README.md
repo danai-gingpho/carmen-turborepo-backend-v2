@@ -17,7 +17,6 @@ Carmen is a comprehensive enterprise resource planning (ERP) system with a focus
 - **micro-file** - File storage and management service
 - **micro-license** - License management service
 - **micro-notification** - Notification service
-- **micro-reports** - Report generation service
 - **micro-tenant-inventory** - Tenant-specific inventory management
 - **micro-tenant-master** - Tenant-specific master data management
 - **micro-tenant-procurement** - Tenant-specific procurement management
@@ -102,9 +101,6 @@ bun run dev:tenant
 
 # Development mode (production configuration)
 bun run dev:prod
-
-# Development mode (reports service)
-bun run dev:report
 ```
 
 ### Start Individual Service
@@ -159,7 +155,6 @@ carmen-turborepo-backend/
 │   ├── micro-file/
 │   ├── micro-license/
 │   ├── micro-notification/
-│   ├── micro-reports/
 │   ├── micro-tenant-inventory/
 │   ├── micro-tenant-master/
 │   ├── micro-tenant-procurement/

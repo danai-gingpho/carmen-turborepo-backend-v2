@@ -9,7 +9,6 @@
     "prod:base": "turbo run prod:base",
     "dev:tenant": "turbo run dev:tenant",
     "dev:prod": "turbo run dev:prod",
-    "dev:report": "turbo run dev:report",
     "start:prod": "turbo run start:prod",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

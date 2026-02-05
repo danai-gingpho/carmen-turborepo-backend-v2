@@ -21,7 +21,6 @@ apps/                           # Microservice applications
 ├── micro-file/               # File management (TCP:5007, HTTP:6007)
 ├── micro-license/            # License management (TCP:5003, HTTP:6003)
 ├── micro-notification/       # Notification service (TCP:5006, HTTP:6006)
-├── micro-reports/            # Reporting service (TCP:5004, HTTP:6004)
 ├── micro-tenant-*/           # Tenant-specific services (inventory, master, procurement, recipe)
 └── bruno/                    # API testing collection
 
@@ -79,7 +78,6 @@ turbo run dev:cluster
 turbo run dev:file
 turbo run dev:license
 turbo run dev:notification
-turbo run dev:report
 turbo run dev:tenant:inventory
 turbo run dev:tenant:master
 turbo run dev:tenant:procurement
@@ -153,7 +151,7 @@ docker-compose up api-backend-gateway api-micro-authen
 
 ### Service Groupings
 - **Core Services**: Gateway, Authentication, Cluster management
-- **Platform Services**: License, File, Notification, Reports
+- **Platform Services**: License, File, Notification
 - **Tenant Services**: Inventory, Master data, Procurement, Recipe management
 
 ## Key Development Patterns
