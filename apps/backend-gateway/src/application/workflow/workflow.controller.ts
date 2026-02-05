@@ -14,12 +14,9 @@ import { TenantHeaderGuard } from 'src/common/guard/tenant-header.guard';
 import { BackendLogger } from 'src/common/helpers/backend.logger';
 import { AppIdGuard } from 'src/common/guard/app-id.guard';
 import { ApiHeaderRequiredXAppId } from 'src/common/decorator/x-app-id.decorator';
-
-@Controller('api/:bu_code/workflow')
 import {
   BaseHttpController,
   Serialize,
-  ZodSerializerInterceptor,
   WorkflowDetailResponseSchema,
   WorkflowListItemResponseSchema,
 } from '@/common';
@@ -28,7 +25,6 @@ import {
 @UseGuards(KeycloakGuard, TenantHeaderGuard)
 @ApiTags('Application - Workflow')
 @ApiHeaderRequiredXAppId()
-@UseGuards(KeycloakGuard, TenantHeaderGuard)
 @ApiBearerAuth()
 export class WorkflowController extends BaseHttpController {
   private readonly logger: BackendLogger = new BackendLogger(

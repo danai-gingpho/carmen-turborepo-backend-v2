@@ -999,7 +999,7 @@ export class PurchaseRequestService {
       }
 
       if (updatePRDetail?.purchase_request_detail?.add?.length > 0) {
-        let lastSequenceNo =
+        const lastSequenceNo =
           await prismatx.tb_purchase_request_detail.findFirst({
             select: {
               sequence_no: true,
@@ -2222,7 +2222,9 @@ export class PurchaseRequestService {
     // Generate PDF buffer
     const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const PdfMake = require('pdfmake/build/pdfmake');
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const vfsFonts = require('pdfmake/build/vfs_fonts');
         PdfMake.vfs = vfsFonts.pdfMake ? vfsFonts.pdfMake.vfs : vfsFonts.vfs;
 

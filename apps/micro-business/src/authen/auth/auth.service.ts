@@ -2182,10 +2182,10 @@ export class AuthService {
       );
 
       // loop each bu_codes
-      let permissionsAllBu = [];
+      const permissionsAllBu = [];
 
       for (const bu_code of bu_codes) {
-        let permissionsBu = {
+        const permissionsBu = {
           code: bu_code.code,
           name: bu_code.name,
           alias_name: bu_code.alias_name,

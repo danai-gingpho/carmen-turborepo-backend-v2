@@ -2173,7 +2173,9 @@ export class PurchaseOrderService {
     const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
       try {
         // Use pdfmake's createPdf with virtual file system
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const PdfMake = require('pdfmake/build/pdfmake');
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const vfsFonts = require('pdfmake/build/vfs_fonts');
         PdfMake.vfs = vfsFonts.pdfMake ? vfsFonts.pdfMake.vfs : vfsFonts.vfs;
 

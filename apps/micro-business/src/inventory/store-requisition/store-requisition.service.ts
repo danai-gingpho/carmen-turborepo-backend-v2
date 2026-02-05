@@ -616,7 +616,7 @@ export class StoreRequisitionService {
       }
 
       if (updateSRDetail?.store_requisition_detail?.add?.length > 0) {
-        let lastSequenceNo =
+        const lastSequenceNo =
           await prismatx.tb_store_requisition_detail.findFirst({
             select: {
               sequence_no: true,
