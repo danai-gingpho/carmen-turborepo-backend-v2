@@ -105,7 +105,6 @@ services:
       retries: 3
       start_period: 40s
 
-  # Consolidated business service (combines authen, cluster, license, log, inventory, master, procurement, recipe)
   api-micro-business:
     build:
       context: .
