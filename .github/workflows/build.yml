@@ -10,7 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment: production
-    
+
+    services:
+      turbo-cache:
+        image: ducktors/turborepo-remote-cache:latest
+        ports:
+          - 3333:3000
+        env:
+          STORAGE_PROVIDER: s3
+          S3_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          S3_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          S3_BUCKET: bun-cache
+          S3_REGION: ap-southeast-2
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -34,10 +47,9 @@ jobs:
       - name: Install dependencies
         run: bun install --ignore-scripts
 
-      - name: Build packages & app
+      - name: Build packages & app (with remote cache)
         run: |
-          bun run build:package
-          bun run build        
+          turbo run build:package build --api="http://localhost:3333" --token="${{ secrets.TURBO_TOKEN }}" --team="carmen"        
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
