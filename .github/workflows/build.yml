@@ -49,7 +49,7 @@ jobs:
 
       - name: Build packages & app (with remote cache)
         run: |
-          turbo run build:package build --api="http://localhost:3333" --token="${{ secrets.TURBO_TOKEN }}" --team="carmen"        
+          bunx turbo run build:package build --api="http://localhost:3333" --token="${{ secrets.TURBO_TOKEN }}" --team="carmen"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
