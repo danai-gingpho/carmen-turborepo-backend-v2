@@ -43,6 +43,14 @@ if [ ! -f /etc/nginx/ssl/carmen-app.crt ]; then
         -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=15.135.75.230"
 fi
 
+if [ ! -f /etc/nginx/ssl/carmen-platform.crt ]; then
+    echo "Generating self-signed SSL certificate for Platform..."
+    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /etc/nginx/ssl/carmen-platform.key \
+        -out /etc/nginx/ssl/carmen-platform.crt \
+        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=15.135.75.230"
+fi
+
 # Backup original nginx.conf if not already backed up
 if [ ! -f /etc/nginx/nginx.conf.original ]; then
     sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.original 2>/dev/null || true
