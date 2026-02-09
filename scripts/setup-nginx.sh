@@ -28,10 +28,18 @@ sudo mkdir -p /etc/nginx/ssl
 
 # Generate self-signed certificate (for testing)
 if [ ! -f /etc/nginx/ssl/carmen-api.crt ]; then
-    echo "Generating self-signed SSL certificate..."
+    echo "Generating self-signed SSL certificate for API..."
     sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout /etc/nginx/ssl/carmen-api.key \
         -out /etc/nginx/ssl/carmen-api.crt \
+        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=15.135.75.230"
+fi
+
+if [ ! -f /etc/nginx/ssl/carmen-app.crt ]; then
+    echo "Generating self-signed SSL certificate for App..."
+    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /etc/nginx/ssl/carmen-app.key \
+        -out /etc/nginx/ssl/carmen-app.crt \
         -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=15.135.75.230"
 fi
 
@@ -83,6 +91,8 @@ sudo rm -f /etc/nginx/sites-enabled/default
 # Copy nginx config to conf.d (Amazon Linux style)
 echo "Copying nginx configuration..."
 sudo cp ~/carmen-turborepo-backend-v2/nginx/carmen-api.conf /etc/nginx/conf.d/carmen-api.conf
+sudo cp ~/carmen-turborepo-backend-v2/nginx/carmen-app.conf /etc/nginx/conf.d/carmen-app.conf
+sudo cp ~/carmen-turborepo-backend-v2/nginx/carmen-platform.conf /etc/nginx/conf.d/carmen-platform.conf
 
 # Test nginx config
 echo "Testing nginx configuration..."
