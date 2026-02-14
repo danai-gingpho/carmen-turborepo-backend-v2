@@ -32,7 +32,7 @@ if [ ! -f /etc/nginx/ssl/carmen-api.crt ]; then
     sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout /etc/nginx/ssl/carmen-api.key \
         -out /etc/nginx/ssl/carmen-api.crt \
-        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=15.135.75.230"
+        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=52.64.239.78"
 fi
 
 if [ ! -f /etc/nginx/ssl/carmen-app.crt ]; then
@@ -40,7 +40,7 @@ if [ ! -f /etc/nginx/ssl/carmen-app.crt ]; then
     sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout /etc/nginx/ssl/carmen-app.key \
         -out /etc/nginx/ssl/carmen-app.crt \
-        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=15.135.75.230"
+        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=52.64.239.78"
 fi
 
 if [ ! -f /etc/nginx/ssl/carmen-platform.crt ]; then
@@ -48,7 +48,7 @@ if [ ! -f /etc/nginx/ssl/carmen-platform.crt ]; then
     sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout /etc/nginx/ssl/carmen-platform.key \
         -out /etc/nginx/ssl/carmen-platform.crt \
-        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=15.135.75.230"
+        -subj "/C=AU/ST=NSW/L=Sydney/O=Carmen/CN=52.64.239.78"
 fi
 
 # Backup original nginx.conf if not already backed up
