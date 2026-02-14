@@ -43,7 +43,9 @@ COPY bun.lock .
 # Copy package source and Prisma generated clients from builder
 COPY packages ./packages
 COPY --from=builder /app/packages/prisma-shared-schema-platform/generated ./packages/prisma-shared-schema-platform/generated
+COPY --from=builder /app/packages/prisma-shared-schema-platform/dist ./packages/prisma-shared-schema-platform/dist
 COPY --from=builder /app/packages/prisma-shared-schema-tenant/generated ./packages/prisma-shared-schema-tenant/generated
+COPY --from=builder /app/packages/prisma-shared-schema-tenant/dist ./packages/prisma-shared-schema-tenant/dist
 
 # Copy app
 COPY --from=builder /app/apps/backend-gateway/package.json ./apps/backend-gateway/
