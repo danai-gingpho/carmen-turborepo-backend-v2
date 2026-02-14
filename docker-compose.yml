@@ -147,7 +147,7 @@ services:
     networks:
       - carmen-network
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/health"]
+      test: ["CMD-SHELL", "node -e \"require('net').connect(3000,'localhost',()=>process.exit(0)).on('error',()=>process.exit(1))\""]
       interval: 30s
       timeout: 10s
       retries: 3
