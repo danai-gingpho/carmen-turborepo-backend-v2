@@ -40,10 +40,8 @@ RUN npm install -g bun
 COPY package.json .
 COPY bun.lock .
 
-# Copy packages and Prisma generated clients from builder
-COPY packages ./packages
-COPY --from=builder /app/packages/prisma-shared-schema-platform/generated ./packages/prisma-shared-schema-platform/generated
-COPY --from=builder /app/packages/prisma-shared-schema-platform/dist ./packages/prisma-shared-schema-platform/dist
+# Copy all packages (with generated clients and built dist) from builder
+COPY --from=builder /app/packages ./packages
 
 # Copy app
 COPY --from=builder /app/apps/micro-notification/tsconfig.json ./apps/micro-notification/
