@@ -793,6 +793,108 @@ export class PurchaseOrderService {
   }
 
   @TryCatch
+  async approve(id: string, workflow: any, payload: any[]): Promise<Result<any>> {
+    this.logger.debug(
+      {
+        function: 'approve',
+        id,
+        user_id: this.userId,
+        tenant_id: this.bu_code,
+      },
+      PurchaseOrderService.name,
+    );
+
+    const purchaseOrder = await this.prismaService.tb_purchase_order.findFirst({
+      where: {
+        id: id,
+        po_status: enum_purchase_order_doc_status.in_progress,
+      },
+    });
+
+    if (!purchaseOrder) {
+      return Result.error('Purchase order not found or not in progress', ErrorCode.NOT_FOUND);
+    }
+
+    const PODetailDocs = await this.prismaService.tb_purchase_order_detail.findMany({
+      where: {
+        purchase_order_id: id,
+      },
+      select: {
+        id: true,
+        history: true,
+      },
+    });
+
+    await this.prismaService.$transaction(async (txp) => {
+      // Calculate totals from details
+      let total_qty = 0;
+      let total_price = 0;
+      let total_tax = 0;
+      let total_amount = 0;
+
+      for (const detail of payload) {
+        const findPODoc = PODetailDocs.find((d) => d.id === detail.id);
+        if (!findPODoc) {
+          continue;
+        }
+
+        const history: any[] = (findPODoc?.history as any) || [];
+
+        // Record approval in history
+        history.push({
+          seq: history.length + 1,
+          action: 'approved',
+          user: {
+            id: this.userId,
+          },
+          at: new Date().toISOString(),
+        });
+
+        // Prepare update data - remove non-updatable fields
+        const { id: detailId, purchase_order_id, ...updateFields } = detail;
+
+        // Accumulate totals
+        total_qty += Number(updateFields.order_qty) || 0;
+        total_price += Number(updateFields.sub_total_price) || 0;
+        total_tax += Number(updateFields.tax_amount) || 0;
+        total_amount += Number(updateFields.total_price) || 0;
+
+        await txp.tb_purchase_order_detail.update({
+          where: {
+            id: detail.id,
+          },
+          data: {
+            ...updateFields,
+            doc_version: { increment: 1 },
+            history: history,
+            updated_by_id: this.userId,
+          },
+        });
+      }
+
+      // Update PO header with workflow data
+      await txp.tb_purchase_order.update({
+        where: {
+          id,
+        },
+        data: {
+          ...workflow,
+          total_qty: total_qty,
+          total_price: total_price,
+          total_tax: total_tax,
+          total_amount: total_amount,
+          doc_version: { increment: 1 },
+          updated_by_id: this.userId,
+        },
+      });
+
+      return id;
+    });
+
+    return Result.ok({ id: purchaseOrder.id });
+  }
+
+  @TryCatch
   async cancel(id: string): Promise<Result<any>> {
     this.logger.debug(
       { function: 'cancel', id, user_id: this.userId, tenant_id: this.bu_code },

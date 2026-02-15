@@ -341,6 +341,70 @@ export class PurchaseOrderController extends BaseHttpController {
     this.respond(res, result);
   }
 
+  @Post(':id/approve')
+  @UseGuards(new AppIdGuard('purchaseOrder.approve'))
+  @Serialize(PurchaseOrderMutationResponseSchema)
+  @ApiVersionMinRequest()
+  @ApiOperation({
+    summary: 'Approve a purchase order',
+    description:
+      'Approves a purchase order at the current workflow stage. Validates user role and advances the workflow.',
+    operationId: 'approvePurchaseOrder',
+    tags: ['[Method] Post'],
+    deprecated: false,
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    parameters: [
+      {
+        name: 'id',
+        in: 'path',
+        required: true,
+      },
+    ],
+    responses: {
+      200: {
+        description: 'The purchase order was successfully approved',
+      },
+      400: {
+        description: 'Invalid state_role or user does not have permission',
+      },
+      404: {
+        description: 'The purchase order was not found',
+      },
+    },
+  })
+  @HttpCode(HttpStatus.OK)
+  async approve(
+    @Param('id') id: string,
+    @Param('bu_code') bu_code: string,
+    @Body() data: any,
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query('version') version: string = 'latest',
+  ): Promise<void> {
+    this.logger.debug(
+      {
+        function: 'approve',
+        id,
+        version,
+      },
+      PurchaseOrderController.name,
+    );
+
+    const { user_id } = ExtractRequestHeader(req);
+    const result = await this.purchaseOrderService.approve(
+      id,
+      data,
+      user_id,
+      bu_code,
+      version,
+    );
+    this.respond(res, result);
+  }
+
   @Post(':id/cancel')
   @UseGuards(new AppIdGuard('purchaseOrder.cancel'))
   @Serialize(PurchaseOrderMutationResponseSchema)

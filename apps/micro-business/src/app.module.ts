@@ -20,6 +20,7 @@ import { ClusterModule } from './cluster/cluster/cluster.module';
 import { BusinessUnitModule } from './cluster/business-unit/business-unit.module';
 import { CurrenciesModule as ClusterCurrenciesModule } from './cluster/currencies/currencies.module';
 import { NewsModule } from './cluster/news/news.module';
+import { UserModule } from './cluster/user/user.module';
 
 // Log modules
 import { ActivityLogModule } from './log/activity-log/activity-log.module';
@@ -33,6 +34,10 @@ import { StoreRequisitionModule } from './inventory/store-requisition/store-requ
 import { StockInModule } from './inventory/stock-in/stock-in.module';
 import { StockOutModule } from './inventory/stock-out/stock-out.module';
 import { TransferModule } from './inventory/transfer/transfer.module';
+import { InventoryPeriodModule } from './inventory/period/period.module';
+import { SpotCheckModule } from './inventory/spot-check/spot-check.module';
+import { PhysicalCountModule } from './inventory/physical-count/physical-count.module';
+import { PhysicalCountPeriodModule } from './inventory/physical-count-period/physical-count-period.module';
 
 // Master modules
 import { AdjustmentTypeModule } from './master/adjustment-type/adjustment-type.module';
@@ -59,6 +64,7 @@ import { UnitsModule } from './master/units/units.module';
 import { VendorBusinessTypeModule } from './master/vendor_business_type/vendor_business_type.module';
 import { VendorsModule } from './master/vendors/vendors.module';
 import { WorkflowsModule } from './master/workflows/workflows.module';
+import { PeriodModule } from './master/period/period.module';
 
 // Procurement modules
 import { CreditNoteModule } from './procurement/credit-note/credit-note.module';
@@ -94,6 +100,7 @@ import { CommonModule } from './common/common.module';
     BusinessUnitModule,
     ClusterCurrenciesModule,
     NewsModule,
+    UserModule,
 
     // Log modules (from micro-log)
     ActivityLogModule,
@@ -107,6 +114,10 @@ import { CommonModule } from './common/common.module';
     StockInModule,
     StockOutModule,
     TransferModule,
+    InventoryPeriodModule,
+    SpotCheckModule,
+    PhysicalCountModule,
+    PhysicalCountPeriodModule,
 
     // Master modules (from micro-tenant-master)
     AdjustmentTypeModule,
@@ -133,6 +144,7 @@ import { CommonModule } from './common/common.module';
     VendorBusinessTypeModule,
     VendorsModule,
     WorkflowsModule,
+    PeriodModule,
 
     // Procurement modules (from micro-tenant-procurement)
     CreditNoteModule,

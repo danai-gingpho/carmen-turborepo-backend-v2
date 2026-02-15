@@ -385,6 +385,39 @@ export class PurchaseOrderService {
     return Result.ok(data);
   }
 
+  async approve(
+    id: string,
+    data: any,
+    user_id: string,
+    bu_code: string,
+    version: string,
+  ): Promise<Result<any>> {
+    this.logger.debug(
+      {
+        function: 'approve',
+        id,
+        version,
+      },
+      PurchaseOrderService.name,
+    );
+
+    const response = await firstValueFrom(
+      this.procurementService.send(
+        { cmd: 'purchase-order.approve', service: 'purchase-order' },
+        { id, data, user_id, bu_code, version },
+      ),
+    );
+
+    if (response.response.status !== HttpStatus.OK) {
+      return Result.error(
+        response.response.message,
+        httpStatusToErrorCode(response.response.status),
+      );
+    }
+
+    return Result.ok(response.data);
+  }
+
   // ==================== Purchase Order Detail CRUD ====================
 
   async findDetailById(

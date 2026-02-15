@@ -1,5 +1,6 @@
 import { Controller, HttpStatus } from '@nestjs/common';
 import { PurchaseOrderService } from './purchase-order.service';
+import { PurchaseOrderLogic } from './purchase-order.logic';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { BackendLogger } from '@/common/helpers/backend.logger';
 import { runWithAuditContext, AuditContext } from '@repo/log-events-library';
@@ -11,7 +12,10 @@ export class PurchaseOrderController extends BaseMicroserviceController {
     PurchaseOrderController.name,
   );
 
-  constructor(private readonly purchaseOrderService: PurchaseOrderService) {
+  constructor(
+    private readonly purchaseOrderService: PurchaseOrderService,
+    private readonly purchaseOrderLogic: PurchaseOrderLogic,
+  ) {
     super();
   }
 
@@ -253,6 +257,27 @@ export class PurchaseOrderController extends BaseMicroserviceController {
     const id = payload.id;
     const auditContext = this.createAuditContext(payload);
     const result = await runWithAuditContext(auditContext, () => this.purchaseOrderService.printToPdf(id));
+    return this.handleResult(result);
+  }
+
+  @MessagePattern({
+    cmd: 'purchase-order.approve',
+    service: 'purchase-order',
+  })
+  async approve(@Payload() payload: any): Promise<any> {
+    this.logger.debug(
+      { function: 'approve', payload },
+      PurchaseOrderController.name,
+    );
+    const auditContext = this.createAuditContext(payload);
+    const result = await runWithAuditContext(auditContext, () =>
+      this.purchaseOrderLogic.approve(
+        payload.id,
+        payload.data,
+        payload.user_id,
+        payload.tenant_id || payload.bu_code,
+      ),
+    );
     return this.handleResult(result);
   }
 

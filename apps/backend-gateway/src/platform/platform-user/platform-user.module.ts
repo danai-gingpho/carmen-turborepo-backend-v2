@@ -15,6 +15,14 @@ import { envConfig } from 'src/libs/config.env';
           port: Number(envConfig.AUTH_SERVICE_PORT),
         },
       },
+      {
+        name: 'CLUSTER_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: envConfig.CLUSTER_SERVICE_HOST,
+          port: Number(envConfig.CLUSTER_SERVICE_PORT),
+        },
+      },
     ]),
   ],
   controllers: [PlatformUserController],
