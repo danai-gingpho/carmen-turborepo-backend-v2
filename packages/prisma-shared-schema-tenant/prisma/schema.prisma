@@ -1286,6 +1286,7 @@ model tb_location {
   tb_transfer_from                    tb_transfer[]                         @relation("transfer_from_location")
   tb_transfer_to                      tb_transfer[]                         @relation("transfer_to_location")
   tb_spot_check                       tb_spot_check[]
+  tb_physical_count                   tb_physical_count[]
   tb_location_comment                 tb_location_comment[]
 
   @@unique([code, name, deleted_at], map: "location_code_name_u")
@@ -1474,6 +1475,7 @@ model tb_product {
   tb_pricelist_template_detail        tb_pricelist_template_detail[]
   tb_tax_profile                      tb_tax_profile?                       @relation(fields: [tax_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   tb_spot_check_detail                tb_spot_check_detail[]
+  tb_physical_count_detail            tb_physical_count_detail[]
   tb_product_comment                  tb_product_comment[]
 
   @@unique([code, name, deleted_at], map: "product_code_name_u")
@@ -3166,6 +3168,7 @@ model tb_unit {
 
   @@unique([name, deleted_at], map: "unit_name_deletedat_u")
   @@index([name], map: "unit_name_idx")
+  tb_physical_count_detail tb_physical_count_detail[]
 }
 
 model tb_unit_comment {
@@ -4935,4 +4938,160 @@ model tb_issue {
   @@index([priority], map: "issue_priority_idx")
   @@index([assigned_to_id], map: "issue_assigned_to_idx")
   @@index([category], map: "issue_category_idx")
+}
+
+// ==================== Physical Count ====================
+
+enum enum_physical_count_period_status {
+  draft
+  counting
+  completed
+}
+
+enum enum_physical_count_status {
+  pending
+  in_progress
+  completed
+}
+
+model tb_physical_count_period {
+  id                        String                            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  counting_period_from_date DateTime                          @db.Timestamptz(6)
+  counting_period_to_date   DateTime                          @db.Timestamptz(6)
+  status                    enum_physical_count_period_status @default(draft)
+
+  created_at                       DateTime?                          @default(now()) @db.Timestamptz(6)
+  created_by_id                    String?                            @db.Uuid
+  updated_at                       DateTime?                          @default(now()) @db.Timestamptz(6)
+  updated_by_id                    String?                            @db.Uuid
+  deleted_at                       DateTime?                          @db.Timestamptz(6)
+  deleted_by_id                    String?                            @db.Uuid
+  tb_physical_count                tb_physical_count[]
+  tb_physical_count_period_comment tb_physical_count_period_comment[]
+
+  @@unique([counting_period_from_date, counting_period_to_date, deleted_at], map: "physical_count_period_delete_at_u")
+  @@index([counting_period_from_date, counting_period_to_date])
+}
+
+model tb_physical_count_period_comment {
+  id                       String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  physical_count_period_id String            @db.Uuid
+  type                     enum_comment_type @default(user)
+  user_id                  String?           @db.Uuid
+  message                  String?
+  attachments              Json?             @default("[]") @db.JsonB
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_physical_count_period tb_physical_count_period @relation(fields: [physical_count_period_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tb_physical_count {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  period_id                String                   @db.Uuid
+  tb_physical_count_period tb_physical_count_period @relation(fields: [period_id], references: [id], onDelete: Cascade)
+
+  location_id         String                   @db.Uuid
+  tb_location         tb_location              @relation(fields: [location_id], references: [id], onDelete: Cascade)
+  location_code       String?                  @db.VarChar
+  location_name       String?                  @db.VarChar
+  physical_count_type enum_physical_count_type @default(yes)
+
+  description String?                    @db.Text
+  status      enum_physical_count_status @default(pending)
+
+  start_counting_at    DateTime? @db.Timestamptz(6)
+  start_counting_by_id String?   @db.Uuid
+  completed_at         DateTime? @db.Timestamptz(6)
+  completed_by_id      String?   @db.Uuid
+
+  product_counted Int @default(0)
+  product_total   Int @default(0)
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_physical_count_detail  tb_physical_count_detail[]
+  tb_physical_count_comment tb_physical_count_comment[]
+
+  @@unique([period_id, location_id, deleted_at], map: "physical_count_delete_at_u")
+  @@index([period_id, location_id])
+}
+
+model tb_physical_count_comment {
+  id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  physical_count_id String            @db.Uuid
+  type              enum_comment_type @default(user)
+  user_id           String?           @db.Uuid
+  message           String?
+  attachments       Json?             @default("[]") @db.JsonB
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_physical_count tb_physical_count @relation(fields: [physical_count_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tb_physical_count_detail {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  physical_count_id String            @db.Uuid
+  tb_physical_count tb_physical_count @relation(fields: [physical_count_id], references: [id], onDelete: Cascade)
+
+  product_id   String     @db.Uuid
+  tb_product   tb_product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  product_name String     @db.VarChar
+  product_code String     @db.VarChar
+  product_sku  String     @db.VarChar
+
+  inventory_unit_id String  @db.Uuid
+  tb_unit_inventory tb_unit @relation(fields: [inventory_unit_id], references: [id], onDelete: Cascade)
+
+  on_hand_qty Decimal @db.Decimal(20, 5)
+  counted_qty Decimal @db.Decimal(20, 5)
+  diff_qty    Decimal @db.Decimal(20, 5)
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_physical_count_detail_comment tb_physical_count_detail_comment[]
+
+  @@unique([physical_count_id, product_id, deleted_at], map: "physical_count_detail_delete_at_u")
+  @@index([physical_count_id, product_id])
+}
+
+model tb_physical_count_detail_comment {
+  id                       String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  physical_count_detail_id String            @db.Uuid
+  type                     enum_comment_type @default(user)
+  user_id                  String?           @db.Uuid
+  message                  String?
+  attachments              Json?             @default("[]") @db.JsonB
+
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_id String?   @db.Uuid
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_by_id String?   @db.Uuid
+  deleted_at    DateTime? @db.Timestamptz(6)
+  deleted_by_id String?   @db.Uuid
+
+  tb_physical_count_detail tb_physical_count_detail @relation(fields: [physical_count_detail_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

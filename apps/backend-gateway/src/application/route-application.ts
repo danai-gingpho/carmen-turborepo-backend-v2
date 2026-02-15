@@ -37,6 +37,8 @@ import { StockOutDetailModule } from './stock-out-detail/stock-out-detail.module
 import { TransferModule } from './transfer/transfer.module';
 import { TransferDetailModule } from './transfer-detail/transfer-detail.module';
 import { InventoryAdjustmentModule } from './inventory-adjustment/inventory-adjustment.module';
+import { PeriodModule } from './period/period.module';
+import { PhysicalCountPeriodModule } from './physical-count-period/physical-count-period.module';
 @Module({
   imports: [
     ApplicationRoleModule,
@@ -77,6 +79,8 @@ import { InventoryAdjustmentModule } from './inventory-adjustment/inventory-adju
     TransferModule,
     TransferDetailModule,
     InventoryAdjustmentModule,
+    PeriodModule,
+    PhysicalCountPeriodModule,
   ],
   controllers: [],
   providers: [],
