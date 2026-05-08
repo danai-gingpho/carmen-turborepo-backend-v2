@@ -1,0 +1,79 @@
+meta {
+  name: Check price list price-list
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{host}}/api/check-price-list/:url_token
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+body:json {
+  {}
+}
+
+docs {
+  ## Check Price List by URL Token
+  ตรวจสอบรายการราคาผ่านโทเค็น URL ที่ส่งให้ผู้ขาย
+
+  Validates a secure URL token sent to vendors for price list confirmation, allowing external vendors to review and verify their submitted pricing without requiring system login. The endpoint uses `UrlTokenGuard` instead of `KeycloakGuard` — the `url_token` path parameter is the authentication mechanism.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `url_token` | string | Secure URL token from the vendor invitation email |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Public — authenticated via URL token (no Keycloak bearer required).
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "no": "PL-2026-0001",
+      "name": "Q2 2026 Beverage Price List",
+      "vendor_name": "Bangkok Beverage Co., Ltd.",
+      "status": "active"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | URL token is invalid or expired |
+  | 404 | URL token not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

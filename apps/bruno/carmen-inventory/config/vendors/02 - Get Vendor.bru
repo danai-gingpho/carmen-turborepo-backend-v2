@@ -1,0 +1,115 @@
+meta {
+  name: By id config_vendors
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/vendors/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Vendor
+  ดึงข้อมูลผู้ขายรายการเดียวตาม ID
+
+  Retrieves a single vendor/supplier record by its unique identifier.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Vendor ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.vendor:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "code": "VND-2024-0001",
+      "name": "Siam Fresh Co., Ltd.",
+      "description": "Fresh produce and food ingredients supplier",
+      "note": "Preferred fresh produce supplier",
+      "business_type": {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "name": "Food Supplier"
+      },
+      "tax_profile_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f",
+      "tax_profile_name": "VAT 7%",
+      "tax_rate": 7,
+      "is_active": true,
+      "info": [],
+      "vendor_address": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c50",
+          "address_type": "mailing_address",
+          "address_line1": "88/12 Mu 4, Phahonyothin Road",
+          "city": "Pathum Thani",
+          "postal_code": "12120",
+          "country": "Thailand"
+        }
+      ],
+      "vendor_contact": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c51",
+          "name": "Wannapa Srisuwan",
+          "email": "wannapa.s@siamfresh.co.th",
+          "phone": "0812345678",
+          "is_primary": true
+        }
+      ],
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `vendor_management.vendor:view` permission |
+  | 404 | Vendor not found |
+}
+
+params:path {
+  id: 0005206b-4cde-44ed-97f5-9b13d333b025
+}

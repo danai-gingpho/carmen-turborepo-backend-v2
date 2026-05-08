@@ -1,0 +1,75 @@
+meta {
+  name: Get users by location id config_user-location
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/user/location/:locationId
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get User Location
+  ดึงข้อมูลผู้ใช้ทั้งหมดที่ผูกกับสถานที่ตาม Location ID
+
+  Retrieves all users assigned to a specific storage location by its location ID.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `locationId` | string (UUID) | Location ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "user_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f",
+        "location_name": "Main Warehouse"
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission to view user location assignments |
+  | 404 | Location not found |
+}
+
+params:path {
+  locationId: 
+}

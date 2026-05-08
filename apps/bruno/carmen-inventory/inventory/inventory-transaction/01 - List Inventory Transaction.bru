@@ -1,0 +1,83 @@
+meta {
+  name: List inventory-transaction
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/inventory-transaction
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List Inventory Transactions
+  ดึงรายการเคลื่อนไหวสินค้าคงคลังทั้งหมดพร้อมประเภท สถานที่ สินค้า จำนวน และต้นทุน
+
+  Lists all inventory transactions with type, location, product, qty, and cost details. Supports pagination, search, and filtering.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `search` | string | No | — | Search keyword |
+  | `filter` | string | No | — | e.g. `inventory_doc_type:stock_in` |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "transaction_type": "stock_in",
+        "transaction_date": "2026-04-29T08:30:00.000Z",
+        "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "product_name": "Rice 5kg",
+        "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "location_name": "Main Store",
+        "qty": 100,
+        "unit_cost": 45.50,
+        "reference_no": "SI-2026-0001",
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": { "page": 1, "perpage": 10, "pages": 5, "total": 48, "prev": null, "next": 2 },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+}

@@ -1,0 +1,66 @@
+meta {
+  name: Get permission user
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/user/permission
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get User Permissions
+  ดึงข้อมูลสิทธิ์การใช้งานของผู้ใช้ที่เข้าสู่ระบบ เพื่อกำหนดว่าผู้ใช้มีสิทธิ์ดำเนินการใดในโมดูลต่างๆ ของระบบ ERP
+
+  Retrieves the authenticated user's permission set, defining which procurement modules, inventory operations, and approval actions the user is authorized to perform within the ERP system.
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "configuration.currency": ["view"],
+      "configuration.department": ["view"],
+      "procurement.purchase_request": ["view", "create", "update", "delete"],
+      "inventory_management.stock_in": ["view", "create", "update", "delete"]
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token is missing or invalid |
+}

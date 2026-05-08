@@ -1,0 +1,132 @@
+meta {
+  name: Update stock-in
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/stock-in/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "description": "",
+    "adjustment_type_id": "",
+    "adjustment_type_code": "",
+    "doc_status": "draft",
+    "note": "",
+    "info": null,
+    "dimension": null,
+    "stock_in_detail": {
+      "add": [
+        {
+          "description": "",
+          "qty": 0,
+          "cost_per_unit": 0,
+          "total_cost": 0,
+          "note": "",
+          "product_name": "",
+          "product_local_name": "",
+          "location_code": "",
+          "location_name": "",
+          "product_id": "",
+          "location_id": "",
+          "info": null,
+          "dimension": null
+        }
+      ],
+      "update": [],
+      "remove": []
+    }
+  }
+}
+
+docs {
+  ## Patch Stock In
+  แก้ไขรายการรับสินค้าเข้าคลังที่มีอยู่เพื่อปรับจำนวน ต้นทุน หรือรายละเอียดสินค้าก่อนที่รายการจะถูกยืนยัน ใช้เมื่อเจ้าหน้าที่ต้องแก้ไขรายการรับสินค้า
+
+  Modifies an existing stock-in record to correct quantities, costs, or item details before the transaction is finalized. Used when receiving staff need to amend an inventory addition.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Stock In ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.stock_in:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "description": "Stock In Updated",
+    "adjustment_type_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "adjustment_type_code": "ADJ-IN",
+    "doc_status": "draft",
+    "note": "Updated inventory addition note",
+    "info": null,
+    "dimension": null,
+    "stock_in_detail": {
+      "add": [],
+      "update": [],
+      "remove": []
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "si_no": "SI-2026-0001"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid request body |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.stock_in:update` permission |
+  | 404 | Stock In not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{stock_in_id}}
+}

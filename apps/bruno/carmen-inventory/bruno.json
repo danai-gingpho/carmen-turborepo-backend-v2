@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "carmen-inventory",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

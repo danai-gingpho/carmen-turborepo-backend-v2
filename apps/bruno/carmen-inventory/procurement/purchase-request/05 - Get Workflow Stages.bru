@@ -1,0 +1,64 @@
+meta {
+  name: Find all workflow stages by pr purchase-request
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/purchase-request/workflow-stages
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~bu_code: 
+  ~version: 
+}
+
+docs {
+  ## Get Purchase Request Workflow Stages
+  แสดงขั้นตอนเวิร์กโฟลว์การอนุมัติที่กำหนดค่าไว้ (เช่น HOD, ผู้จัดซื้อ, FC, GM) สำหรับใบขอซื้อในหน่วยธุรกิจนี้ ใช้เพื่อแสดงความคืบหน้าของเวิร์กโฟลว์
+
+  Returns the configured approval workflow stages (e.g., HOD, Purchaser, FC, GM) for purchase requests in this business unit. Used to display workflow progress and determine which approval steps a PR must pass through.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": ["HOD", "Purchaser", "FC", "GM"],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.purchase_request:view` permission |
+}

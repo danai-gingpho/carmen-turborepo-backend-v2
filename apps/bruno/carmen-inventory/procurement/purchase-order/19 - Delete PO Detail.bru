@@ -1,0 +1,74 @@
+meta {
+  name: Delete detail purchase-order
+  type: http
+  seq: 19
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/purchase-order/:id/details/:detail_id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Delete Purchase Order Detail
+  ลบรายการจากใบสั่งซื้อ ใช้เมื่อรายการเพิ่มผิดพลาดหรือไม่จำเป็นแล้วก่อนส่งให้ผู้ขาย
+
+  Removes a line item from a purchase order. Used when an item was added in error or is no longer needed before the PO is sent to the vendor.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase order ID |
+  | `detail_id` | string (UUID) | Purchase order detail line item ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Detail cannot be deleted when PO has been sent |
+  | 401 | Missing or invalid bearer token |
+  | 404 | Purchase order or detail not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{po_id}}
+  detail_id: {{po_detail_id}}
+}

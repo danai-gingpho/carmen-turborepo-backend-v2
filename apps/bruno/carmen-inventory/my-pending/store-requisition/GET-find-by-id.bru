@@ -1,0 +1,78 @@
+meta {
+  name: Find by id my-pending
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{host}}/api/my-pending/purchase-order/{{bu_code}}/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+docs {
+  ## Get a Purchase Order by ID
+  ดึงรายละเอียดทั้งหมดของใบสั่งซื้อที่รออนุมัติตาม ID รวมถึงข้อมูลผู้ขาย รายการสินค้า จำนวน ราคา และขั้นตอนอนุมัติปัจจุบัน Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Retrieves the full details of a specific purchase order pending approval, including vendor information, ordered items, quantities, pricing, and current approval workflow stage.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase order ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_order:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "po_no": "PO-2026-0001",
+      "po_date": "2026-04-29T08:30:00.000Z",
+      "po_status": "pending_approval",
+      "vendor_name": "Thai Food Supplies Co., Ltd.",
+      "total_amount": 15000.00,
+      "workflow_current_stage": "Manager Approval"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks `procurement.purchase_order:view` permission |
+  | 404 | Purchase order not found |
+}

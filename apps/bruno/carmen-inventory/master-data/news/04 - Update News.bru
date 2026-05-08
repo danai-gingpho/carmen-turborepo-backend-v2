@@ -1,0 +1,95 @@
+meta {
+  name: Update news
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{host}}/api/news/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "title": "Updated inventory policy",
+    "content": "Updated content for the news item.",
+    "category": "announcement",
+    "is_published": true
+  }
+}
+
+docs {
+  ## Update News
+  อัปเดตข้อมูลข่าวสารที่มีอยู่
+
+  Modifies an existing internal announcement or news article, allowing administrators to correct content, update details, or change the publication scope within the business unit.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `id` | string (UUID) | News article ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "title": "Updated inventory policy",
+    "content": "Updated content for the news item.",
+    "category": "announcement",
+    "is_published": true
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 404 | News article not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{news_id}}
+}

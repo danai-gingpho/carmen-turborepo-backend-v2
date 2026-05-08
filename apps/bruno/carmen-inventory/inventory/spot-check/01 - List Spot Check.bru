@@ -1,0 +1,84 @@
+meta {
+  name: Find current by location spot-check
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/spot-check/current
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+  ~include_not_count: 
+}
+
+docs {
+  ## Get Current Spot Checks
+  ดึงรายการตรวจสอบสินค้าเฉพาะจุดในงวดปัจจุบัน จัดกลุ่มตามสถานที่
+
+  Lists all inventory spot checks for the current open period grouped by location.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `include_not_count` | boolean | No | false | Include locations with `physical_count_type=no` |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.spot_check:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "spot_check_no": "SC-2026-0001",
+        "start_date": "2026-04-29T08:30:00.000Z",
+        "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "location_name": "Main Store",
+        "doc_status": "draft",
+        "method": "random",
+        "size": 10,
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": { "page": 1, "perpage": 10, "pages": 3, "total": 25, "prev": null, "next": 2 },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 403 | User lacks `inventory_management.spot_check:view` permission |
+}
+
+params:query {
+  include_not_count: false
+}

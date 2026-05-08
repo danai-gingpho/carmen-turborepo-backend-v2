@@ -1,0 +1,82 @@
+meta {
+  name: Get product inventory locations
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/locations/:location_id/product/:product_id/inventory
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Product Inventory by Location
+  ดึงข้อมูลระดับสินค้าคงคลังของสินค้าที่สถานที่เฉพาะ
+
+  Retrieves real-time inventory levels for a specific product at a given storage location, including on-hand, on-order, reorder, and restock quantities for procurement and replenishment decisions.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `location_id` | string (UUID) | Location ID |
+  | `product_id` | string (UUID) | Product ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `configuration.location:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "location_id": "1874fa94-8c81-4d52-ab39-f072db637f3b",
+      "on_hand": 50.5,
+      "on_order": 20.0,
+      "reorder_point": 10.0,
+      "restock_level": 100.0
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 404 | Location or product not found |
+}
+
+params:path {
+  location_id: 1874fa94-8c81-4d52-ab39-f072db637f3b
+  product_id: bb96415b-dff0-40ec-aa2f-2b4099418314
+}

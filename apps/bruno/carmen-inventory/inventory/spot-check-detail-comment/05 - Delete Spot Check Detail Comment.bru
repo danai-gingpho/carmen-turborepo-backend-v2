@@ -1,0 +1,69 @@
+meta {
+  name: Remove spot-check-detail-comment
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/spot-check-detail-comment/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+docs {
+  ## Delete Spot Check Detail Comment
+  ลบความคิดเห็นของ spot-check-detail (soft delete) พร้อมลบไฟล์แนบจาก S3 ก่อน
+
+  Soft-deletes a spot check detail comment, cleaning up S3 attachments first to prevent orphan files.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.spot_check:update`
+  - **Roles**: Purchase
+
+  ### Sample Response
+  ```json
+  {
+    "data": { "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d" },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | Comment not found |
+  | 403 | User lacks `inventory_management.spot_check:update` permission |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

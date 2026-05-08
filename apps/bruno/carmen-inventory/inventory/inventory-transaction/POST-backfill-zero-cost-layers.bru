@@ -1,0 +1,60 @@
+meta {
+  name: Backfill zero cost layers inventory-transaction
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/inventory-transaction/admin/backfill/zero-cost-layers
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}
+
+docs {
+  ## Backfill Zero Cost Layers (Admin)
+  สร้างแถว cost layer ที่ขาดหายไปสำหรับรายการขาเข้าที่ไม่มีต้นทุน (dev/admin only)
+
+  Dev-only idempotent operation: inserts missing `tb_inventory_transaction_cost_layer` rows for stranded inbound details created before the zero-cost guard fix. Not published in Swagger.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Public — no auth required (dev endpoint; not in Swagger docs)
+
+  ### Sample Response
+  ```json
+  {
+    "data": { "inserted": 12, "skipped": 5 },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  > No service-specific errors thrown by this endpoint.
+}

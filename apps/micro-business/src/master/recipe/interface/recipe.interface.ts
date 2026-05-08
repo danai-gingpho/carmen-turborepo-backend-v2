@@ -1,0 +1,70 @@
+import { enum_recipe_difficulty, enum_recipe_status } from '@repo/prisma-shared-schema-tenant';
+
+export interface ICreateRecipe {
+  code: string;
+  name: string;
+  description?: string | null;
+  note?: string | null;
+  is_active?: boolean;
+  images?: string[];
+  category_id: string;
+  cuisine_id: string;
+  difficulty?: enum_recipe_difficulty;
+  base_yield: number;
+  base_yield_unit: string;
+  default_variant_id?: string | null;
+  prep_time?: number;
+  cook_time?: number;
+  total_ingredient_cost?: number;
+  labor_cost?: number;
+  overhead_cost?: number;
+  cost_per_portion?: number;
+  suggested_price?: number | null;
+  selling_price?: number | null;
+  target_food_cost_percentage?: number | null;
+  actual_food_cost_percentage?: number | null;
+  gross_margin?: number | null;
+  gross_margin_percentage?: number | null;
+  labor_cost_percentage?: number | null;
+  overhead_percentage?: number | null;
+  carbon_footprint?: number | null;
+  deduct_from_stock?: boolean;
+  status?: enum_recipe_status;
+  tags?: string[];
+  allergens?: string[];
+}
+
+export interface IUpdateRecipe {
+  id: string;
+  code?: string;
+  name?: string;
+  description?: string | null;
+  note?: string | null;
+  is_active?: boolean;
+  images?: string[];
+  category_id?: string;
+  cuisine_id?: string;
+  difficulty?: enum_recipe_difficulty;
+  base_yield?: number;
+  base_yield_unit?: string;
+  default_variant_id?: string | null;
+  prep_time?: number;
+  cook_time?: number;
+  total_ingredient_cost?: number;
+  labor_cost?: number;
+  overhead_cost?: number;
+  cost_per_portion?: number;
+  suggested_price?: number | null;
+  selling_price?: number | null;
+  target_food_cost_percentage?: number | null;
+  actual_food_cost_percentage?: number | null;
+  gross_margin?: number | null;
+  gross_margin_percentage?: number | null;
+  labor_cost_percentage?: number | null;
+  overhead_percentage?: number | null;
+  carbon_footprint?: number | null;
+  deduct_from_stock?: boolean;
+  status?: enum_recipe_status;
+  tags?: string[];
+  allergens?: string[];
+}

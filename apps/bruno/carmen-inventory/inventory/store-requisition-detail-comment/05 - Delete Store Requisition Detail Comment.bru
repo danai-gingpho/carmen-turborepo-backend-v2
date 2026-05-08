@@ -1,0 +1,85 @@
+meta {
+  name: Remove store-requisition-detail-comment
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/store-requisition-detail-comment/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+docs {
+  ## Delete Store Requisition Detail Comment
+  ลบความคิดเห็นของรายการย่อยใบเบิกสินค้า (soft delete) พร้อมลบไฟล์แนบจาก S3
+
+  Soft-deletes a store requisition detail comment and removes all its S3 attachments.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.store_requisition:view` (with write access)
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Gateway behavior
+  1. Fetch comment to read `attachments[].fileToken`
+  2. Delete all files from S3 via `file.delete` (best-effort, log warn on failure)
+  3. Send `store-requisition-detail-comment.delete` to business service to soft-delete record (set `deleted_at`)
+
+  > S3 cleanup runs **before** the database flag to prevent orphan files.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | Insufficient permissions |
+  | 404 | Comment not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

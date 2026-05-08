@@ -1,0 +1,94 @@
+meta {
+  name: Get purchase request template purchase-request-template
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/purchase-request-template
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List Purchase Request Templates (with filter)
+  แสดงรายการเทมเพลตใบขอซื้อที่ใช้ซ้ำได้พร้อมการค้นหาและกรอง ใช้เพื่อค้นหาเทมเพลตเฉพาะตามชื่อหรือคำอธิบาย
+
+  Lists reusable purchase request templates with search filtering. Used to find specific templates by name or description.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `search` | string | No | — | Search term to filter templates by name or description |
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request_template:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "name": "Weekly Kitchen Supplies",
+        "description": "Standard weekly order template for kitchen department",
+        "workflow_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "workflow_name": "Purchase Approval Workflow",
+        "is_active": true,
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 5,
+      "total": 42,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks `procurement.purchase_request_template:view` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:query {
+  search: sss
+}

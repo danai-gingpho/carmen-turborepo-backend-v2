@@ -1,0 +1,73 @@
+meta {
+  name: Remove config_locations
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{host}}/api/config/{{bu_code}}/locations/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+docs {
+  ## Delete Location
+  ลบสถานที่/คลังสินค้าตาม ID
+
+  Removes a storage location from active use. The location will no longer accept new inventory transactions, but historical stock movement records at this location are preserved.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Location ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `configuration.location:delete`
+  - **Roles**: Purchase
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token is missing or invalid |
+  | 403 | User lacks `configuration.location:delete` permission |
+  | 404 | Location with the specified ID not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: 019638a6-2a00-7c4f-8e46-9b7a52c80c4d
+}

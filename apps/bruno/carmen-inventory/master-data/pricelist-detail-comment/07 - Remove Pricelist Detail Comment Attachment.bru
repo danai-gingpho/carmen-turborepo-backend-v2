@@ -1,0 +1,78 @@
+meta {
+  name: Remove attachment pricelist-detail-comment
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/pricelist-detail-comment/:id/attachment/:fileToken
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+  fileToken:
+}
+
+docs {
+  ## Remove Pricelist Detail Comment Attachment
+  ลบไฟล์แนบเดี่ยวออกจากคอมเมนต์ผ่าน fileToken
+
+  Removes a single attachment from a comment by its file token. The S3 cleanup is handled by the business service.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+  | `fileToken` | string | File token of the attachment to remove |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > To remove multiple attachments or combine with adding new files, use `PATCH /pricelist-detail/:id` which supports `attachments: { add, remove }` in multipart format.
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `id` is not a valid UUID v4 |
+  | 404 | Comment or attachment not found |
+}

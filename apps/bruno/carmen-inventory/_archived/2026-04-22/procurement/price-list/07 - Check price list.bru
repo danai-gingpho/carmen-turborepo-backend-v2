@@ -1,0 +1,58 @@
+meta {
+  name: 07 - Check price list
+  type: http
+  seq: 7
+}
+
+docs {
+  ## Check Price List
+  ตรวจสอบรายการราคาผ่านโทเค็น URL
+
+  Validates a secure URL token for vendor price list confirmation without requiring system login.
+
+  ### Path Parameters
+  - `url_token` -- Secure URL token / โทเค็น URL ที่ปลอดภัย
+
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "uuid",
+        "no": "PL-001",
+        "name": "Q1 Price List",
+        "status": "active",
+        "vendor": {
+          "id": "uuid",
+          "name": "Vendor Name"
+        },
+        "currency": {
+          "id": "uuid",
+          "code": "THB"
+        }
+      }
+    ],
+    "paginate": {
+      "total": 100,
+      "page": 1,
+      "perpage": 10,
+      "pages": 10
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-03-27T00:00:00.000Z"
+  }
+  ```
+}
+
+post {
+  url: {{host}}/api/check-price-list/tI5wBgUJkl1G
+  body: none
+  auth: none
+}
+
+headers {
+  ~x-app-id: {{x_app_id}}
+}

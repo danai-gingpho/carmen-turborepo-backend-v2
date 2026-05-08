@@ -1,0 +1,85 @@
+meta {
+  name: Get user cluster platform_user-cluster
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api-system/user/cluster/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get User Cluster
+  ดึงข้อมูลคลัสเตอร์ของผู้ใช้รายการเดียวตาม ID
+
+  Retrieves the details of a specific user-to-organization membership, showing which user belongs to which hotel chain or company and their role within it.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `id` | string (UUID) | User-Cluster mapping ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "user_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "cluster_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "role": "member",
+      "is_active": true,
+      "parent_bu_id": null,
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 404 | Mapping not found |
+}
+
+params:path {
+  id:
+}

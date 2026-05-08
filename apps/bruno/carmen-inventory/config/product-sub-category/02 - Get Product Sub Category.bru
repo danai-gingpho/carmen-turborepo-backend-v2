@@ -1,0 +1,94 @@
+meta {
+  name: By id config_product-sub-category
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/products/sub-category/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Product Sub Category
+  ดึงข้อมูลหมวดหมู่ย่อยสินค้ารายการเดียวตาม ID
+
+  Retrieves a specific product sub-category that provides a second level of classification under a parent category (e.g., Dairy under Fresh Produce, Spirits under Beverages).
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Product sub-category ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `product_management.category:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "code": "SUBCAT-001",
+      "name": "Vegetables",
+      "description": "Fresh vegetables and greens",
+      "category_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "is_active": true,
+      "category": {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "name": "Fresh Food"
+      },
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token is missing or invalid |
+  | 403 | User lacks `product_management.category:view` permission |
+  | 404 | Product sub-category not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: 019638a6-2a00-7c4f-8e46-9b7a52c80c4d
+}

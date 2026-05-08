@@ -1,0 +1,1 @@
+export { defaultRootHtml } from "./defaultroot.html";

@@ -1,0 +1,78 @@
+meta {
+  name: 01.3 - Login purchase
+  type: http
+  seq: 2
+}
+
+docs {
+  ## Login Purchaser (blueledgers.com)
+  เข้าสู่ระบบด้วยบทบาทฝ่ายจัดซื้อ (Purchase) สำหรับโดเมน blueledgers.com เพื่อรับโทเค็น JWT สำหรับเรียก API
+
+  Login as a Purchase role user for the blueledgers.com domain, returning JWT access and refresh tokens.
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Public — no auth required
+
+  ### Sample Body
+  ```json
+  {
+    "email": "purchase@blueledgers.com",
+    "password": "12345678"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhYmMxMjMifQ.<truncated>",
+      "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ4eXo5ODcifQ.<truncated>",
+      "expires_in": 300,
+      "refresh_expires_in": 1800,
+      "token_type": "Bearer"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Invalid credentials (wrong email/password) |
+}
+
+post {
+  url: {{host}}/api/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+body:json {
+  {
+    "email": "purchase@blueledgers.com",
+    "password": "12345678"
+  }
+}
+
+script:post-response {
+  if (res.body.data) {
+    bru.setEnvVar('access_token', res.body.data.access_token);
+    bru.setEnvVar('refresh_token', res.body.data.refresh_token);
+  } else {
+    bru.setEnvVar('access_token', '');
+    bru.setEnvVar('refresh_token', '');
+  }
+}

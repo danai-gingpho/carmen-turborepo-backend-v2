@@ -1,0 +1,106 @@
+meta {
+  name: Find all by purchase request id purchase-request-comment
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/purchase-request-comment/:purchase_request_id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  purchase_request_id: {{test_id}}
+}
+
+vars:pre-request {
+  test_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## List Purchase Request Comments
+  แสดงความคิดเห็นทั้งหมดของ purchase-request (พร้อม pagination)
+
+  Lists all comments for a specific purchase request including their file attachments.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `purchase_request_id` | string (UUID) | Purchase Request UUID |
+
+  ### Query Parameters
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `page` | No | Page number (default: 1) |
+  | `perpage` | No | Items per page (default: 10) |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "purchase_request_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "message": "Please review the quantities for line 3",
+        "type": "user",
+        "attachments": [
+          {
+            "fileName": "photo.jpg",
+            "fileToken": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f/019638a6-2a00-7c4f-8e46-9b7a52c80c50",
+            "fileUrl": "",
+            "contentType": "image/jpeg",
+            "size": 204800
+          }
+        ],
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 5,
+      "total": 50,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  Note: `fileUrl` ใน response จะว่าง — frontend ต้องเรียก
+  `GET /api/{bu_code}/documents/presigned-url/{fileToken}` เพื่อแสดงไฟล์
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.purchase_request:view` permission |
+  | 404 | Purchase request not found |
+}

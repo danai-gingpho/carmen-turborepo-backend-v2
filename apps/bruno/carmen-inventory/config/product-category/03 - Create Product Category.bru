@@ -1,0 +1,102 @@
+meta {
+  name: Create config_product-category
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/products/category
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "code": "CAT-001",
+    "name": "Fresh Food",
+    "description": "Fresh food and perishable products",
+    "is_active": true,
+    "price_deviation_limit": 5.0,
+    "qty_deviation_limit": 10.0,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false,
+    "tax_profile_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "tax_profile_name": "VAT 7%",
+    "tax_profile_rate": 7
+  }
+}
+
+docs {
+  ## Create Product Category
+  สร้างหมวดหมู่สินค้าใหม่
+
+  Defines a new top-level product category for classifying items in the master catalog. Sub-categories can then be created under this category for more granular classification.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `product_management.category:create`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "code": "CAT-001",
+    "name": "Fresh Food",
+    "description": "Fresh food and perishable products",
+    "is_active": true,
+    "price_deviation_limit": 5.0,
+    "qty_deviation_limit": 10.0,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false,
+    "tax_profile_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "tax_profile_name": "VAT 7%",
+    "tax_profile_rate": 7
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Request body fails validation |
+  | 401 | Bearer token is missing or invalid |
+  | 403 | User lacks `product_management.category:create` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

@@ -1,0 +1,75 @@
+meta {
+  name: Db object definition config_sql_query
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/sql-query/db-objects/definition
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~type:
+  ~schema:
+  ~name:
+}
+
+docs {
+  ## Get DB Object DDL Definition
+  ดู DDL ของ view / stored procedure / function
+
+  Returns the CREATE OR REPLACE statement for the given database object.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `type` | string | Yes | — | Object type: `view`, `procedure`, or `function` |
+  | `schema` | string | Yes | — | Schema name (e.g., `public`) |
+  | `name` | string | Yes | — | Object name |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "definition": "CREATE OR REPLACE VIEW public.v_pr_summary AS SELECT id, code, status, created_at FROM tb_purchase_request WHERE deleted_at IS NULL"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Missing required query parameters |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission to view DB object definitions |
+  | 404 | Object not found |
+}

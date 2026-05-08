@@ -1,0 +1,93 @@
+meta {
+  name: List price-list-template
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/price-list-template
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get All Price List Templates (with Search Filter)
+  แสดงรายการแม่แบบรายการราคาพร้อมตัวกรองค้นหา
+
+  Lists price list templates filtered by a search keyword. This is the same endpoint as `01 - List` but demonstrates the `search` query parameter for keyword filtering.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `search` | string | No | — | Keyword to filter templates by name or description |
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.price_list:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "name": "Standard Beverage Template",
+        "description": "Default product lineup for beverage vendor RFP",
+        "status": "active",
+        "validity_period": 30,
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 1,
+      "total": 2,
+      "prev": null,
+      "next": null
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token missing or invalid |
+  | 403 | User lacks `vendor_management.price_list:view` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:query {
+  search: sss
+}

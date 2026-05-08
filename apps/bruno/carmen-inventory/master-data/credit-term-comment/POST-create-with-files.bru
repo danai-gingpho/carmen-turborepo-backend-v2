@@ -1,0 +1,111 @@
+meta {
+  name: Create with files credit-term-comment
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/credit-term-comment/{{credit_term_id}}
+  body: multipartForm
+  auth: bearer
+}
+
+params:query {
+  ~version: latest
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  message: Comment with attached photos
+  type: user
+  files: @file(/Users/samutpra/Pictures/logo.png)
+  files: @file(/Users/samutpra/Pictures/logo_CARMEN_Classic-Blue_low-res.png)
+}
+
+vars:pre-request {
+  credit_term_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## Create Credit Term Comment (with file uploads)
+  สร้างความคิดเห็นใหม่สำหรับ credit-term พร้อมแนบไฟล์ใน request เดียว
+
+  Creates a new comment for a credit term with optional file attachments. Files are uploaded to S3 atomically — if any upload fails the request rolls back and returns 502.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `credit_term_id` | string (UUID) | Credit Term ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `message` | text | No* | Comment text (≤ 4000 chars) |
+  | `type` | text | No | `user` or `system` (default `user`) |
+  | `files` | binary (repeatable) | No* | Attachment files |
+
+  *At least one of `message` or `files` must be provided.
+
+  Constraints: max 10 files, max 10 MB per file, allowed MIME: image/jpeg, image/png, image/webp, image/gif, application/pdf
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "credit_term_id": "5d5fa453-f687-4fcd-bbdb-5956f7e810b3",
+      "message": "Comment with attached photos",
+      "type": "user",
+      "attachments": [
+        {
+          "fileName": "logo.png",
+          "fileToken": "tok-abc123",
+          "fileUrl": "",
+          "contentType": "image/png",
+          "size": 204800
+        }
+      ],
+      "created_at": "2026-04-29T08:30:00.000Z"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > `fileUrl` will be empty — frontend must call `GET /api/{bu_code}/documents/presigned-url/{fileToken}` to display files.
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Neither `message` nor `files` provided; file count > 10; file size > 10 MB; unsupported MIME type |
+  | 502 | S3 file upload failure (with automatic rollback) |
+}

@@ -1,0 +1,74 @@
+meta {
+  name: List user-location
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/user-location
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get All User Locations
+  ดึงรายการสถานที่จัดเก็บทั้งหมดที่ผู้ใช้ปัจจุบันมีสิทธิ์เข้าถึง เช่น คลังหลัก ห้องเก็บวัตถุดิบครัว และสต็อกบาร์ ซึ่งควบคุมว่าผู้ใช้สามารถดำเนินการใดในแต่ละสถานที่
+
+  Retrieves all storage locations (e.g., main warehouse, kitchen storeroom, bar stock) that the current user has access permissions for, controlling which inventory locations the user can perform stock-in, stock-out, and transfer operations on.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "name": "Bangkok Main Warehouse",
+        "code": "WH-001",
+        "is_active": true
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token is missing or invalid |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

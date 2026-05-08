@@ -1,0 +1,62 @@
+meta {
+  name: Download document document-management
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/documents/:filetoken/download
+  body: none
+  auth: bearer
+}
+
+params:path {
+  filetoken: {{filetoken}}
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+vars:pre-request {
+  filetoken: T02%2F2552e0e1-1393-4f76-9ba1-ea443442422a
+}
+
+docs {
+  ## Download Document Binary
+  ดาวน์โหลดไฟล์ binary โดยตรงจาก S3/MinIO
+
+  Streams the raw binary content of a procurement document. Response body is the file bytes (not JSON), with Content-Type/Content-Disposition/Content-Length headers set so browsers can preview images/PDFs directly.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `filetoken` | string | Unique file token returned from upload |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - `documents.download`
+
+  ### Sample Response
+  Raw binary stream. Response headers include:
+  - `Content-Type`: e.g. `application/pdf`, `image/png`
+  - `Content-Disposition`: `inline; filename="<original-name>"`
+  - `Content-Length`: file size in bytes
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | App ID not allowed `documents.download` |
+  | 404 | File token not found in storage |
+}

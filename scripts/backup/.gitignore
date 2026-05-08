@@ -1,0 +1,32 @@
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+
+# Backup files
+backups/
+*.sql
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db 

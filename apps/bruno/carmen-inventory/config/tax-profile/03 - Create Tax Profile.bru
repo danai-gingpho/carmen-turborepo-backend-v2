@@ -1,0 +1,83 @@
+meta {
+  name: Create config_tax_profile
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/tax-profile
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "VAT 7%",
+    "tax_rate": 7,
+    "is_active": true
+  }
+}
+
+docs {
+  ## Create Tax Profile
+  สร้างโปรไฟล์ภาษีใหม่
+
+  Creates a new tax rate configuration for use in procurement tax calculations.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "name": "VAT 7%",
+    "tax_rate": 7,
+    "is_active": true
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `name` is empty or `tax_rate` is invalid |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission to create tax profiles |
+}

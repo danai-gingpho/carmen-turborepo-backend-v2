@@ -1,0 +1,76 @@
+meta {
+  name: Assign permission to role application-role-permission
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api-system/role-permission/assign-permission
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "role_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "permission_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+  }
+}
+
+docs {
+  ## Assign Permission
+  กำหนดสิทธิ์ตามบทบาทรายการเดียวให้บทบาท
+
+  Grants a single feature permission to an application role, allowing fine-grained incremental updates to role capabilities without replacing the entire permission set.
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Body
+  ```json
+  {
+    "role_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "permission_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "role_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "permission_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `role_id` or `permission_id` is missing |
+  | 401 | Missing or invalid bearer token |
+}

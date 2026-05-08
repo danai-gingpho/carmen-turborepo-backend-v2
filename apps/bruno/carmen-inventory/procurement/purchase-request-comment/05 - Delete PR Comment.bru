@@ -1,0 +1,78 @@
+meta {
+  name: Remove purchase-request-comment
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/purchase-request-comment/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+docs {
+  ## Delete Purchase Request Comment
+  ลบความคิดเห็นของ purchase-request (soft delete) พร้อมลบไฟล์แนบจาก S3
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment UUID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Gateway behavior
+  1. ดึงข้อมูล comment ผ่าน `purchase-request-comment.find-by-id` เพื่อ
+     อ่าน `attachments[].fileToken`
+  2. ลบไฟล์ทุกตัวออกจาก S3 ผ่าน `file.delete` (best-effort, log warn หากบางตัวล้มเหลว)
+  3. ส่ง `purchase-request-comment.delete` ไปยัง business service เพื่อ
+     soft-delete record (set `deleted_at`)
+
+  > Important: S3 cleanup ทำ **ก่อน** flag delete เพื่อป้องกัน orphan files
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission |
+  | 404 | Comment not found |
+}

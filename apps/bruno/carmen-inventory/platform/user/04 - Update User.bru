@@ -1,0 +1,91 @@
+meta {
+  name: Update user platform-user
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{host}}/api-system/user/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "username": "john.doe",
+    "email": "john.doe@carmensoftware.com",
+    "alias_name": "JD",
+    "platform_role": "user",
+    "is_active": true
+  }
+}
+
+docs {
+  ## Update User
+  อัปเดตข้อมูลผู้ใช้ที่มีอยู่
+
+  Updates the profile or account details of an existing platform user, such as name, contact information, or status. Used by administrators to maintain accurate user records across the hotel management system.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `id` | string (UUID) | User ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Body
+  ```json
+  {
+    "username": "john.doe",
+    "email": "john.doe@carmensoftware.com",
+    "alias_name": "JD",
+    "platform_role": "user",
+    "is_active": true
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Validation fails |
+  | 401 | Missing or invalid bearer token |
+  | 404 | User not found |
+}
+
+params:path {
+  id:
+}

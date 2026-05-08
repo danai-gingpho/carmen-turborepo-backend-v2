@@ -1,0 +1,88 @@
+meta {
+  name: Create config_units
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/units
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "Kilogram",
+    "description": "Standard metric unit of mass",
+    "is_active": true,
+    "decimal_place": 2,
+    "note": "Used for dry goods"
+  }
+}
+
+docs {
+  ## Create Unit
+  สร้างหน่วยนับใหม่
+
+  Creates a new unit of measurement in the business unit.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `product_management.unit:create`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Kilogram",
+    "description": "Standard metric unit of mass",
+    "is_active": true,
+    "decimal_place": 2,
+    "note": "Used for dry goods"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `name` is empty or already exists in this business unit |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `product_management.unit:create` permission |
+}

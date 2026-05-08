@@ -1,0 +1,96 @@
+meta {
+  name: Update vendor-product
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{host}}/api/{{bu_code}}/vendor-product/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "vendor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "product_id": "bb96415b-dff0-40ec-aa2f-2b4099418314",
+    "price": 1300.00,
+    "unit": "KG",
+    "lead_time_days": 5,
+    "is_active": true
+  }
+}
+
+docs {
+  ## Update Vendor Product
+  อัปเดตข้อมูลสินค้าของผู้ขายที่มีอยู่
+
+  Updates a vendor-product mapping to reflect changes in pricing, supply terms, or availability.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Vendor Product ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.vendor:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "vendor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "product_id": "bb96415b-dff0-40ec-aa2f-2b4099418314",
+    "price": 1300.00,
+    "unit": "KG",
+    "lead_time_days": 5,
+    "is_active": true
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid vendor_id or product_id |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `vendor_management.vendor:update` permission |
+  | 404 | Vendor product not found |
+}
+
+params:path {
+  id: {{vendor_product_id}}
+}

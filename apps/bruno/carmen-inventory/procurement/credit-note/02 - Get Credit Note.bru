@@ -1,0 +1,96 @@
+meta {
+  name: By id credit-note
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/credit-note/:id
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~version: 
+}
+
+params:path {
+  id: {{credit_note_id}}
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+vars:pre-request {
+  credit_note_id: 3b5cee0f-d836-4bce-a8fb-42a123345208
+}
+
+docs {
+  ## Get Credit Note by ID
+  ดึงรายละเอียดทั้งหมดของใบลดหนี้ รวมถึงรายการสินค้าที่ส่งคืน/เสียหายและจำนวนเงินเครดิต สำหรับตรวจสอบระหว่างกระบวนการกระทบยอดบัญชีเจ้าหนี้
+  
+  Retrieves the full details of a vendor credit note, including the returned/damaged items and credited amounts, for review during accounts payable reconciliation.
+  
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Credit note ID |
+  
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+  
+  ### Permissions
+  - **Permission key**: `procurement.credit_note:view`
+  - **Roles**: HOD, Purchase, Approval
+  
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "cn_no": "CN-2026-0001",
+      "cn_date": "2026-04-29T08:30:00.000Z",
+      "credit_note_type": "quantity_return",
+      "doc_status": "draft",
+      "vendor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "exchange_rate": 1,
+      "total_amount": 3000.00,
+      "credit_note_detail": [],
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+  
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.credit_note:view` permission |
+  | 404 | Credit note not found |
+}

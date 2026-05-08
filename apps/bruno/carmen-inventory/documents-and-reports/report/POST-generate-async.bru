@@ -1,0 +1,101 @@
+meta {
+  name: Generate async report
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/report/generate-async
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "report_type": "inventory_summary",
+    "format": "pdf",
+    "filters": {
+      "date_from": "2026-01-01",
+      "date_to": "2026-03-31"
+    },
+    "options": {
+      "title": "Inventory Summary Report",
+      "locale": "th-TH",
+      "timezone": "Asia/Bangkok",
+      "page_size": "A4",
+      "orientation": "portrait",
+      "include_summary": true
+    }
+  }
+}
+
+docs {
+  ## Generate Report (Async)
+  สร้างรายงานแบบ async
+
+  Queues a report generation job and returns a job ID for status tracking. Use `GET /report/jobs/:job_id` to poll for completion and retrieve the download URL when the job finishes.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "report_type": "inventory_summary",
+    "format": "pdf",
+    "filters": {
+      "date_from": "2026-01-01",
+      "date_to": "2026-03-31"
+    },
+    "options": {
+      "title": "Inventory Summary Report",
+      "locale": "th-TH",
+      "timezone": "Asia/Bangkok",
+      "page_size": "A4",
+      "orientation": "portrait",
+      "include_summary": true
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "job_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "message": "Report job queued successfully"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid `report_type` or format |
+  | 401 | Missing or invalid Bearer token |
+}

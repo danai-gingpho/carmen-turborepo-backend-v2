@@ -1,0 +1,178 @@
+[
+  {
+    "id": "a7667612-ce9a-4552-ab91-b5ad4d9e0183",
+    "code": "1",
+    "name": "Food",
+    "description": null,
+    "is_active": true,
+    "price_deviation_limit": 0,
+    "qty_deviation_limit": 0,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "801009dd-3835-4007-8c22-faa292de9a66",
+    "code": "2",
+    "name": "Beverage",
+    "description": null,
+    "is_active": true,
+    "price_deviation_limit": 0,
+    "qty_deviation_limit": 0,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "350bdfc5-382a-408a-a038-e7e7e84a7c53",
+    "code": "3",
+    "name": "General",
+    "description": null,
+    "is_active": true,
+    "price_deviation_limit": 0,
+    "qty_deviation_limit": 0,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "c7b94083-78eb-4598-9309-f6038df4dfc8",
+    "code": "4",
+    "name": "Operating equipment",
+    "description": null,
+    "is_active": true,
+    "price_deviation_limit": 0,
+    "qty_deviation_limit": 0,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "06b84a7c-6cfc-44c7-a5f5-205327e11fef",
+    "code": "5",
+    "name": "Engineering",
+    "description": null,
+    "is_active": true,
+    "price_deviation_limit": 0,
+    "qty_deviation_limit": 0,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "329a7859-0f60-4a14-822c-58b1c02777cb",
+    "code": "6",
+    "name": "Fixed Assets",
+    "description": null,
+    "is_active": true,
+    "price_deviation_limit": 0,
+    "qty_deviation_limit": 0,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "4850014d-1dff-4db9-8731-f8668a519bd8",
+    "code": "8",
+    "name": "Consignment",
+    "description": null,
+    "is_active": true,
+    "price_deviation_limit": 0,
+    "qty_deviation_limit": 0,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "e30bbc86-33db-461b-b95a-5661e1ce3602",
+    "code": "9",
+    "name": "Decoration",
+    "description": null,
+    "is_active": true,
+    "price_deviation_limit": 0,
+    "qty_deviation_limit": 0,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "4013e72a-48a1-43cb-bd4d-bd329f38558b",
+    "code": "MINIM ADIPISICING",
+    "name": "laboris occaecat consectetur amet nisi",
+    "description": "Duis",
+    "is_active": true,
+    "price_deviation_limit": -17322266.43231,
+    "qty_deviation_limit": 36463995.54832,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "77d8e70a-3bb1-4c1d-918e-8a78087796ee",
+    "code": "C001",
+    "name": "Carmen",
+    "description": "",
+    "is_active": true,
+    "price_deviation_limit": 0,
+    "qty_deviation_limit": 0,
+    "is_used_in_recipe": false,
+    "is_sold_directly": false
+  },
+  {
+    "id": "13e4eb2c-5fe5-4b4e-8786-47ea0e926919",
+    "code": "ING-001-2024",
+    "name": "黒毛和牛サーロイン (Kuroge Wagyu Sirloin)",
+    "description": "A5ランク黒毛和牛サーロイン、国産最高級品質。ステーキやすき焼き用。1パック500g、冷蔵保存4°C以下",
+    "is_active": true,
+    "price_deviation_limit": 2500,
+    "qty_deviation_limit": 3,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "3e3e92b4-a76c-412e-8139-df9a0c38c124",
+    "code": "ING-002-2024",
+    "name": "本マグロ大トロ",
+    "description": "天然本マグロ大トロ、築地市場直送。刺身・寿司用。1サク約200g、冷蔵保存2°C、当日使用推奨",
+    "is_active": true,
+    "price_deviation_limit": 1800,
+    "qty_deviation_limit": 2,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "cb72679e-a94e-4700-83e7-10f7b4ef6ef0",
+    "code": "ING-005-2024",
+    "name": "한우 등심 1++등급",
+    "description": "프리미엄 한우 등심 1++등급, 국내산 최고급. 구이 및 스테이크용. 진공포장 500g, 냉장보관 0-4°C",
+    "is_active": true,
+    "price_deviation_limit": 3000,
+    "qty_deviation_limit": 3,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "68f14bc7-2115-42fd-94aa-54a55d649a6e",
+    "code": "ING-006-2024",
+    "name": "阳澄湖大闸蟹",
+    "description": "正宗阳澄湖大闸蟹，特级品质。适用于清蒸。每只约200克，活蟹配送，收货后24小时内烹饪",
+    "is_active": true,
+    "price_deviation_limit": 800,
+    "qty_deviation_limit": 5,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "ca50f630-5b1d-42a3-9e59-6fb68f10548a",
+    "code": "ING-007-2024",
+    "name": "Jamón Ibérico de Bellota Reserva",
+    "description": "Jamón ibérico de bellota premium, curado 36 meses. Certificado D.O. Para tapas gourmet. Loncheado al vacío 100g, conservar refrigerado",
+    "is_active": true,
+    "price_deviation_limit": 450,
+    "qty_deviation_limit": 1,
+    "is_used_in_recipe": true,
+    "is_sold_directly": false
+  },
+  {
+    "id": "297657cc-f599-4988-9077-eac70000920f",
+    "code": "A_TEST",
+    "name": "aaaa_test_4",
+    "description": "",
+    "is_active": false,
+    "price_deviation_limit": 0,
+    "qty_deviation_limit": 0,
+    "is_used_in_recipe": false,
+    "is_sold_directly": false
+  }
+]

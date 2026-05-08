@@ -1,0 +1,94 @@
+meta {
+  name: By id config_adjustment-type
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/adjustment-type/:id
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~version: 
+}
+
+params:path {
+  id: {{adjustment_type_id}}
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+vars:pre-request {
+  adjustment_type_id: b5939f7c-d059-4d92-b0ab-1d9a6a0c06de
+}
+
+docs {
+  ## Get an Adjustment Type by ID
+  ดึงข้อมูลประเภทการปรับปรุงรายการเดียวตาม ID
+
+  Retrieves a specific inventory adjustment type definition (e.g., spoilage, breakage, theft, expiration).
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Adjustment type ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `configuration.adjustment_type:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "code": "ADJ-001",
+      "name": "Stock Adjustment In",
+      "type": "STOCK_IN",
+      "description": "Adjustment for incoming stock discrepancies",
+      "is_active": true,
+      "note": "Used for inventory corrections",
+      "info": {},
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | Adjustment type not found for given ID |
+  | 400 | Invalid UUID format for `id` |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

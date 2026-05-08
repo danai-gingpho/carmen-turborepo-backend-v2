@@ -1,0 +1,93 @@
+meta {
+  name: Create config_running-code
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/running-code
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "type": "purchase_request",
+    "config": {
+      "A": "PR",
+      "B": "YYYY",
+      "C": "MM",
+      "D": "0001",
+      "format": "{A}{B}{C}{D}"
+    }
+  }
+}
+
+docs {
+  ## Create Running Code
+  สร้างกฎการกำหนดเลขอัตโนมัติใหม่สำหรับประเภทเอกสาร กำหนดคำนำหน้า รูปแบบ และเลขเริ่มต้น
+
+  Defines a new auto-numbering rule for a document type, specifying the prefix, format pattern, starting number, and reset frequency.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "type": "purchase_request",
+    "config": {
+      "A": "PR",
+      "B": "YYYY",
+      "C": "MM",
+      "D": "0001",
+      "format": "{A}{B}{C}{D}"
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `type` is missing or already exists for this business unit |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission to create running codes |
+}

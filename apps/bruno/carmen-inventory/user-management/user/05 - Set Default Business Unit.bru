@@ -1,0 +1,77 @@
+meta {
+  name: 05 - Set Default Business Unit
+  type: http
+  seq: 5
+}
+
+docs {
+  ## Set Default Business Unit
+  ตั้งค่าหน่วยธุรกิจเริ่มต้นของผู้ใช้ เพื่อกำหนดว่าข้อมูลและการดำเนินการจัดซื้อของโรงแรมใดจะถูกโหลดเมื่อเข้าสู่ระบบ
+
+  Sets the user's default business unit (tenant), determining which hotel property's data and procurement operations are loaded upon login.
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "tenant_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "code": "CH001",
+      "name": "Carmen Hotel",
+      "is_default": true
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token is missing or invalid |
+  | 404 | Business unit not found |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+post {
+  url: {{host}}/api/business-unit/default
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "tenant_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+  }
+}

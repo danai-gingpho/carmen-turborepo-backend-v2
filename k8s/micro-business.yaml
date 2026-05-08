@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micro-business
+  namespace: carmen-backend
+  labels:
+    app: micro-business
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micro-business
+  template:
+    metadata:
+      labels:
+        app: micro-business
+    spec:
+      containers:
+        - name: micro-business
+          image: carmen-micro-business:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp
+              containerPort: 5020
+            - name: http
+              containerPort: 6020
+          envFrom:
+            - configMapRef:
+                name: service-discovery
+            - secretRef:
+                name: carmen-backend-secret
+            - secretRef:
+                name: micro-business-env
+                optional: true
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 6020
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 6020
+            initialDelaySeconds: 20
+            periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micro-business
+  namespace: carmen-backend
+  labels:
+    app: micro-business
+spec:
+  type: ClusterIP
+  selector:
+    app: micro-business
+  ports:
+    - name: tcp
+      port: 5020
+      targetPort: 5020
+    - name: http
+      port: 6020
+      targetPort: 6020

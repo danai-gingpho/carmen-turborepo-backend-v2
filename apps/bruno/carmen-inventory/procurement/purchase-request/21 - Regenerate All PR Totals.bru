@@ -1,0 +1,65 @@
+meta {
+  name: Regenerate all totals purchase-request
+  type: http
+  seq: 21
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/purchase-request/regenerate-totals
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}
+
+docs {
+  ## Regenerate Purchase Request Amount Totals (All)
+  คำนวณ `base_net_amount`, `base_total_amount` บน `tb_purchase_request` ใหม่ทุกใบที่ยังไม่ถูกลบในหน่วยธุรกิจที่ระบุ โดย aggregate จาก `tb_purchase_request_detail`
+
+  Recomputes denormalized base amount totals on every non-deleted Purchase Request in the business unit by aggregating from detail rows. Use to repair drift after manual DB edits or schema migrations.
+
+  Note: PR header stores only `base_*` totals because details can have mixed currencies — per-currency totals would be meaningless when summed across rows.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": { "count": 137 },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | Insufficient permissions |
+}

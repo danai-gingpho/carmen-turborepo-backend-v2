@@ -1,0 +1,56 @@
+meta {
+  name: Print to report purchase-request
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/purchase-request/:id/print-viewer
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+docs {
+  ## Print Purchase Request to Report Viewer
+  สร้างหน้าแสดงผลรายงาน (print viewer) สำหรับใบขอซื้อ เหมาะสำหรับแสดงตัวอย่างก่อนพิมพ์จริง
+
+  Generates an in-browser print viewer for a purchase request. Used to preview the formatted PR document before printing or saving as PDF.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase request ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  Returns an HTML document or binary PDF stream for display.
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.purchase_request:view` permission |
+  | 404 | Purchase request not found |
+}
+
+params:path {
+  id: {{pr_id}}
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Add widget dashboard
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/dashboard/:id/widget
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}

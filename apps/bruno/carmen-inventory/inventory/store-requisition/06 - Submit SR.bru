@@ -1,0 +1,95 @@
+meta {
+  name: Submit store-requisition
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/store-requisition/:id/submit
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "stage_role": "create",
+    "details": []
+  }
+}
+
+docs {
+  ## Submit Store Requisition
+  ส่งใบเบิกสินค้าฉบับร่างเข้าสู่ขั้นตอนอนุมัติ
+
+  Submits a draft store requisition into the approval workflow. SR moves from draft to pending and enters the configured approval chain.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Store Requisition ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "stage_role": "create",
+    "details": []
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "sr_no": "SR-2026-0001"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Cannot submit non-draft Store Requisition |
+  | 401 | Missing or invalid bearer token |
+  | 403 | Insufficient permissions |
+  | 404 | Store Requisition not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{sr_id}}
+}

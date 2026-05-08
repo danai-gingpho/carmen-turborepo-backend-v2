@@ -1,0 +1,75 @@
+meta {
+  name: Get permissions by role application-role-permission
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api-system/role-permission/role/:roleId/permissions
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Permissions By Role
+  ดึงรายการสิทธิ์การใช้งานทั้งหมดที่กำหนดให้บทบาทที่ระบุ
+
+  Lists all feature permissions currently assigned to a specific role, showing exactly what actions (e.g., create PO, approve PR) users with this role are authorized to perform in the ERP system.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `roleId` | string (UUID) | Role ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "name": "Create Purchase Request",
+        "code": "procurement.purchase_request:create",
+        "resource": "procurement.purchase_request",
+        "action": "create",
+        "is_active": true
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 404 | Role not found |
+}
+
+params:path {
+  roleId:
+}

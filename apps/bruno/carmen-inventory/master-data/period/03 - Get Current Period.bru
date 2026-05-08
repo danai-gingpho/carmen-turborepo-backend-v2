@@ -1,0 +1,77 @@
+meta {
+  name: Find current period
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/period/current
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Current Period
+  ดึงข้อมูลรอบบัญชีปัจจุบัน (สถานะเปิดหรือล็อค)
+
+  Retrieves the current fiscal/accounting period with status open or locked. Returns the earliest open/locked period ordered by fiscal year and month.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.period_end:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "fiscal_year": 2026,
+      "fiscal_month": 4,
+      "start_at": "2026-04-01T00:00:00.000Z",
+      "end_at": "2026-04-30T23:59:59.000Z",
+      "status": "open",
+      "note": ""
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.period_end:view` permission |
+  | 404 | No current period found (no open or locked period exists) |
+}

@@ -1,0 +1,86 @@
+meta {
+  name: Regenerate totals by id good-received-note
+  type: http
+  seq: 27
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/good-received-note/:id/regenerate-totals
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}
+
+vars:pre-request {
+  grn_id: 0
+}
+
+docs {
+  ## Regenerate GRN Amount Totals (Single)
+  คำนวณ `net_amount`, `base_net_amount`, `total_amount`, `base_total_amount` ใหม่สำหรับ GRN เดียว โดย aggregate จาก `tb_good_received_note_detail_item`
+
+  Recomputes denormalized amount totals for one Good Received Note by aggregating from detail items.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Good Received Note ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {}
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": { "count": 1 },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.goods_received_note:update` permission |
+  | 404 | Good Received Note not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{grn_id}}
+}

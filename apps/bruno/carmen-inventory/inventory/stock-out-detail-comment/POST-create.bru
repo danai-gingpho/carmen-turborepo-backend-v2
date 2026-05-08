@@ -1,0 +1,109 @@
+meta {
+  name: Create stock-out-detail
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/stock-out-detail
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "description": "Rice Jasmine for kitchen",
+    "qty": 5.0,
+    "note": "Daily usage",
+    "product_name": "Rice Jasmine",
+    "product_local_name": "ข้าวหอมมะลิ",
+    "location_code": "MAIN-01",
+    "location_name": "Main Store",
+    "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "info": null,
+    "dimension": null
+  }
+}
+
+docs {
+  ## Create Stock Out Detail (standalone)
+  เพิ่มรายการย่อยเบิกสินค้าออกจากคลัง ผ่าน standalone controller
+
+  Creates a new stock-out detail record via the standalone stock-out-detail controller.
+
+  > Note: This file is located in the `stock-out-detail-comment/` folder for organizational reasons but maps to the standalone `stock-out-detail` controller at `POST /api/:bu_code/stock-out-detail`.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.stock_out:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "description": "Rice Jasmine for kitchen",
+    "qty": 5.0,
+    "note": "Daily usage",
+    "product_name": "Rice Jasmine",
+    "product_local_name": "ข้าวหอมมะลิ",
+    "location_code": "MAIN-01",
+    "location_name": "Main Store",
+    "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "info": null,
+    "dimension": null
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "so_no": "SO-2026-0001"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.stock_out:update` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

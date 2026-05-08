@@ -1,0 +1,96 @@
+meta {
+  name: Update config_extra_cost_type
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{host}}/api/config/{{bu_code}}/extra-cost-type/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "Shipping",
+    "description": "Freight and shipping charges",
+    "is_active": true,
+    "note": "Applied on all international orders",
+    "info": null,
+    "dimension": null
+  }
+}
+
+docs {
+  ## Update an Extra Cost Type
+  อัปเดตข้อมูลประเภทค่าใช้จ่ายเพิ่มเติมที่มีอยู่
+
+  Modifies an existing extra cost type definition.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Extra cost type ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  | Permission key | Roles |
+  |---------------|-------|
+  | `configuration.extra_cost:update` | Purchase |
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Shipping",
+    "description": "Freight and shipping charges",
+    "is_active": true,
+    "note": "Applied on all international orders",
+    "info": null,
+    "dimension": null
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | Extra cost type not found for given ID |
+  | 400 | Invalid UUID format for `id` |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: 
+}

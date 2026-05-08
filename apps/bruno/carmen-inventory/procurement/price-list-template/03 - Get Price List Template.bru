@@ -1,0 +1,101 @@
+meta {
+  name: By id price-list-template
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/price-list-template/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Price List Template by ID
+  ดึงข้อมูลแม่แบบรายการราคารายการเดียวตาม ID
+
+  Retrieves the full details of a reusable price list template, including its product lineup and configuration, used when generating new vendor price lists from a standard template.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Price list template ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.price_list:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "name": "Standard Beverage Template",
+      "description": "Default product lineup for beverage vendor RFP",
+      "status": "active",
+      "validity_period": 30,
+      "vendor_instructions": "Please quote in THB inclusive of VAT.",
+      "send_reminders": true,
+      "reminder_days": [7, 3, 1],
+      "escalation_after_days": 14,
+      "currency_code": "THB",
+      "products": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "product_name": "Sparkling Water 500ml",
+          "unit_name": "Bottle"
+        }
+      ],
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token missing or invalid |
+  | 403 | User lacks `vendor_management.price_list:view` permission |
+  | 404 | Price list template not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{price_list_template_id}}
+}

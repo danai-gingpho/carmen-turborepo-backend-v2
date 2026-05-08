@@ -1,0 +1,133 @@
+meta {
+  name: Update purchase-order
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{host}}/api/{{bu_code}}/purchase-order/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "",
+    "purchase_order_status": "draft",
+    "description": "",
+    "order_date": null,
+    "delivery_date": null,
+    "vendor_id": "",
+    "currency_id": "",
+    "base_currency_id": "",
+    "exchange_rate": 0,
+    "notes": "",
+    "approval_date": null,
+    "email": "user@example.com",
+    "buyer_name": "",
+    "credit_term": 0,
+    "remarks": "",
+    "info": null,
+    "history": null,
+    "doc_version": 0,
+    "purchase_order_detail": {
+      "name": "",
+      "description": "",
+      "exchange_rate": 0,
+      "order_qty": 0,
+      "order_unit_id": "",
+      "base_qty": 0,
+      "base_unit_id": "",
+      "unit_price": 0,
+      "sub_total_price": 0,
+      "base_sub_total_price": 0,
+      "is_foc": false,
+      "is_tax_included": false,
+      "tax_rate": 0,
+      "tax_amount": 0,
+      "discount_rate": 0,
+      "discount_amount": 0,
+      "net_amount": 0,
+      "base_net_amount": 0,
+      "total_price": 0,
+      "base_total_price": 0,
+      "info": null,
+      "history": null
+    }
+  }
+}
+
+docs {
+  ## Update Purchase Order
+  อัปเดตข้อมูลส่วนหัวและรายการของใบสั่งซื้อ เช่น จำนวน ราคา วันส่งมอบ หรือเงื่อนไขผู้ขาย ใช้ได้เฉพาะใบสั่งซื้อที่ยังไม่ได้รับสินค้าครบหรือปิดแล้ว
+
+  Updates purchase order header and line item details such as quantities, pricing, delivery dates, or vendor terms. Only applicable to POs that have not yet been fully received or closed.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase order ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "vendor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "vendor_name": "ABC Food Supplies Co., Ltd.",
+    "delivery_date": "2026-05-10",
+    "currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "currency_code": "THB",
+    "exchange_rate": 1,
+    "description": "Updated PO for kitchen supplies"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid request body |
+  | 401 | Missing or invalid bearer token |
+  | 404 | Purchase order not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{po_id}}
+}

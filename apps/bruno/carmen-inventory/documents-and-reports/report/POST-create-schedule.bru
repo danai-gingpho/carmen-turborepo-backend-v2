@@ -1,0 +1,134 @@
+meta {
+  name: Create schedule report
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/report/schedules
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "name": "Daily Inventory Report",
+    "report_type": "inventory_summary",
+    "report_template_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "format": "viewer_url",
+    "cron_expression": "0 8 * * *",
+    "schedule_config": {
+      "frequency": "daily",
+      "time": "08:00"
+    },
+    "filters": {
+      "date_from": "2026-01-01",
+      "date_to": "2026-03-31"
+    },
+    "options": {
+      "title": "Daily Inventory Report",
+      "locale": "th-TH",
+      "timezone": "Asia/Bangkok"
+    },
+    "delivery": {
+      "type": "viewer_url",
+      "viewer_endpoint": "/api/proxy/api/T03/report/viewer"
+    },
+    "notifications": {
+      "web": true,
+      "email": true,
+      "mail_source": "internal"
+    },
+    "recipients": ["019638a6-2a00-7c4f-8e46-9b7a52c80c4d"]
+  }
+}
+
+docs {
+  ## Create Report Schedule
+  สร้างกำหนดการรายงานอัตโนมัติ
+
+  Creates a recurring report schedule using a cron expression or a user-friendly schedule config. The scheduler runs the report at the specified interval and delivers it via the configured channel (viewer URL or file attachment).
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Daily Inventory Report",
+    "report_type": "inventory_summary",
+    "report_template_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "format": "viewer_url",
+    "cron_expression": "0 8 * * *",
+    "schedule_config": {
+      "frequency": "daily",
+      "time": "08:00"
+    },
+    "filters": {
+      "date_from": "2026-01-01",
+      "date_to": "2026-03-31"
+    },
+    "options": {
+      "title": "Daily Inventory Report",
+      "locale": "th-TH",
+      "timezone": "Asia/Bangkok"
+    },
+    "delivery": {
+      "type": "viewer_url",
+      "viewer_endpoint": "/api/proxy/api/T03/report/viewer"
+    },
+    "notifications": {
+      "web": true,
+      "email": true,
+      "mail_source": "internal"
+    },
+    "recipients": ["019638a6-2a00-7c4f-8e46-9b7a52c80c4d"]
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "name": "Daily Inventory Report",
+      "report_type": "inventory_summary",
+      "format": "viewer_url",
+      "cron_expression": "0 8 * * *",
+      "is_active": true,
+      "next_run_at": "2026-04-30T08:00:00.000Z"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid `cron_expression` or `report_type` |
+  | 401 | Missing or invalid Bearer token |
+}

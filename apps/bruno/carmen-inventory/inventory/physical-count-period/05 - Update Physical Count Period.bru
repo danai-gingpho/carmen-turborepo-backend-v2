@@ -1,0 +1,87 @@
+meta {
+  name: Update physical-count-period
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/physical-count-period/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "period_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "status": "counting"
+  }
+}
+
+docs {
+  ## Patch Physical Count Period
+  แก้ไขสถานะหรือรอบของการตรวจนับสินค้า
+
+  Updates the period reference or status of a physical count period.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Physical Count Period ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.physical_count:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `period_id` | string (UUID) | No | Reference to tb_period |
+  | `status` | string | No | `draft`, `counting`, or `completed` |
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "period_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "status": "counting"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | Period not found |
+  | 400 | Invalid request body |
+  | 403 | User lacks `inventory_management.physical_count:update` permission |
+}
+
+params:path {
+  id: {{physical_count_period_id}}
+}

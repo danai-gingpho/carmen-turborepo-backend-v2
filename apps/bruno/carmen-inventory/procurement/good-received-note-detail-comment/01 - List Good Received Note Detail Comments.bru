@@ -1,0 +1,109 @@
+meta {
+  name: Find all by good received note detail id good-received-note-detail-comment
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/good-received-note-detail-comment/:good_received_note_detail_id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  good_received_note_detail_id: {{test_id}}
+}
+
+vars:pre-request {
+  test_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## Get All Comments for a Good Received Note Detail
+  แสดงความคิดเห็นทั้งหมดของรายการในใบรับสินค้า (good-received-note-detail) พร้อม pagination
+
+  Retrieves all comments attached to a specific good-received-note detail line, ordered by creation time. Each comment may include file attachments; use the presigned-URL endpoint to fetch actual file content.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `good_received_note_detail_id` | string (UUID) | Good Received Note Detail ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "good_received_note_detail_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "message": "Item quantity discrepancy noted — 2 units short.",
+        "type": "user",
+        "attachments": [
+          {
+            "fileName": "detail-photo.jpg",
+            "fileToken": "bu001/019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+            "fileUrl": "",
+            "contentType": "image/jpeg",
+            "size": 153600
+          }
+        ],
+        "created_at": "2026-04-29T08:30:00.000Z",
+        "created_by_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 2,
+      "total": 12,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > `fileUrl` in the response is always empty. Call `GET /api/{bu_code}/documents/presigned-url/{fileToken}` to obtain a temporary download URL.
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `good_received_note_detail_id` is not a valid UUID v4 |
+  | 401 | Bearer token missing or invalid |
+  | 403 | User lacks `procurement.goods_received_note:view` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

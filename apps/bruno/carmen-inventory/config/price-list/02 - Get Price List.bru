@@ -1,0 +1,100 @@
+meta {
+  name: By id config_price-list
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/price-list/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+docs {
+  ## Get Price List (Config)
+  ดึงข้อมูลรายการราคารายการเดียวตาม ID
+
+  Retrieves a specific vendor price list with all its line-item pricing details. Used to review agreed product prices from a particular vendor for procurement decisions.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Price list ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.price_list:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "pricelist_no": "PL-2026-0001",
+      "name": "Q2 2026 Vendor Price List",
+      "status": "active",
+      "description": "Quarterly price agreement for dry goods",
+      "vendor": {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "name": "Bangkok Supplier Co., Ltd."
+      },
+      "currency": {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "code": "THB"
+      },
+      "effective_from_date": "2026-04-01T00:00:00.000Z",
+      "effective_to_date": "2026-06-30T00:00:00.000Z",
+      "pricelist_detail": [],
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token is missing or invalid |
+  | 403 | User lacks `vendor_management.price_list:view` permission |
+  | 404 | Price list with the specified ID not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: 019638a6-2a00-7c4f-8e46-9b7a52c80c4d
+}

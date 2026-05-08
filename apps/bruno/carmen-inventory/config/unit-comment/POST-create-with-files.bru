@@ -1,0 +1,101 @@
+meta {
+  name: Create with files unit-comment
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/unit-comment/{{unit_id}}
+  body: multipartForm
+  auth: bearer
+}
+
+params:query {
+  ~version: latest
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  message: Comment with attached photos
+  type: user
+  files: @file(/Users/samutpra/Pictures/logo.png)
+  files: @file(/Users/samutpra/Pictures/logo_CARMEN_Classic-Blue_low-res.png)
+}
+
+vars:pre-request {
+  unit_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## Create Unit Comment (with file uploads)
+  สร้างความคิดเห็นใหม่สำหรับ unit พร้อมแนบไฟล์ใน request เดียว
+
+  Creates a new comment for a unit with optional file attachments in a single request. No separate file upload step required.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `unit_id` | string (UUID) | Unit ID (in URL path, not request body) |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `product_management.unit:create`
+  - **Roles**: Purchase
+
+  ### Body (multipart/form-data)
+  At least one of `message` or `files` is required:
+  - `message` (text, optional) — Comment text (≤ 4000 characters)
+  - `type` (text, optional, default `user`) — `user` | `system`
+  - `files` (binary, optional, repeatable) — File attachments (max 10, max 10 MB each)
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "unit_id": "5d5fa453-f687-4fcd-bbdb-5956f7e810b3",
+      "attachments": [
+        {
+          "fileName": "photo.jpg",
+          "fileToken": "bu-code/019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "fileUrl": "",
+          "contentType": "image/jpeg",
+          "size": 204800
+        }
+      ]
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > Note: `fileUrl` ใน response จะว่าง — frontend ต้องเรียก `GET /api/{bu_code}/documents/presigned-url/{fileToken}` เพื่อแสดงไฟล์
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Neither `message` nor `files` provided, file too large, or unsupported mime type |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `product_management.unit:create` permission |
+  | 502 | File service upload failure (S3 error) |
+}

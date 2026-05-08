@@ -1,0 +1,88 @@
+meta {
+  name: Create config_extra_cost_type
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/extra-cost-type
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "Shipping",
+    "description": "Freight and shipping charges",
+    "is_active": true,
+    "note": "Applied on all international orders",
+    "info": null,
+    "dimension": null
+  }
+}
+
+docs {
+  ## Create an Extra Cost Type
+  สร้างประเภทค่าใช้จ่ายเพิ่มเติมใหม่
+
+  Defines a new category for additional procurement costs (e.g., shipping, customs, handling).
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  | Permission key | Roles |
+  |---------------|-------|
+  | `configuration.extra_cost:create` | Purchase |
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Shipping",
+    "description": "Freight and shipping charges",
+    "is_active": true,
+    "note": "Applied on all international orders",
+    "info": null,
+    "dimension": null
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  > No service-specific errors thrown by this endpoint.
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

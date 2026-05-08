@@ -1,0 +1,98 @@
+meta {
+  name: Review store-requisition
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/store-requisition/:id/review
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "stage_role": "create",
+    "des_stage": "HOD",
+    "details": []
+  }
+}
+
+docs {
+  ## Review Store Requisition
+  ส่งใบเบิกสินค้ากลับไปยังขั้นตอนก่อนหน้าเพื่อแก้ไข
+
+  Returns a store requisition to a previous workflow stage for corrections. Allows approvers to request changes before granting final authorization.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Store Requisition ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.store_requisition:view` (with approval role)
+  - **Roles**: HOD, Approval
+
+  ### Sample Body
+  ```json
+  {
+    "stage_role": "create",
+    "des_stage": "HOD",
+    "details": []
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "sr_no": "SR-2026-0001"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | SR is not in a state that can be reviewed |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User is not authorized to review at this stage |
+  | 404 | Store Requisition or target stage not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{sr_id}}
+}

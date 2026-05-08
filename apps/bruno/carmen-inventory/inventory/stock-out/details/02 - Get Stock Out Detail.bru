@@ -1,0 +1,101 @@
+meta {
+  name: Find detail by id stock-out
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/stock-out/:id/details/:detail_id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get a specific Stock Out detail by ID
+  ดึงรายการย่อยเฉพาะรายการจากรายการเบิกสินค้าออกจากคลัง พร้อมรายละเอียดสินค้าและจำนวน
+
+  Retrieves a specific item line from a stock-out transaction with full product and quantity details.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Stock Out ID |
+  | `detail_id` | string (UUID) | Stock Out Detail ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.stock_out:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "description": "Rice Jasmine for kitchen",
+      "qty": 5.0,
+      "note": "Daily usage",
+      "product_name": "Rice Jasmine",
+      "product_local_name": "ข้าวหอมมะลิ",
+      "location_code": "MAIN-01",
+      "location_name": "Main Store",
+      "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.stock_out:view` permission |
+  | 404 | Stock Out detail not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{stock_out_id}}
+  detail_id: {{stock_out_detail_id}}
+}

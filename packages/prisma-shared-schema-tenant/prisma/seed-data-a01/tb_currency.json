@@ -1,0 +1,24 @@
+[
+  {
+    "id": "5d5e29b1-c566-413c-93b3-ba2f16ce51d9",
+    "code": "THB",
+    "name": "Thai Baht",
+    "symbol": "฿",
+    "description": "Thai baht (Thailand)",
+    "decimal_places": 2,
+    "is_active": true,
+    "exchange_rate": 1,
+    "exchange_rate_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "f7182ef1-b928-4a40-bac1-f9185b63189a",
+    "code": "USD",
+    "name": "United States Dollar",
+    "symbol": "$",
+    "description": "United States Dollar (United States)",
+    "decimal_places": 2,
+    "is_active": false,
+    "exchange_rate": 0.03084,
+    "exchange_rate_at": "2025-01-01T00:00:00.000Z"
+  }
+]

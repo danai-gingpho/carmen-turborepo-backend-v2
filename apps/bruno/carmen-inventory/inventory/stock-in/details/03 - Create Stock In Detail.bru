@@ -1,0 +1,118 @@
+meta {
+  name: Create detail stock-in
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/stock-in/:id/details
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "description": "Rice Jasmine 50kg bag",
+    "qty": 10.5,
+    "cost_per_unit": 1250.00,
+    "total_cost": 13125.00,
+    "note": "Received from supplier",
+    "product_name": "Rice Jasmine",
+    "product_local_name": "ข้าวหอมมะลิ",
+    "location_code": "MAIN-01",
+    "location_name": "Main Store",
+    "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "info": null,
+    "dimension": null
+  }
+}
+
+docs {
+  ## Create a new Stock In detail
+  เพิ่มรายการสินค้าใหม่ในรายการรับสินค้าเข้าคลังที่เป็นร่าง โดยระบุสินค้า จำนวน และต้นทุนที่จะเพิ่มเข้าคลังสินค้า
+
+  Adds a new item line to a draft stock-in transaction, specifying the product, quantity, and cost to be added to inventory.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Stock In ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.stock_in:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "description": "Rice Jasmine 50kg bag",
+    "qty": 10.5,
+    "cost_per_unit": 1250.00,
+    "total_cost": 13125.00,
+    "note": "Received from supplier",
+    "product_name": "Rice Jasmine",
+    "product_local_name": "ข้าวหอมมะลิ",
+    "location_code": "MAIN-01",
+    "location_name": "Main Store",
+    "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "info": null,
+    "dimension": null
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "si_no": "SI-2026-0001"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Cannot add detail to non-draft Stock In |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.stock_in:update` permission |
+  | 404 | Stock In not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{stock_in_id}}
+}

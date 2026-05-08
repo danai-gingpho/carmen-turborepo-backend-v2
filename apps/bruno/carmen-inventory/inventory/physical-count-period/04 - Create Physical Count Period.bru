@@ -1,0 +1,82 @@
+meta {
+  name: Create physical-count-period
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/physical-count-period
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "period_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "status": "draft"
+  }
+}
+
+docs {
+  ## Create Physical Count Period
+  สร้างรอบการตรวจนับสินค้าใหม่ กำหนดช่วงเวลาที่ต้องทำการตรวจนับสินค้าคงคลังให้เสร็จสิ้น
+
+  Defines a new physical count period tied to an existing accounting period.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.physical_count:create`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `period_id` | string (UUID) | Yes | Reference to tb_period |
+  | `status` | string | No | `draft`, `counting`, or `completed` (default: `draft`) |
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "period_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "status": "draft",
+      "created_at": "2026-04-29T08:30:00.000Z"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid request body |
+  | 403 | User lacks `inventory_management.physical_count:create` permission |
+}

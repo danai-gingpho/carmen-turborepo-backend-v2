@@ -1,0 +1,123 @@
+meta {
+  name: Create purchase-order
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/purchase-order
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "vendor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "vendor_name": "ABC Food Supplies Co., Ltd.",
+    "delivery_date": "2026-05-06",
+    "currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "currency_code": "THB",
+    "exchange_rate": 1,
+    "description": "PO for kitchen supplies May 2026",
+    "workflow_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "details": {
+      "add": [
+        {
+          "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "product_name": "Rice Jasmine 5kg",
+          "order_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "order_qty": 10.5,
+          "unit_price": 250.00,
+          "is_foc": false,
+          "is_tax_included": false,
+          "tax_rate": 7.0
+        }
+      ]
+    }
+  }
+}
+
+docs {
+  ## Create Purchase Order
+  สร้างใบสั่งซื้อใหม่เพื่อยืนยันการจัดซื้อจากผู้ขาย โดยจัดกลุ่มรายการจากใบขอซื้อที่อนุมัติแล้วตามผู้ขาย วันส่งมอบ และสกุลเงิน
+
+  Creates a new purchase order to formalize procurement from a vendor. The PO groups approved PR line items by vendor, delivery date, and currency, establishing a binding order commitment that can be sent to the vendor.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "vendor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "vendor_name": "ABC Food Supplies Co., Ltd.",
+    "delivery_date": "2026-05-06",
+    "currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "currency_code": "THB",
+    "exchange_rate": 1,
+    "description": "PO for kitchen supplies May 2026",
+    "workflow_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "details": {
+      "add": [
+        {
+          "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "product_name": "Rice Jasmine 5kg",
+          "order_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "order_qty": 10.5,
+          "unit_price": 250.00,
+          "is_foc": false,
+          "is_tax_included": false,
+          "tax_rate": 7.0
+        }
+      ]
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid request body |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission to create purchase orders |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

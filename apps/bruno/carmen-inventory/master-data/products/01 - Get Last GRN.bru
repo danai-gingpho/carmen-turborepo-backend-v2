@@ -1,0 +1,80 @@
+meta {
+  name: Get last purchase products
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/products/:product_id/last-purchase/:date
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Last Purchase by Product
+  ดึงข้อมูลการซื้อล่าสุดของสินค้าตามวันที่ที่กำหนด
+
+  Retrieves the last committed good received note detail for a product on or before the specified date.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `product_id` | string (UUID) | Product ID |
+  | `date` | string | Receiving date in YYYY-MM-DD format |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `product_management.product:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "grn_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "grn_code": "GRN-2026-0042",
+      "product_id": "bb96415b-dff0-40ec-aa2f-2b4099418314",
+      "qty": 10.5,
+      "price": 1250.00,
+      "unit": "KG",
+      "date": "2026-04-29"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `product_management.product:view` permission |
+  | 404 | Product not found |
+}
+
+params:path {
+  product_id: bb96415b-dff0-40ec-aa2f-2b4099418314
+  date: 2026-03-23
+}

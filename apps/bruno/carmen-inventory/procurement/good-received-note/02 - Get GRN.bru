@@ -1,0 +1,95 @@
+meta {
+  name: By id good-received-note
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/good-received-note/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Good Received Note by ID
+  ดึงรายละเอียดทั้งหมดของใบรับสินค้า รวมถึงรายการสินค้าที่รับ จำนวน บันทึกคุณภาพ และใบสั่งซื้อที่เกี่ยวข้อง ใช้สำหรับตรวจสอบว่าสินค้าที่ส่งมาตรงกับที่สั่งซื้อหรือไม่
+
+  Retrieves the full details of a goods receiving record including received items, quantities, quality notes, and the associated purchase order. Used to verify what was delivered against what was ordered.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Good Received Note ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "grn_no": "GRN-2026-0042",
+      "grn_date": "2026-04-29T08:30:00.000Z",
+      "doc_status": "draft",
+      "doc_type": "purchase_order",
+      "invoice_no": "INV-2026-0100",
+      "invoice_date": "2026-04-28T00:00:00.000Z",
+      "description": "Goods received from ABC Supplies Co., Ltd.",
+      "vendor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+      "vendor_name": "ABC Supplies Co., Ltd.",
+      "currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f",
+      "currency_code": "THB",
+      "exchange_rate": 1,
+      "net_amount": 10000.00,
+      "total_amount": 10700.00,
+      "good_received_note_detail": [],
+      "created_at": "2026-04-29T08:30:00.000Z",
+      "updated_at": "2026-04-29T08:30:00.000Z"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.goods_received_note:view` permission |
+  | 404 | Good Received Note not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{grn_id}}
+}

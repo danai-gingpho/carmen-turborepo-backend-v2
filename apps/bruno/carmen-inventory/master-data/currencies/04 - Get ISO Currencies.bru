@@ -1,0 +1,86 @@
+meta {
+  name: Find all iso currencies
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/iso
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get ISO Currencies
+  ดึงรายการสกุลเงินมาตรฐาน ISO 4217 ทั้งหมด
+
+  Lists all ISO 4217 standard currencies available in the system, used when configuring which currencies a business unit should support for international procurement.
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `configuration.currency:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "code": "THB",
+        "name": "Thai Baht",
+        "symbol": "฿",
+        "is_active": true
+      },
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "code": "USD",
+        "name": "US Dollar",
+        "symbol": "$",
+        "is_active": true
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 17,
+      "total": 170,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+}

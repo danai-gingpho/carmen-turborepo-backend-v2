@@ -1,0 +1,120 @@
+meta {
+  name: List credit-note
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/credit-note
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List All Credit Notes
+  แสดงรายการใบลดหนี้ของผู้ขายทั้งหมดของหน่วยธุรกิจ ช่วยให้เจ้าหน้าที่จัดซื้อและการเงินติดตามเครดิตที่ได้รับจากสินค้าที่ส่งคืนหรือเสียหาย
+
+  Lists all vendor credit notes for the business unit, enabling procurement and finance staff to track credits received for returned or damaged goods.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `sort` | string | No | — | Sort field and direction (e.g. `total_amount:asc`) |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.credit_note:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "11111111-1111-1111-1111-111111111111",
+        "cn_no": "CN-2026-0001",
+        "cn_date": "2026-04-29T08:30:00.000Z",
+        "credit_note_type": "quantity_return",
+        "doc_status": "draft",
+        "vendor_name": "Bangkok Food Supplies Co., Ltd.",
+        "total_amount": 3000.00,
+        "audit": {
+          "created": {
+            "at": "2026-04-29T08:30:00.000Z",
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "John Doe"
+          },
+          "updated": {
+            "at": "2026-04-29T09:15:00.000Z",
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+            "name": "Jane Smith"
+          }
+        }
+      },
+      {
+        "id": "22222222-2222-2222-2222-222222222222",
+        "cn_no": "CN-2026-0002",
+        "cn_date": "2026-04-29T08:00:00.000Z",
+        "credit_note_type": "amount_discount",
+        "doc_status": "draft",
+        "vendor_name": "Bangkok Food Supplies Co., Ltd.",
+        "total_amount": 1500.00,
+        "audit": {
+          "created": {
+            "at": "2026-04-29T08:00:00.000Z",
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "John Doe"
+          }
+        }
+      }
+    ],
+    "paginate": {
+      "total": 2,
+      "page": 1,
+      "perpage": 10,
+      "pages": 1
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T09:15:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.credit_note:view` permission |
+}
+
+params:query {
+  page: 1
+  perpage: 10
+  sort: total_amount%3Aasc
+}

@@ -1,0 +1,93 @@
+meta {
+  name: Split pr purchase-request
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/purchase-request/:id/split
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "detail_ids": []
+  }
+}
+
+vars:pre-request {
+  pr_id: a622a420-9a50-4090-88a0-05f0a16f6c85
+}
+
+docs {
+  ## Split Purchase Request
+  แยกรายการที่เลือกจากใบขอซื้อที่มีอยู่ออกเป็นใบขอซื้อใหม่ ใช้เมื่อผู้จัดซื้อต้องการแยกสินค้าสำหรับผู้ขายหรือกำหนดการส่งที่แตกต่างกัน
+
+  Moves selected line items from an existing purchase request into a new separate PR, preserving the original workflow status. Used when a purchaser needs to separate items for different vendors or delivery timelines.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Original purchase request ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+  | `Content-Type` | Yes | `application/json` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "detail_ids": [
+      "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "019638a6-2a00-7c4f-8e46-9b7a52c80c4e"
+    ]
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Validation error or no detail_ids provided |
+  | 401 | Missing or invalid bearer token |
+  | 403 | Insufficient permissions |
+  | 404 | Purchase request not found |
+}
+
+params:path {
+  id: {{pr_id}}
+}

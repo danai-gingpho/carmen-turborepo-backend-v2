@@ -1,0 +1,88 @@
+meta {
+  name: List stock-in-detail
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/stock-in-detail
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+docs {
+  ## List Stock In Details (standalone)
+  ดึงรายการย่อยของ stock-in ทั้งหมดผ่าน standalone endpoint
+
+  Lists stock-in detail records via the standalone stock-in-detail controller.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.stock_in:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "description": "Rice Jasmine 50kg bag",
+        "qty": 10.5,
+        "cost_per_unit": 1250.00,
+        "total_cost": 13125.00,
+        "product_name": "Rice Jasmine",
+        "location_name": "Main Store",
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 5,
+      "total": 48,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.stock_in:view` permission |
+}

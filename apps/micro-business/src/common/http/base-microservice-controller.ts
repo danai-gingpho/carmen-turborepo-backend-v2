@@ -1,0 +1,206 @@
+import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
+import { Result } from '../result/result';
+import { StdResponse } from '../std-response/std-response';
+import { StdStatus } from '../std-response/std-status';
+
+export interface MicroserviceResponse<T = unknown> {
+  data?: T;
+  paginate?: {
+    total: number;
+    page: number;
+    perpage: number;
+    pages: number;
+  };
+  response: {
+    status: HttpStatus;
+    message: string;
+    timestamp: string;
+    error?: {
+      error_code: string;
+      service: string;
+      id?: string;
+      error: string;
+    };
+  };
+}
+
+export abstract class BaseMicroserviceController {
+  protected handleResultCreate<T>(
+    result: Result<T, any>,
+    successStatus: HttpStatus = HttpStatus.CREATED,
+  ): MicroserviceResponse<T> {
+    if (result.isOk()) {
+      return {
+        data: result.value,
+        response: {
+          status: successStatus,
+          message: 'Created Successfully',
+          timestamp: new Date().toISOString(),
+        },
+      };
+    }
+
+    const error = result.error;
+    const errorData = error.data as { error_code?: string; service?: string; id?: string; error?: string } | undefined;
+    return {
+      response: {
+        status: this.fromStdStatus(this.errorCodeToStdStatus(error.code)),
+        message: error.message,
+        timestamp: new Date().toISOString(),
+        ...(errorData?.error_code && {
+          error: {
+            error_code: errorData.error_code,
+            service: errorData.service,
+            id: errorData.id,
+            error: errorData.error,
+          },
+        }),
+      },
+    };
+  }
+
+   
+  protected handleResult<T>(
+    result: Result<any, any>,
+    successStatus: HttpStatus = HttpStatus.OK,
+  ): MicroserviceResponse<T> {
+    if (result.isOk()) {
+      return {
+        data: result.value,
+        response: {
+          status: successStatus,
+          message: 'Success',
+          timestamp: new Date().toISOString(),
+        },
+      };
+    }
+
+    const error = result.error;
+    const errorData = error.data as { error_code?: string; service?: string; id?: string; error?: string } | undefined;
+    return {
+      response: {
+        status: this.fromStdStatus(this.errorCodeToStdStatus(error.code)),
+        message: error.message,
+        timestamp: new Date().toISOString(),
+        ...(errorData?.error_code && {
+          error: {
+            error_code: errorData.error_code,
+            service: errorData.service,
+            id: errorData.id,
+            error: errorData.error,
+          },
+        }),
+      },
+    };
+  }
+
+   
+  protected handleMultiPaginatedResult<T>(
+    result: Result<any, any>,
+  ): MicroserviceResponse<T[]> {
+    if (result.isOk()) {
+      // console.log('Multi Paginated Result Value:', result.value);
+      return {
+        data: result.value as T[],
+        response: {
+          status: HttpStatus.OK,
+          message: 'Success',
+          timestamp: new Date().toISOString(),
+        },
+      };
+    }
+
+    const error = result.error;
+    const errorData = error.data as { error_code?: string; service?: string; id?: string; error?: string } | undefined;
+    return {
+      response: {
+        status: this.fromStdStatus(this.errorCodeToStdStatus(error.code)),
+        message: error.message,
+        timestamp: new Date().toISOString(),
+        ...(errorData?.error_code && {
+          error: {
+            error_code: errorData.error_code,
+            service: errorData.service,
+            id: errorData.id,
+            error: errorData.error,
+          },
+        }),
+      },
+    };
+  }
+
+   
+  protected handlePaginatedResult<T>(
+    result: Result<any, any>,
+  ): MicroserviceResponse<T[]> {
+    if (result.isOk()) {
+      const value = result.value as { paginate: { total: number; page: number; perpage: number; pages: number }; data: T[] };
+      const paginate = value.paginate;
+      const data = value.data;
+
+      return {
+        paginate,
+        data,
+        response: {
+          status: HttpStatus.OK,
+          message: 'Success',
+          timestamp: new Date().toISOString(),
+        },
+      };
+    }
+
+    const error = result.error;
+    const errorData = error.data as { error_code?: string; service?: string; id?: string; error?: string } | undefined;
+    return {
+      response: {
+        status: this.fromStdStatus(this.errorCodeToStdStatus(error.code)),
+        message: error.message,
+        timestamp: new Date().toISOString(),
+        ...(errorData?.error_code && {
+          error: {
+            error_code: errorData.error_code,
+            service: errorData.service,
+            id: errorData.id,
+            error: errorData.error,
+          },
+        }),
+      },
+    };
+  }
+
+  private errorCodeToStdStatus(code: number): StdStatus {
+    const statusMap: Record<number, StdStatus> = {
+      1: StdStatus.INVALID_ARGUMENT,
+      2: StdStatus.UNAUTHENTICATED,
+      3: StdStatus.NOT_FOUND,
+      4: StdStatus.PERMISSION_DENIED,
+      5: StdStatus.VALIDATION_FAILURE,
+      6: StdStatus.ALREADY_EXISTS,
+      7: StdStatus.INTERNAL_ERROR,
+    };
+    return statusMap[code] ?? StdStatus.INTERNAL_ERROR;
+  }
+
+  private fromStdStatus(status: StdStatus): HttpStatus {
+    switch (status) {
+      case StdStatus.SUCCESS:
+        return HttpStatus.OK;
+      case StdStatus.INVALID_ARGUMENT:
+        return HttpStatus.BAD_REQUEST;
+      case StdStatus.NOT_FOUND:
+        return HttpStatus.NOT_FOUND;
+      case StdStatus.UNAUTHENTICATED:
+        return HttpStatus.UNAUTHORIZED;
+      case StdStatus.PERMISSION_DENIED:
+        return HttpStatus.FORBIDDEN;
+      case StdStatus.VALIDATION_FAILURE:
+        return HttpStatus.UNPROCESSABLE_ENTITY;
+      case StdStatus.ALREADY_EXISTS:
+        return HttpStatus.CONFLICT;
+      case StdStatus.INTERNAL_ERROR:
+        return HttpStatus.INTERNAL_SERVER_ERROR;
+      default:
+        return HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+  }
+}

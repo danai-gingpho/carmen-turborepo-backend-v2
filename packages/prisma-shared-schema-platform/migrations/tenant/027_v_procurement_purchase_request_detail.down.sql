@@ -1,0 +1,1 @@
+DROP VIEW IF EXISTS v_procurement_purchase_request_detail;

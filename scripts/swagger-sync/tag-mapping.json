@@ -1,0 +1,172 @@
+{
+  "apps/backend-gateway/src/app.controller.ts": "App Info",
+  "apps/backend-gateway/src/auth/auth.controller.ts": "Authentication",
+  "apps/backend-gateway/src/notification/notification.controller.ts": "Notifications",
+
+  "apps/backend-gateway/src/platform/platform_cluster/platform_cluster.controller.ts": "Platform: Clusters",
+  "apps/backend-gateway/src/platform/platform_business-unit/platform_business-unit.controller.ts": "Platform: Business Units",
+  "apps/backend-gateway/src/platform/platform-user/platform-user.controller.ts": "Platform: Users",
+  "apps/backend-gateway/src/platform/platform_user-cluster/platform_user-cluster.controller.ts": "Platform: User ↔ Cluster",
+  "apps/backend-gateway/src/platform/platform_user-business-unit/platform_user-business-unit.controller.ts": "Platform: User ↔ Business Unit",
+  "apps/backend-gateway/src/platform/application-role/application-role.controller.ts": "Platform: Application Roles",
+  "apps/backend-gateway/src/platform/application-permission/application-permission.controller.ts": "Platform: Application Permissions",
+  "apps/backend-gateway/src/platform/application-role-permission/application-role-permission.controller.ts": "Platform: Role ↔ Permission",
+  "apps/backend-gateway/src/platform/platform_report-template/platform_report-template.controller.ts": "Platform: Report Templates",
+
+  "apps/backend-gateway/src/config/config_currencies/config_currencies.controller.ts": "Config: Currencies & FX",
+  "apps/backend-gateway/src/config/config_exchange-rate/config_exchange-rate.controller.ts": "Config: Currencies & FX",
+  "apps/backend-gateway/src/application/currencies/currencies.controller.ts": "Config: Currencies & FX",
+  "apps/backend-gateway/src/application/currency-comment/currency-comment.controller.ts": "Config: Currencies & FX",
+  "apps/backend-gateway/src/application/exchange-rate-comment/exchange-rate-comment.controller.ts": "Config: Currencies & FX",
+
+  "apps/backend-gateway/src/config/config_locations/config_locations.controller.ts": "Config: Locations",
+  "apps/backend-gateway/src/config/config_locations-user/config_locations-user.controller.ts": "Config: Locations",
+  "apps/backend-gateway/src/config/config_user-location/config_user-location.controller.ts": "Config: Locations",
+  "apps/backend-gateway/src/config/config_location-product/config_location-product.controller.ts": "Config: Locations",
+  "apps/backend-gateway/src/config/config_product-location/config_product-location.controller.ts": "Config: Locations",
+  "apps/backend-gateway/src/config/config_delivery-point/config_delivery-point.controller.ts": "Config: Locations",
+  "apps/backend-gateway/src/application/locations/locations.controller.ts": "Config: Locations",
+  "apps/backend-gateway/src/application/location-comment/location-comment.controller.ts": "Config: Locations",
+  "apps/backend-gateway/src/application/delivery-point-comment/delivery-point-comment.controller.ts": "Config: Locations",
+
+  "apps/backend-gateway/src/config/config_departments/config_departments.controller.ts": "Config: Departments",
+  "apps/backend-gateway/src/config/config_department-user/config_department-user.controller.ts": "Config: Departments",
+  "apps/backend-gateway/src/application/department/department.controller.ts": "Config: Departments",
+  "apps/backend-gateway/src/application/department-comment/department-comment.controller.ts": "Config: Departments",
+
+  "apps/backend-gateway/src/config/config_products/config_products.controller.ts": "Config: Products",
+  "apps/backend-gateway/src/config/config_product-category/config_product-category.controller.ts": "Config: Products",
+  "apps/backend-gateway/src/config/config_product-sub-category/config_product-sub-category.controller.ts": "Config: Products",
+  "apps/backend-gateway/src/config/config_product-item-group/config_product-item-group.controller.ts": "Config: Products",
+  "apps/backend-gateway/src/application/products/products.controller.ts": "Config: Products",
+  "apps/backend-gateway/src/application/product-comment/product-comment.controller.ts": "Config: Products",
+  "apps/backend-gateway/src/application/product-category-comment/product-category-comment.controller.ts": "Config: Products",
+  "apps/backend-gateway/src/application/product-sub-category-comment/product-sub-category-comment.controller.ts": "Config: Products",
+  "apps/backend-gateway/src/application/product-item-group-comment/product-item-group-comment.controller.ts": "Config: Products",
+
+  "apps/backend-gateway/src/config/config_units/config_units.controller.ts": "Config: Units",
+  "apps/backend-gateway/src/config/config_unit_comment/config_unit_comment.controller.ts": "Config: Units",
+  "apps/backend-gateway/src/application/unit-conversion/unit-conversion.controller.ts": "Config: Units",
+  "apps/backend-gateway/src/application/unit-comment/unit-comment.controller.ts": "Config: Units",
+
+  "apps/backend-gateway/src/config/config_vendors/config_vendors.controller.ts": "Config: Vendors",
+  "apps/backend-gateway/src/config/config_vendor_business_type/config_vendor_business_type.controller.ts": "Config: Vendors",
+  "apps/backend-gateway/src/config/config_credit_term/config_credit_term.controller.ts": "Config: Vendors",
+  "apps/backend-gateway/src/config/config_credit-note-reason/config_credit-note-reason.controller.ts": "Config: Vendors",
+  "apps/backend-gateway/src/application/credit-term/credit-term.controller.ts": "Config: Vendors",
+  "apps/backend-gateway/src/application/credit-term-comment/credit-term-comment.controller.ts": "Config: Vendors",
+  "apps/backend-gateway/src/application/vendor-comment/vendor-comment.controller.ts": "Config: Vendors",
+  "apps/backend-gateway/src/application/vendor-business-type/vendor-business-type.controller.ts": "Config: Vendors",
+  "apps/backend-gateway/src/application/vendor-business-type-comment/vendor-business-type-comment.controller.ts": "Config: Vendors",
+
+  "apps/backend-gateway/src/config/config_tax_profile/config_tax_profile.controller.ts": "Config: Tax & Cost Types",
+  "apps/backend-gateway/src/config/config_adjustment-type/config_adjustment-type.controller.ts": "Config: Tax & Cost Types",
+  "apps/backend-gateway/src/config/config_extra_cost_type/config_extra_cost_type.controller.ts": "Config: Tax & Cost Types",
+  "apps/backend-gateway/src/application/tax-profile/tax-profile.controller.ts": "Config: Tax & Cost Types",
+  "apps/backend-gateway/src/application/tax-profile-comment/tax-profile-comment.controller.ts": "Config: Tax & Cost Types",
+
+  "apps/backend-gateway/src/config/config_recipe/config_recipe.controller.ts": "Config: Recipes",
+  "apps/backend-gateway/src/config/config_recipe-category/config_recipe-category.controller.ts": "Config: Recipes",
+  "apps/backend-gateway/src/config/config_recipe-cuisine/config_recipe-cuisine.controller.ts": "Config: Recipes",
+  "apps/backend-gateway/src/config/config_recipe-equipment/config_recipe-equipment.controller.ts": "Config: Recipes",
+  "apps/backend-gateway/src/config/config_recipe-equipment-category/config_recipe-equipment-category.controller.ts": "Config: Recipes",
+
+  "apps/backend-gateway/src/config/config_price-list/config_price-list.controller.ts": "Config: Price Lists",
+
+  "apps/backend-gateway/src/config/config_workflows/config_workflows.controller.ts": "Config: Workflows",
+
+  "apps/backend-gateway/src/config/config_application_role/config_application_role.controller.ts": "Config: Roles & Permissions",
+  "apps/backend-gateway/src/config/config_permission/config_permission.controller.ts": "Config: Roles & Permissions",
+  "apps/backend-gateway/src/config/config_user_application_role/config_user_application_role.controller.ts": "Config: Roles & Permissions",
+
+  "apps/backend-gateway/src/config/config_app_config/config_app_config.controller.ts": "Config: System",
+  "apps/backend-gateway/src/config/config_running-code/config_running-code.controller.ts": "Config: System",
+  "apps/backend-gateway/src/config/config_sql_query/config_sql_query.controller.ts": "Config: System",
+  "apps/backend-gateway/src/application/config-running-code-comment/config-running-code-comment.controller.ts": "Config: System",
+  "apps/backend-gateway/src/application/dimension-comment/dimension-comment.controller.ts": "Config: System",
+
+  "apps/backend-gateway/src/application/purchase-request/purchase-request.controller.ts": "Procurement: Purchase Requests",
+  "apps/backend-gateway/src/application/purchase-request-comment/purchase-request-comment.controller.ts": "Procurement: Purchase Requests",
+  "apps/backend-gateway/src/application/purchase-request-detail-comment/purchase-request-detail-comment.controller.ts": "Procurement: Purchase Requests",
+  "apps/backend-gateway/src/application/purchase-request-template/purchase-request-template.controller.ts": "Procurement: Purchase Requests",
+  "apps/backend-gateway/src/application/purchase-request-template-comment/purchase-request-template-comment.controller.ts": "Procurement: Purchase Requests",
+
+  "apps/backend-gateway/src/application/purchase-order/purchase-order.controller.ts": "Procurement: Purchase Orders",
+  "apps/backend-gateway/src/application/purchase-order-comment/purchase-order-comment.controller.ts": "Procurement: Purchase Orders",
+  "apps/backend-gateway/src/application/purchase-order-detail-comment/purchase-order-detail-comment.controller.ts": "Procurement: Purchase Orders",
+
+  "apps/backend-gateway/src/application/good-received-note/good-received-note.controller.ts": "Procurement: Good Received Notes",
+  "apps/backend-gateway/src/application/good-received-note-comment/good-received-note-comment.controller.ts": "Procurement: Good Received Notes",
+  "apps/backend-gateway/src/application/good-received-note-detail-comment/good-received-note-detail-comment.controller.ts": "Procurement: Good Received Notes",
+
+  "apps/backend-gateway/src/application/credit-note/credit-note.controller.ts": "Procurement: Credit Notes",
+  "apps/backend-gateway/src/application/credit-note-comment/credit-note-comment.controller.ts": "Procurement: Credit Notes",
+  "apps/backend-gateway/src/application/credit-note-detail-comment/credit-note-detail-comment.controller.ts": "Procurement: Credit Notes",
+  "apps/backend-gateway/src/application/credit-note-reason/credit-note-reason.controller.ts": "Procurement: Credit Notes",
+
+  "apps/backend-gateway/src/application/request-for-pricing/request-for-pricing.controller.ts": "Procurement: Request for Pricing",
+  "apps/backend-gateway/src/application/request-for-pricing-comment/request-for-pricing-comment.controller.ts": "Procurement: Request for Pricing",
+  "apps/backend-gateway/src/application/request-for-pricing-detail-comment/request-for-pricing-detail-comment.controller.ts": "Procurement: Request for Pricing",
+
+  "apps/backend-gateway/src/application/store-requisition/store-requisition.controller.ts": "Procurement: Store Requisitions",
+  "apps/backend-gateway/src/application/store-requisition-comment/store-requisition-comment.controller.ts": "Procurement: Store Requisitions",
+  "apps/backend-gateway/src/application/store-requisition-detail-comment/store-requisition-detail-comment.controller.ts": "Procurement: Store Requisitions",
+
+  "apps/backend-gateway/src/application/extra-cost-comment/extra-cost-comment.controller.ts": "Procurement: Extra Costs",
+  "apps/backend-gateway/src/application/extra-cost-detail-comment/extra-cost-detail-comment.controller.ts": "Procurement: Extra Costs",
+
+  "apps/backend-gateway/src/application/vendor-product/vendor-product.controller.ts": "Procurement: Vendor Products",
+
+  "apps/backend-gateway/src/application/price-list/price-list.controller.ts": "Procurement: Price Lists",
+  "apps/backend-gateway/src/application/price-list/check-price-list.controller.ts": "Procurement: Price Lists",
+  "apps/backend-gateway/src/application/price-list-template/price-list-template.controller.ts": "Procurement: Price Lists",
+  "apps/backend-gateway/src/application/pricelist-comment/pricelist-comment.controller.ts": "Procurement: Price Lists",
+  "apps/backend-gateway/src/application/pricelist-detail-comment/pricelist-detail-comment.controller.ts": "Procurement: Price Lists",
+  "apps/backend-gateway/src/application/pricelist-template-comment/pricelist-template-comment.controller.ts": "Procurement: Price Lists",
+  "apps/backend-gateway/src/application/pricelist-template-detail-comment/pricelist-template-detail-comment.controller.ts": "Procurement: Price Lists",
+
+  "apps/backend-gateway/src/application/stock-in/stock-in.controller.ts": "Inventory: Stock In",
+  "apps/backend-gateway/src/application/stock-in-detail/stock-in-detail.controller.ts": "Inventory: Stock In",
+  "apps/backend-gateway/src/application/stock-in-comment/stock-in-comment.controller.ts": "Inventory: Stock In",
+  "apps/backend-gateway/src/application/stock-in-detail-comment/stock-in-detail-comment.controller.ts": "Inventory: Stock In",
+
+  "apps/backend-gateway/src/application/stock-out/stock-out.controller.ts": "Inventory: Stock Out",
+  "apps/backend-gateway/src/application/stock-out-detail/stock-out-detail.controller.ts": "Inventory: Stock Out",
+  "apps/backend-gateway/src/application/stock-out-comment/stock-out-comment.controller.ts": "Inventory: Stock Out",
+  "apps/backend-gateway/src/application/stock-out-detail-comment/stock-out-detail-comment.controller.ts": "Inventory: Stock Out",
+
+  "apps/backend-gateway/src/application/physical-count/physical-count.controller.ts": "Inventory: Physical Count",
+  "apps/backend-gateway/src/application/physical-count-comment/physical-count-comment.controller.ts": "Inventory: Physical Count",
+  "apps/backend-gateway/src/application/physical-count-detail-comment/physical-count-detail-comment.controller.ts": "Inventory: Physical Count",
+  "apps/backend-gateway/src/application/physical-count-period/physical-count-period.controller.ts": "Inventory: Physical Count",
+  "apps/backend-gateway/src/application/physical-count-period-comment/physical-count-period-comment.controller.ts": "Inventory: Physical Count",
+
+  "apps/backend-gateway/src/application/spot-check/spot-check.controller.ts": "Inventory: Spot Check",
+  "apps/backend-gateway/src/application/spot-check-comment/spot-check-comment.controller.ts": "Inventory: Spot Check",
+  "apps/backend-gateway/src/application/spot-check-detail-comment/spot-check-detail-comment.controller.ts": "Inventory: Spot Check",
+
+  "apps/backend-gateway/src/application/inventory-adjustment/inventory-adjustment.controller.ts": "Inventory: Adjustments",
+
+  "apps/backend-gateway/src/application/inventory-transaction/inventory-transaction.controller.ts": "Inventory: Transactions",
+
+  "apps/backend-gateway/src/application/period/period.controller.ts": "Inventory: Periods",
+  "apps/backend-gateway/src/application/period-comment/period-comment.controller.ts": "Inventory: Periods",
+
+  "apps/backend-gateway/src/application/workflow/workflow.controller.ts": "Workflow: Operations",
+  "apps/backend-gateway/src/application/workflow-comment/workflow-comment.controller.ts": "Workflow: Operations",
+  "apps/backend-gateway/src/application/my-pending/purchase-request/my-pending.purchase-request.controller.ts": "Workflow: My Pending",
+  "apps/backend-gateway/src/application/my-pending/purchase-order/my-pending.purchase-order.controller.ts": "Workflow: My Pending",
+  "apps/backend-gateway/src/application/my-pending/store-requisition/my-pending.store-requisition.controller.ts": "Workflow: My Pending",
+  "apps/backend-gateway/src/application/my-pending/my-approve/my-approve.controller.ts": "Workflow: My Approvals",
+
+  "apps/backend-gateway/src/application/dashboard/dashboard.controller.ts": "Reports: Dashboard",
+  "apps/backend-gateway/src/application/report/report.controller.ts": "Reports: Reports",
+  "apps/backend-gateway/src/application/activity-log/activity-log.controller.ts": "Reports: Activity Log",
+  "apps/backend-gateway/src/application/news/news.controller.ts": "Reports: News",
+  "apps/backend-gateway/src/application/document-management/document-management.controller.ts": "Documents: File Management",
+
+  "apps/backend-gateway/src/application/user/user.controller.ts": "User: Profile",
+  "apps/backend-gateway/src/application/user-business-unit/user-business-unit.controller.ts": "User: Business Units",
+  "apps/backend-gateway/src/application/business-unit/business-unit.controller.ts": "User: Business Units",
+  "apps/backend-gateway/src/application/user-location/user-location.controller.ts": "User: Locations"
+}

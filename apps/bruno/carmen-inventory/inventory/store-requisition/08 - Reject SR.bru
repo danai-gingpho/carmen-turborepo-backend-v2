@@ -1,0 +1,96 @@
+meta {
+  name: Reject store-requisition
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/store-requisition/:id/reject
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "stage_role": "create",
+    "details": []
+  }
+}
+
+docs {
+  ## Reject Store Requisition
+  ปฏิเสธใบเบิกสินค้าในขั้นตอนอนุมัติปัจจุบัน
+
+  Rejects a store requisition at the current approval stage, preventing items from being issued.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Store Requisition ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.store_requisition:view` (with approval role)
+  - **Roles**: HOD, Approval
+
+  ### Sample Body
+  ```json
+  {
+    "stage_role": "create",
+    "details": []
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "sr_no": "SR-2026-0001"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | SR is not in a state that can be rejected |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User is not authorized to reject at this stage |
+  | 404 | Store Requisition not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{sr_id}}
+}

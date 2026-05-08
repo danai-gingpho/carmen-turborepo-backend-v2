@@ -1,0 +1,70 @@
+meta {
+  name: Get job status report
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/report/jobs/:job_id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+docs {
+  ## Get Job Status
+  ดึงสถานะงานรายงาน
+
+  Returns the current status of an async report generation job. Poll this endpoint after calling `POST /report/generate-async`. When `status` is 3 (completed), the `file_url` field contains a download link.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `job_id` | string | Job ID returned from `generate-async` |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "job_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "report_type": "inventory_summary",
+      "format": 1,
+      "status": 3,
+      "file_url": "https://storage.example.com/reports/inventory_summary_2026-04-29.pdf?token=abc123",
+      "file_size": 204800,
+      "row_count": 250,
+      "error_message": null
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > Status codes: 1=queued, 2=processing, 3=completed, 4=failed, 5=cancelled
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 404 | Job ID not found |
+}

@@ -1,0 +1,92 @@
+meta {
+  name: Get review physical-count
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/physical-count/:id/review
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~version: 
+  ~version: 
+}
+
+params:path {
+  id: {{physical_count_id}}
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+vars:pre-request {
+  physical_count_id: 267d6ba6-cf66-4b7f-927f-a7c52bfa68be
+}
+
+docs {
+  ## Get Physical Count Review Result
+  ดึงรายงานผลต่างที่คำนวณไว้ก่อนหน้าของการตรวจนับสินค้า แสดงความแตกต่างระหว่างจำนวนในระบบกับจำนวนจริง เพื่อให้ผู้จัดการอนุมัติหรือตรวจสอบความคลาดเคลื่อน
+
+  Retrieves the previously calculated variance report for a physical count, showing the differences between system and actual quantities so managers can approve or investigate discrepancies.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Physical Count ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.physical_count:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "physical_count_period_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "location_name": "Main Store",
+      "status": "pending",
+      "product_counted": 12,
+      "product_total": 50,
+      "tb_physical_count_detail": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "product_name": "Rice 5kg",
+          "system_qty": 100,
+          "actual_qty": 95,
+          "variance": -5
+        }
+      ],
+      "created_at": "2026-04-29T08:30:00.000Z",
+      "updated_at": "2026-04-29T08:30:00.000Z"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | Physical count not found |
+  | 403 | User lacks `inventory_management.physical_count:view` permission |
+}

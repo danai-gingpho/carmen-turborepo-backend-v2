@@ -1,0 +1,73 @@
+meta {
+  name: Get roles by permission application-role-permission
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api-system/role-permission/permission/:permissionId/roles
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Roles By Permission
+  ดึงรายการบทบาททั้งหมดที่มีสิทธิ์การใช้งานที่ระบุ
+
+  Finds all application roles that include a specific permission, enabling administrators to audit which roles grant a particular capability such as inventory adjustments or purchase approvals.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `permissionId` | string (UUID) | Permission ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "name": "Purchaser",
+        "code": "PURCHASER",
+        "is_active": true
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 404 | Permission not found |
+}
+
+params:path {
+  permissionId:
+}

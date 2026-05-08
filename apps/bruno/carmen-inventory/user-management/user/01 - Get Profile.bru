@@ -1,0 +1,88 @@
+meta {
+  name: Profile user
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/user/profile
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get User Profile
+  ดึงข้อมูลโปรไฟล์ของผู้ใช้ที่เข้าสู่ระบบ รวมถึงชื่อ ข้อมูลติดต่อ หน่วยธุรกิจที่ได้รับมอบหมาย และบทบาทในระบบ ERP
+
+  Retrieves the authenticated user's profile information including name, contact details, assigned business units, and role within the hotel ERP system.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | (none) | — | No path parameters |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "email": "john.doe@carmensoftware.com",
+      "alias_name": "john.doe",
+      "platform_role": "user",
+      "user_info": {
+        "firstname": "John",
+        "middlename": "William",
+        "lastname": "Doe",
+        "telephone": "+66-81-234-5678"
+      },
+      "business_unit": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "name": "Carmen Hotel",
+          "code": "CH001",
+          "alias_name": "Carmen",
+          "is_default": true,
+          "system_level": "user",
+          "is_active": true
+        }
+      ]
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token is missing or invalid |
+}

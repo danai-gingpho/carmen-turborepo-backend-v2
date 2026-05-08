@@ -1,0 +1,49 @@
+meta {
+  name: 01 - List Notifications
+  type: http
+  seq: 1
+}
+
+docs {
+  ## List Notifications
+  แสดงรายการการแจ้งเตือนทั้งหมดพร้อมการแบ่งหน้าและค้นหา
+
+  Retrieve all notifications with pagination and search support.
+
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "uuid",
+        "name": "Item Name"
+      }
+    ],
+    "paginate": {
+      "total": 100,
+      "page": 1,
+      "perpage": 10,
+      "pages": 10
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-03-27T00:00:00.000Z"
+  }
+  ```
+}
+
+get {
+  url: {{host}}/api/notifications
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

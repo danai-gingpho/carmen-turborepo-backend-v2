@@ -1,0 +1,97 @@
+meta {
+  name: Update delivery-point-comment
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/delivery-point-comment/:id
+  body: multipartForm
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  ~message: Updated comment text
+  ~type: user
+  ~remove_attachments: ["tok-old-1","tok-old-2"]
+  ~files: @file(/Users/samutpra/Pictures/logo.png)
+}
+
+docs {
+  ## Patch Delivery Point Comment
+  แก้ไขความคิดเห็นของ delivery-point พร้อมเพิ่ม/ลบไฟล์แนบใน request เดียว
+
+  Updates an existing comment with optional new file attachments or removal of existing ones. Upload-first pattern with atomic rollback on failure.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `message` | text | No* | Updated comment text (≤ 4000 chars) |
+  | `type` | text | No* | `user` or `system` |
+  | `files` | binary (repeatable) | No* | New files to add |
+  | `remove_attachments` | text | No* | JSON-encoded array of fileTokens to remove, e.g. `["tok-1","tok-2"]` |
+
+  *At least one field must be provided.
+
+  Constraints (for `files`): max 10 files, max 10 MB per file, allowed MIME: image/jpeg, image/png, image/webp, image/gif, application/pdf
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | No fields provided; file count > 10; file size > 10 MB; unsupported MIME type |
+  | 502 | S3 file upload failure (with automatic rollback of newly uploaded files) |
+}

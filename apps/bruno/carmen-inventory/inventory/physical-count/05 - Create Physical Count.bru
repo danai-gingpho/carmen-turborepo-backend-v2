@@ -1,0 +1,94 @@
+meta {
+  name: Create physical-count
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/physical-count
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "physical_count_period_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "description": "Monthly stock count for kitchen storage"
+  }
+}
+
+vars:pre-request {
+  period_id: 4b589f8b-9fa7-4e62-a5b5-e6bf45c4f9bb
+  location_id: 47414c16-9d52-4b16-8428-4a4c4e89986e
+  physical_count_period_id: 4b589f8b-9fa7-4e62-a5b5-e6bf45c4f9bb
+}
+
+docs {
+  ## Create Physical Count
+  สร้างรายการตรวจนับสินค้าใหม่สำหรับสถานที่จัดเก็บและรอบการตรวจนับที่กำหนด ระบบจะสร้างรายการสินค้าที่ต้องตรวจสอบเทียบกับจำนวนในระบบโดยอัตโนมัติ
+
+  Initiates a new periodic physical inventory count for a specific storage location and count period, generating the list of products to be verified against system stock levels.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.physical_count:create`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "physical_count_period_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "description": "Monthly stock count for kitchen storage"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "physical_count_period_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "location_name": "Main Store",
+      "status": "draft",
+      "description": "Monthly stock count for kitchen storage"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid request body |
+  | 403 | User lacks `inventory_management.physical_count:create` permission |
+}

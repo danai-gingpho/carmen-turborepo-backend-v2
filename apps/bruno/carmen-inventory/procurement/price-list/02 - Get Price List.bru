@@ -1,0 +1,110 @@
+meta {
+  name: By id price-list
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/price-list/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Price List by ID
+  ดึงข้อมูลรายการราคารายการเดียวตาม ID
+
+  Retrieves the full details of a vendor price list including all product prices, validity dates, and terms, used when reviewing or editing procurement pricing agreements.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Price list ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.price_list:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "no": "PL-2026-0001",
+      "name": "Q2 2026 Beverage Price List",
+      "status": "active",
+      "vendor": {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "name": "Bangkok Beverage Co., Ltd."
+      },
+      "currency": {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "code": "THB"
+      },
+      "effective_from_date": "2026-04-01",
+      "effective_to_date": "2026-06-30",
+      "is_active": true,
+      "pricelist_detail": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "product_name": "Sparkling Water 500ml",
+          "unit_name": "Bottle",
+          "price": 15.00,
+          "moq_qty": 24,
+          "is_active": true
+        }
+      ],
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token missing or invalid |
+  | 403 | User lacks `vendor_management.price_list:view` permission |
+  | 404 | Price list not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{price_list_id}}
+}

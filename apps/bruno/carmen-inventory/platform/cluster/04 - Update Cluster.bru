@@ -1,0 +1,95 @@
+meta {
+  name: Update cluster platform_cluster
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{host}}/api-system/cluster/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "code": "CL-001",
+    "name": "Blueledgers Hotel Group Updated",
+    "alias_name": "BLG",
+    "logo_url": null,
+    "max_license_bu": 15,
+    "is_active": true,
+    "info": null
+  }
+}
+
+docs {
+  ## Update Cluster
+  อัปเดตข้อมูลคลัสเตอร์ที่มีอยู่
+
+  Modifies the configuration or details of an existing hotel chain or company organization, such as its name, license limit, or logo.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `id` | string (UUID) | Cluster ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Body
+  ```json
+  {
+    "code": "CL-001",
+    "name": "Blueledgers Hotel Group Updated",
+    "alias_name": "BLG",
+    "logo_url": null,
+    "max_license_bu": 15,
+    "is_active": true,
+    "info": null
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Validation fails |
+  | 401 | Missing or invalid bearer token |
+  | 404 | Cluster not found |
+}
+
+params:path {
+  id: 6dbeb937-2fbb-4960-9b76-055b83a4591b
+}

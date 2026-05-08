@@ -1,0 +1,88 @@
+meta {
+  name: Update status price-list-template
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/price-list-template/:id/status
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "status": "active"
+  }
+}
+
+docs {
+  ## Patch Price List Template Status
+  อัปเดตสถานะของแม่แบบรายการราคา (draft → active → inactive)
+
+  Changes the lifecycle status of a price list template (draft, active, or inactive), controlling whether it is available for generating new vendor price requests.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Price list template ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.price_list:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "status": "active"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `status` value not in allowed enum |
+  | 401 | Bearer token missing or invalid |
+  | 403 | User lacks `vendor_management.price_list:update` permission |
+  | 404 | Price list template not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{price_list_template_id}}
+}

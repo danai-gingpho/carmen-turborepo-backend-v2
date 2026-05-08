@@ -1,0 +1,115 @@
+meta {
+  name: Create with files extra-cost-detail-comment
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/extra-cost-detail-comment/{{extra_cost_detail_id}}
+  body: multipartForm
+  auth: bearer
+}
+
+params:query {
+  ~version: latest
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  message: Comment with attached photos
+  type: user
+  files: @file(/Users/samutpra/Pictures/logo.png)
+  files: @file(/Users/samutpra/Pictures/logo_CARMEN_Classic-Blue_low-res.png)
+}
+
+vars:pre-request {
+  extra_cost_detail_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## Create Extra Cost Detail Comment (with file uploads)
+  สร้างความคิดเห็นใหม่สำหรับ extra-cost-detail พร้อมแนบไฟล์ใน request เดียว ไม่ต้อง upload file แยกก่อน `extra_cost_detail_id` ระบุผ่าน URL path parameter
+
+  Creates a new comment for an extra cost detail line item with optional file attachments in a single request. Atomic: if any upload fails, all are rolled back.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `extra_cost_detail_id` | string (UUID) | Extra cost detail record ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `message` | text | No* | Comment text (≤ 4000 chars) |
+  | `type` | text | No | `user` (default) or `system` |
+  | `files` | binary | No* | Attachments (repeatable, 0–10 files) |
+
+  *At least one of `message` or `files` is required.
+
+  **Constraints:** max 10 files · max 10 MB per file · allowed types: image/jpeg, image/png, image/webp, image/gif, application/pdf
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "extra_cost_detail_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+      "message": "VAT amount adjusted per vendor invoice",
+      "type": "user",
+      "attachments": [
+        {
+          "fileName": "tax-invoice.pdf",
+          "fileToken": "bu-001/019638a6-2a00-7c4f-8e46-9b7a52c80c4f",
+          "fileUrl": "",
+          "contentType": "application/pdf",
+          "size": 102400
+        }
+      ],
+      "created_at": "2026-04-29T08:30:00.000Z"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > Note: `fileUrl` ใน response จะว่าง — frontend ต้องเรียก `GET /api/{bu_code}/documents/presigned-url/{fileToken}` เพื่อแสดงไฟล์
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Neither `message` nor `files` provided; file type/size violation |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission |
+  | 502 | S3 upload failed (all uploaded files rolled back) |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

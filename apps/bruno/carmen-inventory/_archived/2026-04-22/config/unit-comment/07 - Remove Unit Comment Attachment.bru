@@ -1,0 +1,48 @@
+meta {
+  name: 07 - Remove Unit Comment Attachment
+  type: http
+  seq: 7
+}
+
+docs {
+  ## Remove Unit Comment Attachment
+  ลบไฟล์แนบออกจากความคิดเห็น
+
+  Removes a file attachment from a comment by file token.
+
+  ### Path Parameters
+  - `id` — Comment ID / รหัสความคิดเห็น
+  - `fileToken` — File token of the attachment to remove / โทเคนไฟล์ของไฟล์แนบที่จะลบ
+  - `bu_code` — Business unit code / รหัสหน่วยธุรกิจ
+
+  ### Sample Response
+  ```json
+  {
+    "data": { "id": "uuid" },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-03-27T00:00:00.000Z"
+  }
+  ```
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/  url: {{host}}/api/config/{{bu_code}}/unit-comment/:id/:id/attachment/:fileToken
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: {{test_id}}
+  fileToken:
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

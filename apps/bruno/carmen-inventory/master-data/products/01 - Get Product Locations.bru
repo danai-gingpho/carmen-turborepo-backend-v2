@@ -1,0 +1,82 @@
+meta {
+  name: Get by location products
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/products/locations/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Products by Location
+  ดึงรายการสินค้าทั้งหมดตามรหัสสถานที่
+
+  Retrieves all products assigned to a specific storage location or warehouse.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Location ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `product_management.product:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "code": "PRD-001",
+        "name": "Rice (Jasmine)",
+        "local_name": "ข้าวหอมมะลิ",
+        "product_status_type": "active",
+        "inventory_unit": {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "name": "KG"
+        },
+        "locations": []
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `product_management.product:view` permission |
+  | 404 | Location not found |
+}
+
+params:path {
+  id: {{product_id}}
+}

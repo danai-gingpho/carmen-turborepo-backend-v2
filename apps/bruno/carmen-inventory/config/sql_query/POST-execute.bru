@@ -1,0 +1,80 @@
+meta {
+  name: Execute config_sql_query
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/sql-query/execute
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "sql_text": "SELECT * FROM tb_purchase_request LIMIT 10"
+  }
+}
+
+docs {
+  ## Execute SQL Query (Read-Only)
+  รัน SQL แบบ read-only แล้วคืนผลลัพธ์สำหรับการตรวจสอบข้อมูลใน tenant schema
+
+  Runs a SELECT/WITH/SHOW/EXPLAIN statement against the tenant DB and returns rows and columns.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "sql_text": "SELECT * FROM tb_purchase_request LIMIT 10"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "columns": ["id", "code", "status"],
+      "rows": [
+        { "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d", "code": "PR-2026-0001", "status": "draft" }
+      ]
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | SQL is not a read-only statement or syntax error |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission to execute SQL queries |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

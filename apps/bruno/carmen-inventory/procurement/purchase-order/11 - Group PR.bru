@@ -1,0 +1,91 @@
+meta {
+  name: Group pr for po purchase-order
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/purchase-order/group-pr
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "pr_ids": []
+  }
+}
+
+docs {
+  ## Group PR Details for PO Creation
+  แสดงตัวอย่างการจัดกลุ่มรายการใบขอซื้อที่อนุมัติแล้วเป็นใบสั่งซื้อตามผู้ขาย วันส่งมอบ และสกุลเงิน
+
+  Previews how approved purchase request line items will be grouped into purchase orders by vendor, delivery date, and currency. Optionally accepts a `workflow_id`; if omitted, auto-resolves the default purchase_order_workflow. Used by purchasers to review the PO structure before confirming the conversion from PRs to POs.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "workflow_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "pr_ids": [
+      "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    ]
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "groups": [
+        {
+          "vendor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "vendor_name": "ABC Food Supplies Co., Ltd.",
+          "currency_code": "THB",
+          "delivery_date": "2026-05-06",
+          "items": []
+        }
+      ]
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid or empty `pr_ids` array |
+  | 401 | Missing or invalid bearer token |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

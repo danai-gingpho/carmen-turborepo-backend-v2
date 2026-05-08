@@ -1,0 +1,107 @@
+meta {
+  name: Find all by purchase request template id purchase-request-template-comment
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/purchase-request-template-comment/:purchase_request_template_id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  purchase_request_template_id: {{test_id}}
+}
+
+vars:pre-request {
+  test_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## List Purchase Request Template Comments
+  แสดงความคิดเห็นทั้งหมดของ purchase-request-template (พร้อม pagination)
+
+  Get all comments for a purchase-request-template, with pagination support.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `purchase_request_template_id` | string (UUID) | Purchase Request Template ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "purchase_request_template_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "message": "Template updated for Q2 season.",
+        "type": "user",
+        "attachments": [
+          {
+            "fileName": "photo.jpg",
+            "fileToken": "tok-1",
+            "fileUrl": "",
+            "contentType": "image/jpeg",
+            "size": 204800
+          }
+        ],
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 3,
+      "total": 25,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > Note: `fileUrl` ใน response จะว่าง — frontend ต้องเรียก
+  > `GET /api/{bu_code}/documents/presigned-url/{fileToken}` เพื่อแสดงไฟล์
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `purchase_request_template_id` is not a valid UUID |
+  | 401 | Missing or invalid Bearer token |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

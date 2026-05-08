@@ -1,0 +1,144 @@
+meta {
+  name: Create config_vendors
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/vendors
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "code": "VND-2024-0001",
+    "name": "Siam Fresh Co., Ltd.",
+    "business_type": ["019638a6-2a00-7c4f-8e46-9b7a52c80c4e"],
+    "description": "Fresh produce and food ingredients supplier",
+    "info": [
+      {
+        "label": "Tax ID",
+        "value": "0105562034871",
+        "data_type": "string"
+      }
+    ],
+    "vendor_address": {
+      "add": [
+        {
+          "address_type": "mailing_address",
+          "address_line1": "88/12 Mu 4, Phahonyothin Road",
+          "address_line2": "Khlong Nueng",
+          "sub_district": "Khlong Nueng",
+          "district": "Khlong Luang",
+          "city": "Pathum Thani",
+          "province": "Pathum Thani",
+          "postal_code": "12120",
+          "country": "Thailand"
+        }
+      ]
+    },
+    "vendor_contact": {
+      "add": [
+        {
+          "name": "Wannapa Srisuwan",
+          "email": "wannapa.s@siamfresh.co.th",
+          "phone": "0812345678",
+          "is_primary": true,
+          "description": "Primary sales contact",
+          "info": []
+        }
+      ]
+    }
+  }
+}
+
+docs {
+  ## Create Vendor
+  สร้างผู้ขายใหม่
+
+  Creates a new vendor/supplier in the business unit.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.vendor:create`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "code": "VND-2024-0001",
+    "name": "Siam Fresh Co., Ltd.",
+    "business_type": ["019638a6-2a00-7c4f-8e46-9b7a52c80c4e"],
+    "description": "Fresh produce and food ingredients supplier",
+    "info": [
+      { "label": "Tax ID", "value": "0105562034871", "data_type": "string" }
+    ],
+    "vendor_address": {
+      "add": [
+        {
+          "address_type": "mailing_address",
+          "address_line1": "88/12 Mu 4, Phahonyothin Road",
+          "city": "Pathum Thani",
+          "postal_code": "12120",
+          "country": "Thailand"
+        }
+      ]
+    },
+    "vendor_contact": {
+      "add": [
+        {
+          "name": "Wannapa Srisuwan",
+          "email": "wannapa.s@siamfresh.co.th",
+          "phone": "0812345678",
+          "is_primary": true
+        }
+      ]
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `name` or `code` is missing or invalid |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `vendor_management.vendor:create` permission |
+}

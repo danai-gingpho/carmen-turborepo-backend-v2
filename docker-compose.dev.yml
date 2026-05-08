@@ -1,0 +1,224 @@
+# docker-compose.dev.yml
+# Build local version — ใช้สำหรับ development บน VM (Alpine Linux / Docker)
+# Usage:
+#   docker compose -f docker-compose.dev.yml build
+#   docker compose -f docker-compose.dev.yml up -d
+#   docker compose -f docker-compose.dev.yml logs -f
+#
+# Run เฉพาะ core (3 services หลัก):
+#   docker compose -f docker-compose.dev.yml up -d api-backend-gateway api-micro-business api-micro-keycloak-api
+
+services:
+  api-backend-gateway:
+    image: local/carmen-backend-gateway:latest
+    build:
+      context: .
+      dockerfile: apps/backend-gateway/Dockerfile
+    container_name: carmen-api-backend-gateway
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+      - "4001:4001"
+    env_file:
+      - ./apps/backend-gateway/.env
+    environment:
+      - NODE_ENV=production
+      # Service discovery — ใช้ Docker network hostname
+      - BUSINESS_SERVICE_HOST=api-micro-business
+      - BUSINESS_SERVICE_TCP_PORT=5020
+      - BUSINESS_SERVICE_HTTP_PORT=6020
+      - CLUSTER_SERVICE_HOST=api-micro-cluster
+      - CLUSTER_SERVICE_TCP_PORT=5014
+      - CLUSTER_SERVICE_HTTP_PORT=6014
+      - FILE_SERVICE_HOST=api-micro-file
+      - FILE_SERVICE_TCP_PORT=5007
+      - FILE_SERVICE_HTTP_PORT=6007
+      - KEYCLOAK_API_SERVICE_HOST=api-micro-keycloak-api
+      - KEYCLOAK_API_SERVICE_TCP_PORT=5013
+      - KEYCLOAK_API_SERVICE_HTTP_PORT=6013
+      - NOTIFICATION_SERVICE_HOST=api-micro-notification
+      - NOTIFICATION_SERVICE_TCP_PORT=5006
+      - NOTIFICATION_SERVICE_HTTP_PORT=6006
+      - REPORT_SERVICE_HOST=api-micro-report
+      - REPORT_SERVICE_TCP_PORT=5015
+      - REPORT_SERVICE_HTTP_PORT=6015
+      - REPORT_RENDER_HOST=api-micro-report
+      - REPORT_RENDER_TCP_PORT=8001
+    networks:
+      - carmen-network
+    healthcheck:
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:4000/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  api-micro-cluster:
+    image: local/carmen-micro-cluster:latest
+    build:
+      context: .
+      dockerfile: apps/micro-cluster/Dockerfile
+    container_name: carmen-api-micro-cluster
+    restart: unless-stopped
+    ports:
+      - "5014:5014"
+      - "6014:6014"
+    env_file:
+      - ./apps/micro-cluster/.env
+    environment:
+      - NODE_ENV=production
+      # Service discovery
+      - GATEWAY_SERVICE_HOST=api-backend-gateway
+      - BUSINESS_SERVICE_HOST=api-micro-business
+      - CLUSTER_SERVICE_HOST=0.0.0.0
+      - FILE_SERVICE_HOST=api-micro-file
+      - KEYCLOAK_API_SERVICE_HOST=api-micro-keycloak-api
+      - KEYCLOAK_API_SERVICE_TCP_PORT=5013
+      - NOTIFICATION_SERVICE_HOST=api-micro-notification
+      - REPORT_SERVICE_HOST=api-micro-report
+      - REPORT_RENDER_HOST=api-micro-report
+    networks:
+      - carmen-network
+    depends_on:
+      - api-backend-gateway
+    healthcheck:
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:5014/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  api-micro-business:
+    image: local/carmen-micro-business:latest
+    build:
+      context: .
+      dockerfile: apps/micro-business/Dockerfile
+    container_name: carmen-api-micro-business
+    restart: unless-stopped
+    ports:
+      - "5020:5020"
+      - "6020:6020"
+    env_file:
+      - ./apps/micro-business/.env
+    environment:
+      - NODE_ENV=production
+      # Service discovery
+      - GATEWAY_SERVICE_HOST=api-backend-gateway
+      - BUSINESS_SERVICE_HOST=api-micro-business
+      - CLUSTER_SERVICE_HOST=api-micro-cluster
+      - FILE_SERVICE_HOST=api-micro-file
+      - FILE_SERVICE_TCP_PORT=5007
+      - KEYCLOAK_API_SERVICE_HOST=api-micro-keycloak-api
+      - KEYCLOAK_API_SERVICE_TCP_PORT=5013
+      - NOTIFICATION_SERVICE_HOST=api-micro-notification
+      - NOTIFICATION_SERVICE_TCP_PORT=5006
+      - REPORT_SERVICE_HOST=api-micro-report
+      - REPORT_SERVICE_TCP_PORT=5015
+      - REPORT_RENDER_HOST=api-micro-report
+      - REPORT_RENDER_TCP_PORT=8001
+    networks:
+      - carmen-network
+    depends_on:
+      - api-backend-gateway
+    healthcheck:
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:5020/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  api-micro-keycloak-api:
+    image: local/carmen-micro-keycloak-api:latest
+    build:
+      context: .
+      dockerfile: apps/micro-keycloak-api/Dockerfile
+    container_name: carmen-api-micro-keycloak-api
+    restart: unless-stopped
+    ports:
+      - "5013:5013"
+      - "6013:6013"
+    env_file:
+      - ./apps/micro-keycloak-api/.env
+    environment:
+      - NODE_ENV=production
+      # Service discovery
+      - GATEWAY_SERVICE_HOST=api-backend-gateway
+      - BUSINESS_SERVICE_HOST=api-micro-business
+      - CLUSTER_SERVICE_HOST=api-micro-cluster
+      - FILE_SERVICE_HOST=api-micro-file
+      - NOTIFICATION_SERVICE_HOST=api-micro-notification
+      - REPORT_SERVICE_HOST=api-micro-report
+      - REPORT_RENDER_HOST=api-micro-report
+    networks:
+      - carmen-network
+    depends_on:
+      - api-backend-gateway
+
+  api-micro-file:
+    image: local/carmen-micro-file:latest
+    build:
+      context: .
+      dockerfile: apps/micro-file/Dockerfile
+    container_name: carmen-api-micro-file
+    restart: unless-stopped
+    ports:
+      - "5007:5007"
+      - "6007:6007"
+    env_file:
+      - ./apps/micro-file/.env
+    environment:
+      - NODE_ENV=production
+      # Service discovery
+      - GATEWAY_SERVICE_HOST=api-backend-gateway
+      - BUSINESS_SERVICE_HOST=api-micro-business
+      - CLUSTER_SERVICE_HOST=api-micro-cluster
+      - FILE_SERVICE_HOST=api-micro-file
+      - KEYCLOAK_API_SERVICE_HOST=api-micro-keycloak-api
+      - NOTIFICATION_SERVICE_HOST=api-micro-notification
+      - REPORT_SERVICE_HOST=api-micro-report
+      - REPORT_RENDER_HOST=api-micro-report
+    networks:
+      - carmen-network
+    depends_on:
+      - api-backend-gateway
+
+  api-micro-notification:
+    image: local/carmen-micro-notification:latest
+    build:
+      context: .
+      dockerfile: apps/micro-notification/Dockerfile
+    container_name: carmen-api-micro-notification
+    restart: unless-stopped
+    ports:
+      - "5006:5006"
+      - "6006:6006"
+    env_file:
+      - ./apps/micro-notification/.env
+    environment:
+      - NODE_ENV=production
+      # Service discovery
+      - GATEWAY_SERVICE_HOST=api-backend-gateway
+      - BUSINESS_SERVICE_HOST=api-micro-business
+      - CLUSTER_SERVICE_HOST=api-micro-cluster
+      - FILE_SERVICE_HOST=api-micro-file
+      - KEYCLOAK_API_SERVICE_HOST=api-micro-keycloak-api
+      - NOTIFICATION_SERVICE_HOST=0.0.0.0
+      - NOTIFICATION_SERVICE_TCP_PORT=5006
+      - NOTIFICATION_SERVICE_HTTP_PORT=6006
+      - REPORT_SERVICE_HOST=api-micro-report
+      - REPORT_RENDER_HOST=api-micro-report
+    networks:
+      - carmen-network
+    depends_on:
+      - api-backend-gateway
+    healthcheck:
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:5006/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  carmen-network:
+    driver: bridge
+    name: carmen-network

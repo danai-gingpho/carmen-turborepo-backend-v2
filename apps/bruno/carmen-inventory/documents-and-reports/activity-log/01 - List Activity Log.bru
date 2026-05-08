@@ -1,0 +1,123 @@
+meta {
+  name: List activity-log
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/activity-log
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~entity_type:
+  ~entity_id:
+  ~actor_id:
+  ~action:
+  ~start_date:
+  ~end_date:
+}
+
+docs {
+  ## Get All Activity Logs
+  แสดงรายการบันทึกกิจกรรมทั้งหมดพร้อมการแบ่งหน้าและค้นหา
+
+  Lists all user activity records for the business unit with filtering by entity type, user, action, and date range. Used for audit trail review, compliance reporting, and investigating who performed what actions on procurement and inventory documents.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `entity_type` | string | No | — | Filter by entity type (e.g. `purchase_request`) |
+  | `entity_id` | string | No | — | Filter by entity ID (UUID) |
+  | `actor_id` | string | No | — | Filter by actor (user) ID |
+  | `action` | string | No | — | Filter by action (`create`, `update`, `delete`, etc.) |
+  | `start_date` | string | No | — | Filter from date (ISO 8601) |
+  | `end_date` | string | No | — | Filter to date (ISO 8601) |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "11111111-1111-1111-1111-111111111111",
+        "action": "create",
+        "entity_type": "purchase_request",
+        "entity_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "actor_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "actor_username": "john.doe",
+        "actor_firstname": "John",
+        "actor_lastname": "Doe",
+        "description": "Created purchase request PR-2026-0001",
+        "ip_address": "192.168.1.1",
+        "audit": {
+          "created": {
+            "at": "2026-04-29T08:30:00.000Z",
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "John Doe"
+          }
+        }
+      },
+      {
+        "id": "22222222-2222-2222-2222-222222222222",
+        "action": "update",
+        "entity_type": "purchase_order",
+        "entity_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "actor_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "actor_username": "john.doe",
+        "actor_firstname": "John",
+        "actor_lastname": "Doe",
+        "description": "Updated purchase order PO-2026-0002",
+        "ip_address": "192.168.1.1",
+        "audit": {
+          "created": {
+            "at": "2026-04-29T08:00:00.000Z",
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "John Doe"
+          }
+        }
+      }
+    ],
+    "paginate": {
+      "total": 2,
+      "page": 1,
+      "perpage": 10,
+      "pages": 1
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T09:15:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks permission to view activity logs |
+}

@@ -1,0 +1,83 @@
+meta {
+  name: Find one detail purchase-order
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/purchase-order/:id/details/:detail_id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Purchase Order Detail by ID
+  ดึงรายการเดียวจากใบสั่งซื้อพร้อมรายละเอียดสินค้า ราคา และการจัดส่ง สำหรับตรวจสอบเมื่อสร้างใบรับสินค้า
+
+  Retrieves a single line item from a purchase order with full product, pricing, and delivery details. Used to inspect a specific item when creating a Good Received Note or resolving discrepancies.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase order ID |
+  | `detail_id` | string (UUID) | Purchase order detail line item ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_order:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "product_name": "Rice Jasmine 5kg",
+      "order_qty": 10.5,
+      "order_unit_name": "bag",
+      "unit_price": 250.00,
+      "sub_total_price": 2625.00,
+      "received_qty": 0.0,
+      "delivery_date": "2026-05-06T08:30:00.000Z",
+      "created_at": "2026-04-29T08:30:00.000Z",
+      "updated_at": "2026-04-29T08:30:00.000Z"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.purchase_order:view` permission |
+  | 404 | Purchase order or detail not found |
+}
+
+params:path {
+  id: {{po_id}}
+  detail_id: {{po_detail_id}}
+}

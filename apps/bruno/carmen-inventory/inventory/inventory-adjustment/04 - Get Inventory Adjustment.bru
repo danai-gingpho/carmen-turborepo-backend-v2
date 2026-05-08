@@ -1,0 +1,102 @@
+meta {
+  name: By id inventory-adjustment
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/inventory-adjustment/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+  ~type: 
+}
+
+vars:pre-request {
+  inventory_adjustment_id: 5a501669-7a74-436b-99aa-5eaed3d08e93
+}
+
+docs {
+  ## Get Inventory Adjustment
+  ดึงรายละเอียดทั้งหมดของรายการปรับปรุงสินค้าคงคลังเฉพาะรายการ (รับเข้าหรือจ่ายออก) รวมถึงสินค้าที่ได้รับผลกระทบ จำนวน และสาเหตุของการแก้ไข สำหรับการตรวจสอบและยืนยัน
+
+  Retrieves the full details of a specific inventory adjustment (stock-in or stock-out), including affected products, quantities, and the reason for the correction, for audit review and verification.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Inventory Adjustment ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `type` | string | Yes | — | Adjustment type: `stock-in` or `stock-out` |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "type": "stock-in",
+      "doc_no": "ADJ-2026-0001",
+      "doc_date": "2026-04-29T08:30:00.000Z",
+      "doc_status": "draft",
+      "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "location_name": "Main Store",
+      "info": [],
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `type` query parameter is missing or invalid |
+  | 404 | Inventory adjustment not found |
+}
+
+params:query {
+  type: stock-in
+}
+
+params:path {
+  id: {{inventory_adjustment_id}}
+}

@@ -1,0 +1,84 @@
+meta {
+  name: Patch user action workflow
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/workflow/patch-user-action
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "doc_type": "purchase_request",
+    "doc_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "user_ids": ["019638a6-2a00-7c4f-8e46-9b7a52c80c4d"]
+  }
+}
+
+docs {
+  ## Patch User Action on Workflow Document
+  แก้ไข user_action บนเอกสารที่มีขั้นตอนการทำงาน เพื่อแก้ไขการมอบหมายที่ผิดพลาด
+
+  Manually override the user_action field on any workflow-enabled document (po, pr, sr, grn, cn, si, so). Use this to fix broken workflow assignments so the approval process can continue.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "doc_type": "purchase_request",
+    "doc_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "user_ids": ["019638a6-2a00-7c4f-8e46-9b7a52c80c4d"]
+  }
+  ```
+
+  Valid `doc_type` values: `po`, `pr`, `sr`, `grn`, `cn`, `si`, `so`, `tf`, `jv`.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "doc_type": "purchase_request",
+      "doc_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "updated": true
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid `doc_type` value |
+  | 401 | Missing or invalid bearer token |
+  | 404 | Document not found |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

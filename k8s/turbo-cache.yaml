@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: turbo-cache
+  namespace: carmen-backend
+  labels:
+    app: turbo-cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: turbo-cache
+  template:
+    metadata:
+      labels:
+        app: turbo-cache
+    spec:
+      containers:
+        - name: turbo-cache
+          image: ducktors/turborepo-remote-cache:latest
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            - name: STORAGE_PROVIDER
+              value: "s3"
+            - name: S3_BUCKET
+              value: "bun-cache"
+            - name: S3_REGION
+              value: "ap-southeast-7"
+          envFrom:
+            - secretRef:
+                name: carmen-backend-secret
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: turbo-cache
+  namespace: carmen-backend
+  labels:
+    app: turbo-cache
+spec:
+  type: ClusterIP
+  selector:
+    app: turbo-cache
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000

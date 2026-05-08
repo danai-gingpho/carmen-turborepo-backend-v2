@@ -1,0 +1,82 @@
+meta {
+  name: Remove attachment stock-out-detail-comment
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/stock-out-detail-comment/:id/attachment/:fileToken
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+  fileToken:
+}
+
+docs {
+  ## Remove Stock Out Detail Comment Attachment
+  ลบไฟล์แนบเดี่ยวออกจากคอมเมนต์ ผ่าน fileToken
+
+  Removes a single attachment from a stock-out detail comment by its fileToken.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+  | `fileToken` | string | File token (`bu_code/uuid`) of the attachment to remove |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.stock_out:update`
+  - **Roles**: Purchase
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > To remove multiple files or combine with adding new files, use `04 - Update` which supports `attachments: { add, remove }` in multipart format.
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.stock_out:update` permission |
+  | 404 | Comment or attachment not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

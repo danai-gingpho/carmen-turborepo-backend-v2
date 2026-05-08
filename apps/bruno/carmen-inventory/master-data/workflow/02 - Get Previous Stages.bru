@@ -1,0 +1,86 @@
+meta {
+  name: Get previous stages workflow
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/workflow/:workflow_id/previous_stages
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~stage: 
+  ~version: 
+}
+
+docs {
+  ## Get Previous Workflow Stages
+  ดึงขั้นตอนอนุมัติก่อนหน้าของขั้นตอนการทำงาน ใช้สำหรับตัวเลือกส่งกลับในห่วงโซ่การอนุมัติ
+
+  Retrieves the previous approval stages of a workflow relative to the current stage, used to determine revert/return-to options in the approval chain.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `workflow_id` | string (UUID) | Workflow ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `stage` | string | No | — | Current stage name to find previous stages from |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "name": "Requestor Submission",
+        "order": 0,
+        "role": "Requestor"
+      },
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "name": "HOD Approval",
+        "order": 1,
+        "role": "HOD"
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 404 | Workflow not found |
+}
+
+params:path {
+  workflow_id: {{workflow_id}}
+}

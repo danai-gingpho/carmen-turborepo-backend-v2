@@ -1,0 +1,82 @@
+meta {
+  name: Cancel purchase-order
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/purchase-order/:id/cancel
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {}
+}
+
+docs {
+  ## Cancel Purchase Order
+  ยกเลิกใบสั่งซื้อที่ยังไม่ได้รับสินค้าครบถ้วน ถอนการสั่งซื้อจากผู้ขาย เฉพาะสถานะร่าง อยู่ระหว่างดำเนินการ หรือส่งแล้วเท่านั้น
+
+  Cancels a purchase order that has not been fully received, withdrawing the commitment to the vendor. Only draft, in-progress, or sent POs can be cancelled. Cancelled quantities are tracked on line items for reporting.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase order ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {}
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | PO is in a state that cannot be cancelled (e.g., fully received or already closed) |
+  | 401 | Missing or invalid bearer token |
+  | 404 | Purchase order not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{po_id}}
+}

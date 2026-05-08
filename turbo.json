@@ -1,0 +1,84 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["db:generate", "^db:generate", "^build:package", "^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**"]
+    },
+    "build:bump": {
+      "dependsOn": ["db:generate", "^db:generate", "^build:package", "^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**"]
+    },
+    "build:package": {
+      "dependsOn": ["db:generate", "^db:generate", "^build:package", "^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "dev": {
+      "dependsOn": ["^db:generate", "^build:package"],
+      "cache": false,
+      "persistent": true
+    },
+    "dev:gateway": {
+      "cache": false
+    },
+    "dev:business": {
+      "cache": false
+    },
+    "dev:file": {
+      "cache": false
+    },
+    "dev:notification": {
+      "cache": false
+    },
+    "dev:keycloak-api": {
+      "cache": false
+    },
+"dev:cluster": {
+      "cache": false
+    },
+    "dev:base": {
+      "dependsOn": ["^db:generate", "^build:package", "dev:business", "dev:gateway", "dev:keycloak-api", "dev:cluster"],
+      "cache": false,
+      "persistent": true
+    },
+    "prod:base": {
+      "dependsOn": ["^db:generate", "^build:package", "start:prod"],
+      "cache": true,
+      "persistent": true
+    },
+    "dev:prod": {
+      "dependsOn": ["^db:generate", "^build:package"],
+      "cache": true,
+      "persistent": true
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:migrate:reset": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:deploy": {
+      "cache": false
+    },
+    "start:prod": {
+      "dependsOn": ["^db:generate", "^build:package"],
+      "cache": true,
+      "persistent": true
+    }
+  }
+}

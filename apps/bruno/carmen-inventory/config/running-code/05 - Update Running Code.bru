@@ -1,0 +1,98 @@
+meta {
+  name: Update config_running-code
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{host}}/api/config/{{bu_code}}/running-code/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "type": "purchase_request",
+    "config": {
+      "A": "PR",
+      "B": "YYYY",
+      "C": "MM",
+      "D": "0001",
+      "format": "{A}{B}{C}{D}"
+    }
+  }
+}
+
+docs {
+  ## Update Running Code
+  อัปเดตกฎการกำหนดเลขอัตโนมัติที่มีอยู่ เช่น เปลี่ยนรูปแบบหรือรีเซ็ตตัวนับ
+
+  Modifies an existing auto-numbering rule, such as changing the format pattern, prefix, or resetting the counter.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Running code ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "type": "purchase_request",
+    "config": {
+      "A": "PR",
+      "B": "YYYY",
+      "C": "MM",
+      "D": "0001",
+      "format": "{A}{B}{C}{D}"
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission to update running codes |
+  | 404 | Running code not found |
+}
+
+params:path {
+  id: 
+}

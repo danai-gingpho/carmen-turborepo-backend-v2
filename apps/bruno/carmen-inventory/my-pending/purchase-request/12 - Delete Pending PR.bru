@@ -1,0 +1,78 @@
+meta {
+  name: Remove my-pending
+  type: http
+  seq: 12
+}
+
+delete {
+  url: {{host}}/api/my-pending/purchase-request/{{bu_code}}/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Delete a Purchase Request
+  ลบใบขอซื้อที่ไม่ต้องการ โดยทั่วไปเป็นใบขอฉบับร่างหรือที่ถูกปฏิเสธ ที่ผู้ขอตัดสินใจยกเลิกแทนที่จะส่งใหม่ Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Removes a purchase request that is no longer needed, typically a draft or rejected request that the requestor has decided to discard rather than resubmit.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase request ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks permission to delete purchase requests |
+  | 404 | Purchase request not found |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  bu_code: {{bu_code}}
+  id: {{pr_id}}
+}

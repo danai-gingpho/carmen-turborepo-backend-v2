@@ -1,0 +1,72 @@
+meta {
+  name: Find detail by id spot-check
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/spot-check/:id/details/:detail_id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+docs {
+  ## Get Spot Check Detail
+  ดึงรายละเอียดสินค้าแต่ละรายการในการตรวจสอบ
+
+  Retrieves a single spot check detail item.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Spot Check ID |
+  | `detail_id` | string (UUID) | Spot Check Detail ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.spot_check:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "spot_check_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "product_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "product_name": "Rice 50kg",
+      "system_qty": 100,
+      "actual_qty": 95
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | Detail not found |
+  | 403 | User lacks `inventory_management.spot_check:view` permission |
+}

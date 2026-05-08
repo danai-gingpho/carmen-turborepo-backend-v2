@@ -1,0 +1,95 @@
+meta {
+  name: Update good-received-note-detail-comment
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/good-received-note-detail-comment/:id
+  body: multipartForm
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  ~message: Updated comment text
+  ~type: user
+  ~remove_attachments: ["tok-old-1","tok-old-2"]
+  ~files: @file(/Users/samutpra/Pictures/logo.png)
+}
+
+docs {
+  ## Patch Good Received Note Detail Comment
+  แก้ไขความคิดเห็นของรายการในใบรับสินค้า พร้อมเพิ่ม/ลบไฟล์แนบใน request เดียว
+
+  Updates an existing good-received-note-detail comment. Supports adding new files and removing existing attachments atomically in a single multipart request.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:update`
+  - **Roles**: Purchase
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `message` | text | Conditional | Updated comment text (≤ 4000 chars) |
+  | `type` | text | No | `user` or `system` |
+  | `files` | binary (repeatable) | No | New files to add (max 10, 10 MB each) |
+  | `remove_attachments` | text | No | JSON-encoded array of fileTokens to delete, e.g. `["tok-1","tok-2"]` |
+
+  At least one field must be provided. Allowed file types: image/jpeg, image/png, image/webp, image/gif, application/pdf.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | No fields provided; file exceeds size/type constraints; `remove_attachments` is not valid JSON array |
+  | 401 | Bearer token missing or invalid |
+  | 403 | User lacks `procurement.goods_received_note:update` permission |
+  | 502 | File service upstream failure during S3 upload |
+
+  > New file uploads are rolled back automatically if the business service returns an error. Removed files are deleted from S3 on a best-effort basis (failures are logged but do not abort the request).
+}

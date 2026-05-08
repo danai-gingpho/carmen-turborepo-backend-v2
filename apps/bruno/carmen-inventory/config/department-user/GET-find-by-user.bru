@@ -1,0 +1,76 @@
+meta {
+  name: Find by user config_department-user
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/department-user/user/:user_id
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~version:
+}
+
+params:path {
+  user_id: d384490c-95b7-478c-b0ae-81d8bc89e274
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+docs {
+  ## Get Department Assignments by User ID
+  ดึงข้อมูลการมอบหมายแผนกตาม User ID
+
+  Retrieves all department assignments for a specific user.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `user_id` | string (UUID) | User ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "department_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "user_id": "d384490c-95b7-478c-b0ae-81d8bc89e274",
+        "department_name": "Kitchen",
+        "is_active": true
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | User not found for given user_id |
+  | 400 | Invalid UUID format for `user_id` |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

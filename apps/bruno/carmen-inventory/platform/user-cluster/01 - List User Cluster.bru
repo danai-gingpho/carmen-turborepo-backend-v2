@@ -1,0 +1,91 @@
+meta {
+  name: Get user cluster all platform_user-cluster
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api-system/user/cluster
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List User Cluster
+  แสดงรายการคลัสเตอร์ของผู้ใช้ทั้งหมดพร้อมการแบ่งหน้าและค้นหา
+
+  Lists all user-to-organization memberships across the platform, showing which users belong to which hotel chains or companies. Used to manage and audit organizational-level access control.
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "11111111-1111-1111-1111-111111111111",
+        "email": "john.doe@example.com",
+        "platform_role": "user",
+        "role": "user",
+        "parent_bu_id": null,
+        "cluster": { "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d", "name": "Acme Hotel Group" },
+        "user_info": { "firstname": "John", "lastname": "Doe", "middlename": "" },
+        "business_unit": { "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f", "name": "Acme Bangkok", "code": "BKK" },
+        "audit": {
+          "created": { "at": "2026-04-29T08:30:00.000Z", "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "name": "John Doe" },
+          "updated": { "at": "2026-04-29T09:15:00.000Z", "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891", "name": "Jane Smith" }
+        }
+      },
+      {
+        "id": "22222222-2222-2222-2222-222222222222",
+        "email": "jane.smith@example.com",
+        "platform_role": "user",
+        "role": "user",
+        "parent_bu_id": null,
+        "cluster": { "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d", "name": "Acme Hotel Group" },
+        "user_info": { "firstname": "Jane", "lastname": "Smith", "middlename": "" },
+        "business_unit": { "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f", "name": "Acme Bangkok", "code": "BKK" },
+        "audit": {
+          "created": { "at": "2026-04-29T08:00:00.000Z", "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "name": "John Doe" }
+        }
+      }
+    ],
+    "paginate": { "total": 2, "page": 1, "perpage": 10, "pages": 1 },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T09:15:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+}

@@ -1,0 +1,84 @@
+meta {
+  name: List my-pending
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/my-pending/purchase-order
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get All Purchase Orders
+  แสดงรายการใบสั่งซื้อทั้งหมดที่รอการอนุมัติของผู้ใช้พร้อมการแบ่งหน้า ให้ผู้อนุมัติตรวจสอบและดำเนินการกับใบสั่งซื้อที่รออนุมัติ Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Lists all purchase orders in the user's pending approval queue with pagination, allowing approvers to review and process vendor orders awaiting authorization before goods are procured.
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `search` | string | No | — | Search keyword |
+  | `bu_code` | string | No | — | Business unit code filter |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_order:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "po_no": "PO-2026-0001",
+        "po_date": "2026-04-29T08:30:00.000Z",
+        "po_status": "pending_approval",
+        "vendor_name": "Thai Food Supplies Co., Ltd.",
+        "total_amount": 15000.00,
+        "workflow_current_stage": "Manager Approval"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 5,
+      "total": 42,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks `procurement.purchase_order:view` permission |
+}

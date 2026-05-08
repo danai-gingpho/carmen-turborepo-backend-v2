@@ -1,0 +1,93 @@
+meta {
+  name: Commit good-received-note
+  type: http
+  seq: 16
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/good-received-note/:id/commit
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {}
+}
+
+vars:pre-request {
+  grn_id: 2c0e2454-5812-4a57-a374-080453c6ed24
+}
+
+docs {
+  ## Patch Good Received Note — Commit
+  ยืนยันใบรับสินค้า เปลี่ยนสถานะจาก `saved` เป็น `committed`
+
+  Commits a saved goods receiving record, changing its status from `saved` to `committed`. GRN must be in `saved` status before committing.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Good Received Note ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:commit`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {}
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | GRN must be in `saved` status to commit |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.goods_received_note:commit` permission |
+  | 404 | Good Received Note not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{grn_id}}
+}

@@ -1,0 +1,62 @@
+meta {
+  name: Hard delete many activity-log
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/activity-log/batch/hard
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+docs {
+  ## Batch Hard Delete Activity Logs
+  ลบบันทึกกิจกรรมหลายรายการอย่างถาวรพร้อมกัน
+
+  Permanently and irreversibly removes multiple activity log entries from the database in a single operation. Use with caution as this cannot be undone and may affect audit compliance.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "count": 3
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 400 | IDs array is empty or invalid |
+
+  > Note: This endpoint accepts a request body with `ids: string[]` even though it is a DELETE request.
+}

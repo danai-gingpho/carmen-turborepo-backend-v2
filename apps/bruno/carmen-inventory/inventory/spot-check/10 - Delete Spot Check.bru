@@ -1,0 +1,72 @@
+meta {
+  name: Remove spot-check
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/spot-check/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+vars:pre-request {
+  spot_check_id:
+}
+
+docs {
+  ## Delete Spot Check
+  ลบรายการตรวจสอบสินค้าเฉพาะจุดที่สร้างผิดพลาดหรือไม่จำเป็น
+
+  Removes a spot check that was created in error or is no longer required.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Spot Check ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.spot_check:delete`
+  - **Roles**: Purchase
+
+  ### Sample Response
+  ```json
+  {
+    "data": { "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d" },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | Spot check not found |
+  | 403 | User lacks `inventory_management.spot_check:delete` permission |
+}
+
+params:path {
+  id: {{spot_check_id}}
+}

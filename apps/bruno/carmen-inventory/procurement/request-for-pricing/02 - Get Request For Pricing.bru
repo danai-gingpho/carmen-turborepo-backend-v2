@@ -1,0 +1,100 @@
+meta {
+  name: By id request-for-pricing
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/request-for-pricing/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+vars:pre-request {
+  rfp_id: 97e7fae5-18cc-4ae4-af9a-967799c0bffa
+}
+
+docs {
+  ## Get Request For Pricing by ID
+  ดึงข้อมูลใบขอราคารายการเดียวตาม ID
+
+  Retrieves a specific Request for Pricing (RFP) document sent to vendors, including the requested items, vendor responses, and quoted prices used for competitive procurement comparison.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Request For Pricing ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "name": "Q1 2026 Pricing Request",
+      "pricelist_template_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+      "start_date": "2026-04-01T00:00:00.000Z",
+      "end_date": "2026-04-30T23:59:59.000Z",
+      "custom_message": "Please submit your best pricing for Q1 items.",
+      "workflow_current_stage": "draft",
+      "workflow_next_stage": "approval",
+      "tb_request_for_pricing_detail": [],
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 404 | Request for pricing not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{rfp_id}}
+}

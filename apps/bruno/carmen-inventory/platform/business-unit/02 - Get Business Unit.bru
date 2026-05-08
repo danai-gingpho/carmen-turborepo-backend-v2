@@ -1,0 +1,89 @@
+meta {
+  name: Get business unit by id platform_business-unit
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api-system/business-unit/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Business Unit
+  ดึงข้อมูลหน่วยธุรกิจรายการเดียวตาม ID
+
+  Retrieves the full details of a specific hotel property or operational unit, including its configuration, cluster membership, and tenant settings.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `id` | string (UUID) | Business unit ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "code": "BU-001",
+      "name": "Bangkok Grand Hotel",
+      "alias_name": "BGH",
+      "description": "Main property in Bangkok CBD",
+      "is_hq": true,
+      "is_active": true,
+      "cluster_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "default_currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "timezone": "Asia/Bangkok",
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 404 | Business unit not found |
+}
+
+params:path {
+  id:
+}

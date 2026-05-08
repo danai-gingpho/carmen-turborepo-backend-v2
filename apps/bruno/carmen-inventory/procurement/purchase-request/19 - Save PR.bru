@@ -1,0 +1,102 @@
+meta {
+  name: Update purchase-request
+  type: http
+  seq: 19
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/purchase-request/:id/save
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {}
+}
+
+vars:pre-request {
+  pr_id: d2a87a6c-5b77-4b43-9df4-e2d2aeab2bd7
+}
+
+docs {
+  ## Save (Update) Purchase Request
+  บันทึกการเปลี่ยนแปลงใบขอซื้อรวมถึงข้อมูลส่วนหัวและการแก้ไขรายการสินค้า ใช้สำหรับปรับปรุงจำนวน เพิ่มหรือลบรายการ หรือแก้ไขรายละเอียดก่อนส่งเข้าอนุมัติ
+
+  Saves changes to a purchase request including header information and line item modifications. Used to update quantities, add or remove items, or adjust details before submitting the PR for approval.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase request ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+  | `Content-Type` | Yes | `application/json` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "details": {
+      "pr_date": "2026-04-29T08:30:00.000Z",
+      "description": "Kitchen supplies for May 2026 (updated)",
+      "purchase_request_detail": {
+        "add": [],
+        "update": [
+          {
+            "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+            "requested_qty": 15,
+            "delivery_date": "2026-05-10T00:00:00.000Z"
+          }
+        ],
+        "remove": []
+      }
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Validation error in request body |
+  | 401 | Missing or invalid bearer token |
+  | 403 | Insufficient permissions |
+  | 404 | Purchase request not found |
+}
+
+params:path {
+  id: {{pr_id}}
+}

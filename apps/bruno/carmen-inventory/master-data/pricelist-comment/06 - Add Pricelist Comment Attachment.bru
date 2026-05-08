@@ -1,0 +1,101 @@
+meta {
+  name: Add attachments pricelist-comment
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/pricelist-comment/:id/attachment
+  body: multipartForm
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  files: @file(/Users/samutpra/Pictures/logo.png)
+  files: @file(/Users/samutpra/Pictures/logo_CARMEN_Classic-Blue_low-res.png)
+}
+
+docs {
+  ## Add Pricelist Comment Attachment
+  อัปโหลดไฟล์แนบหลายไฟล์เข้ากับคอมเมนต์ที่มีอยู่แล้วใน request เดียว
+
+  Batch-uploads one or more files to an existing comment. Files are uploaded to S3 atomically — if any upload fails the request rolls back and returns 502.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `files` | binary (repeatable) | Yes | Attachment files (1–10) |
+
+  Constraints: max 10 files, max 10 MB per file, allowed MIME: image/jpeg, image/png, image/webp, image/gif, application/pdf
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "attachments": [
+        {
+          "fileName": "logo.png",
+          "fileToken": "tok-abc123",
+          "fileUrl": "",
+          "contentType": "image/png",
+          "size": 204800
+        }
+      ]
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > `fileUrl` will be empty — frontend must call `GET /api/{bu_code}/documents/presigned-url/{fileToken}` to display files.
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | No files provided; file count > 10; file size > 10 MB; unsupported MIME type |
+  | 502 | S3 file upload failure (with automatic rollback) |
+}

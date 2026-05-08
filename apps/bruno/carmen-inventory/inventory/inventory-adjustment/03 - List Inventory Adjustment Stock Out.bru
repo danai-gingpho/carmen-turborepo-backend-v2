@@ -1,0 +1,75 @@
+meta {
+  name: 03 - List Inventory Adjustment Stock Out
+  type: http
+  seq: 3
+}
+
+docs {
+  ## List Inventory Adjustments (Stock-Out)
+  ดึงรายการปรับปรุงสินค้าคงคลังเฉพาะประเภทจ่ายออก (stock-out) แสดงรายการที่มีการหักจำนวนสินค้าออกจากระบบ
+
+  Lists inventory adjustments filtered to stock-out type only, showing records where quantities were deducted from the system inventory.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `type` | string | No | — | Fixed to `stock-out` for this variant |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "type": "stock-out",
+        "doc_no": "ADJ-2026-0002",
+        "doc_date": "2026-04-29T08:30:00.000Z",
+        "doc_status": "draft",
+        "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "location_name": "Main Store",
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": { "page": 1, "perpage": 10, "pages": 5, "total": 48, "prev": null, "next": 2 },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/inventory-adjustment?type=stock-out
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

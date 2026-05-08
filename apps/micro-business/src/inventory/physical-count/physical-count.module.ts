@@ -1,0 +1,40 @@
+import { Module } from '@nestjs/common';
+import { PhysicalCountService } from './physical-count.service';
+import { PhysicalCountController } from './physical-count.controller';
+import { PrismaClient_SYSTEM } from '@repo/prisma-shared-schema-platform';
+import { PrismaClient_TENANT } from '@repo/prisma-shared-schema-tenant';
+import { TenantModule } from '@/tenant/tenant.module';
+import { CostingModule } from '@/inventory/costing/costing.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { envConfig } from '@/libs/config.env';
+
+@Module({
+  imports: [
+    TenantModule,
+    CostingModule,
+    ClientsModule.register([
+      {
+        name: 'MASTER_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: envConfig.BUSINESS_SERVICE_HOST,
+          port: Number(envConfig.BUSINESS_SERVICE_TCP_PORT),
+        },
+      },
+    ]),
+  ],
+  controllers: [PhysicalCountController],
+  providers: [
+    PhysicalCountService,
+    {
+      provide: 'PRISMA_SYSTEM',
+      useValue: PrismaClient_SYSTEM,
+    },
+    {
+      provide: 'PRISMA_TENANT',
+      useValue: PrismaClient_TENANT,
+    },
+  ],
+  exports: [PhysicalCountService],
+})
+export class PhysicalCountModule {}

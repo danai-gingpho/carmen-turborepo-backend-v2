@@ -1,0 +1,82 @@
+meta {
+  name: Save config_sql_query
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/sql-query/save
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "name": "v_pr_summary",
+    "sql_text": "SELECT id, code, status, created_at FROM tb_purchase_request WHERE deleted_at IS NULL",
+    "query_type": "view"
+  }
+}
+
+docs {
+  ## Save DDL (Create/Replace View, Procedure, Function)
+  สร้าง / อัปเดต view / stored procedure / function ลง schema ของ tenant
+
+  Executes the provided DDL against the tenant schema. For type=view, a bare SELECT will be auto-wrapped with CREATE OR REPLACE VIEW.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "name": "v_pr_summary",
+    "sql_text": "SELECT id, code, status, created_at FROM tb_purchase_request WHERE deleted_at IS NULL",
+    "query_type": "view"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "success": true,
+      "name": "v_pr_summary"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `sql_text` or `query_type` is missing, or DDL syntax error |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission to save DDL |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

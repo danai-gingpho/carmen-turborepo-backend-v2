@@ -1,0 +1,97 @@
+meta {
+  name: Update request-for-pricing
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/request-for-pricing/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "Updated Q1 2026 Pricing Request",
+    "pricelist_template_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+    "start_date": "2026-04-01T00:00:00.000Z",
+    "end_date": "2026-04-30T23:59:59.000Z",
+    "custom_message": "Updated message to vendors."
+  }
+}
+
+vars:pre-request {
+  rfp_id: 97e7fae5-18cc-4ae4-af9a-967799c0bffa
+}
+
+docs {
+  ## Patch Request For Pricing
+  อัปเดตข้อมูลใบขอราคาที่มีอยู่
+
+  Updates an existing Request for Pricing (RFP) to modify requested items, adjust quantities, or record vendor pricing responses during the competitive bidding process.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Request For Pricing ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Updated Q1 2026 Pricing Request",
+    "pricelist_template_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+    "start_date": "2026-04-01T00:00:00.000Z",
+    "end_date": "2026-04-30T23:59:59.000Z",
+    "custom_message": "Updated message to vendors."
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 404 | Request for pricing not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: 97e7fae5-18cc-4ae4-af9a-967799c0bffa
+}

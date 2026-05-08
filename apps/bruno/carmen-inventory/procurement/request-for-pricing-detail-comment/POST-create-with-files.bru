@@ -1,0 +1,108 @@
+meta {
+  name: Create with files request-for-pricing-detail-comment
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/request-for-pricing-detail-comment/{{request_for_pricing_detail_id}}
+  body: multipartForm
+  auth: bearer
+}
+
+params:query {
+  ~version: latest
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  message: Comment with attached photos
+  type: user
+  files: @file(/Users/samutpra/Pictures/logo.png)
+  files: @file(/Users/samutpra/Pictures/logo_CARMEN_Classic-Blue_low-res.png)
+}
+
+vars:pre-request {
+  request_for_pricing_detail_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## Create Request For Pricing Detail Comment (with file uploads)
+  สร้างความคิดเห็นใหม่สำหรับ request-for-pricing-detail พร้อมแนบไฟล์ใน request เดียว
+  ไม่ต้อง upload file แยกก่อน
+
+  Creates a new comment for a request-for-pricing-detail with optional file attachments in a single multipart request. `request_for_pricing_detail_id` is specified via URL path parameter, not in the body.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `request_for_pricing_detail_id` | string (UUID) | Request For Pricing Detail ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `message` | text | Conditional | Comment text (≤ 4000 chars). Required if no files. |
+  | `type` | text | No | `user` (default) or `system` |
+  | `files` | binary (repeatable) | Conditional | Attachments. Required if no message. |
+
+  Constraints: max 10 files, max 10 MB per file, allowed: image/jpeg, image/png, image/webp, image/gif, application/pdf.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "request_for_pricing_detail_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+      "message": "Pricing for vendor ABC confirmed.",
+      "type": "user",
+      "attachments": [
+        {
+          "fileName": "photo.jpg",
+          "fileToken": "tok-abc-123",
+          "fileUrl": "",
+          "contentType": "image/jpeg",
+          "size": 204800
+        }
+      ]
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > Note: `fileUrl` ใน response จะว่าง — frontend ต้องเรียก
+  > `GET /api/{bu_code}/documents/presigned-url/{fileToken}` เพื่อแสดงไฟล์
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Neither `message` nor `files` provided; file count/size/mime exceeds limit |
+  | 401 | Missing or invalid Bearer token |
+  | 502 | File service (S3 upload) upstream failure |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

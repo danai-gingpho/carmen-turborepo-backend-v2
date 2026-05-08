@@ -1,0 +1,102 @@
+meta {
+  name: List good-received-note
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/good-received-note
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List All Good Received Notes
+  แสดงรายการใบรับสินค้าทั้งหมดของหน่วยธุรกิจ พร้อมการแบ่งหน้าและตัวกรอง ใช้สำหรับเจ้าหน้าที่รับสินค้าและผู้จัดการคลังสินค้าในการติดตามการส่งมอบจากผู้ขาย ตรวจสอบสถานะการรับสินค้า และเปรียบเทียบกับใบสั่งซื้อ
+
+  Lists all goods receiving records for the business unit with pagination and filtering. Used by receiving staff and inventory managers to track vendor deliveries, monitor receiving status, and reconcile with purchase orders.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `search` | string | No | — | Full-text search |
+  | `sort` | string | No | — | e.g. `total_amount:asc` |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "grn_no": "GRN-2026-0042",
+        "grn_date": "2026-04-29T08:30:00.000Z",
+        "doc_status": "draft",
+        "doc_type": "purchase_order",
+        "invoice_no": "INV-2026-0100",
+        "vendor_name": "ABC Supplies Co., Ltd.",
+        "currency_code": "THB",
+        "net_amount": 10000.00,
+        "total_amount": 10700.00,
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 5,
+      "total": 48,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.goods_received_note:view` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:query {
+  page: 1
+  perpage: 10
+  sort: total_amount%3Aasc
+  ~version: 
+}

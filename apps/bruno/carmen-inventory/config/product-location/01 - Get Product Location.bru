@@ -1,0 +1,86 @@
+meta {
+  name: Get locations by product id config_product-location
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/product/location/:productId
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Product Location
+  ดึงข้อมูลสินค้าตามสถานที่โดยใช้รหัสสินค้า แสดงสถานที่จัดเก็บทั้งหมดที่ผูกกับสินค้า
+
+  Retrieves all product-location records for a specific product, including location_code, location_name, product_code, product_name, product_local_name, product_sku, and quantity settings (min/max/reorder/par).
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `productId` | string (UUID) | Product ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `configuration.location:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "product_code": "PRD-001",
+        "product_name": "Olive Oil 1L",
+        "product_local_name": "น้ำมันมะกอก 1 ลิตร",
+        "product_sku": "SKU-001",
+        "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "location_code": "LOC-001",
+        "location_name": "Main Store",
+        "min_qty": 5.0,
+        "max_qty": 100.0,
+        "re_order_qty": 20.0,
+        "par_qty": 50.0
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token is missing or invalid |
+  | 403 | User lacks `configuration.location:view` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  productId: 019638a6-2a00-7c4f-8e46-9b7a52c80c4d
+}

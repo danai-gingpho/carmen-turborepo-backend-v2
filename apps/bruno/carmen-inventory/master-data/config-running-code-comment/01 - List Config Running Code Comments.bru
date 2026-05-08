@@ -1,0 +1,106 @@
+meta {
+  name: Find all by config running code id config-running-code-comment
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/config-running-code-comment/:config_running_code_id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  config_running_code_id: {{test_id}}
+}
+
+vars:pre-request {
+  test_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## List Config Running Code Comments
+  แสดงความคิดเห็นทั้งหมดของ config-running-code พร้อม pagination
+
+  Retrieves all comments for a specific running-code configuration, ordered by creation date with full attachment metadata.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `config_running_code_id` | string (UUID) | Config Running Code ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "config_running_code_id": "5d5fa453-f687-4fcd-bbdb-5956f7e810b3",
+        "message": "Updated running code prefix to PO-2026",
+        "type": "user",
+        "attachments": [
+          {
+            "fileName": "screenshot.png",
+            "fileToken": "tok-abc123",
+            "fileUrl": "",
+            "contentType": "image/png",
+            "size": 204800
+          }
+        ],
+        "created_at": "2026-04-29T08:30:00.000Z",
+        "created_by_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 3,
+      "total": 25,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > `fileUrl` in response will be empty — frontend must call
+  > `GET /api/{bu_code}/documents/presigned-url/{fileToken}` to display the file.
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `config_running_code_id` is not a valid UUID v4 |
+  | 401 | Missing or invalid bearer token |
+}

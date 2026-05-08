@@ -1,0 +1,85 @@
+meta {
+  name: List my-pending
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/my-approve
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get All Pending Approvals (SR + PR + PO) Grouped by Type
+  แสดงรายการเอกสารจัดซื้อทั้งหมดที่รอการอนุมัติของผู้ใช้ปัจจุบัน จัดกลุ่มตามประเภทเอกสาร (ใบเบิกสินค้า ใบขอซื้อ ใบสั่งซื้อ) ทำหน้าที่เป็นคิวงานหลักของผู้อนุมัติ Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Retrieves the full list of procurement documents pending the current user's approval, grouped by document type (store requisitions, purchase requests, purchase orders), serving as the approver's central task queue.
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `search` | string | No | — | Search keyword |
+  | `bu_code` | string | No | — | Business unit code filter |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "store_requisitions": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "sr_no": "SR-2026-0001",
+          "sr_date": "2026-04-29T08:30:00.000Z",
+          "doc_status": "pending_approval",
+          "department_name": "Kitchen"
+        }
+      ],
+      "purchase_requests": [],
+      "purchase_orders": []
+    },
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 1,
+      "total": 1,
+      "prev": null,
+      "next": null
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks required permission |
+}

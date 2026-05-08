@@ -1,0 +1,106 @@
+meta {
+  name: Add attachments credit-note-comment
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/credit-note-comment/:id/attachment
+  body: multipartForm
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  files: @file(/Users/samutpra/Pictures/logo.png)
+  files: @file(/Users/samutpra/Pictures/logo_CARMEN_Classic-Blue_low-res.png)
+}
+
+docs {
+  ## Add Attachments to Credit Note Comment (multipart, batch upload)
+  อัปโหลดไฟล์แนบหลายไฟล์เข้ากับคอมเมนต์ที่มีอยู่แล้วใน request เดียว
+
+  Batch-uploads file attachments to an existing credit note comment.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.credit_note:update`
+  - **Roles**: Purchase
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `files` | binary (repeatable) | Yes | Files to attach (1–10) |
+
+  **Constraints**: max 10 files, max 10 MB per file, allowed MIME: image/jpeg, image/png, image/webp, image/gif, application/pdf
+
+  ### Gateway behavior
+  1. Upload all files to S3 via `file.upload` (parallel)
+  2. If any upload fails — rollback (delete uploaded files from S3), respond 502
+  3. Send `{ id, attachments: [...] }` to business service via `credit-note-comment.add-attachment`
+  4. If business returns error — rollback: delete uploaded files from S3
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "attachments": [
+        {
+          "fileName": "receipt.pdf",
+          "fileToken": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d/receipt.pdf",
+          "fileUrl": "",
+          "contentType": "application/pdf",
+          "size": 512000
+        }
+      ]
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  Note: `fileUrl` ใน response จะว่าง — frontend ต้องเรียก `GET /api/{bu_code}/documents/presigned-url/{fileToken}` เพื่อแสดงไฟล์
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | No files provided or file validation failed |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.credit_note:update` permission |
+  | 404 | Comment not found |
+  | 502 | S3 file upload failed |
+}

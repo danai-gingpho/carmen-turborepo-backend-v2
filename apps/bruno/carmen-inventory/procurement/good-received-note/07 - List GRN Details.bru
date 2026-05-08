@@ -1,0 +1,97 @@
+meta {
+  name: Find details by grn id good-received-note
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/good-received-note/:id/details
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List GRN Detail Items
+  แสดงรายการสินค้าที่รับทั้งหมดในใบรับสินค้า รวมถึงรายละเอียดสินค้า จำนวนที่สั่งเทียบกับจำนวนที่รับ และบันทึกการตรวจสอบ
+
+  Lists all received items on a GRN including product details, ordered vs. received quantities, and inspection notes.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Good Received Note ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "good_received_note_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f",
+        "product_code": "P-001",
+        "product_name": "Premium Jasmine Rice",
+        "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c50",
+        "location_name": "Main Warehouse",
+        "received_qty": 10.5,
+        "received_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c51",
+        "received_unit_name": "KG",
+        "total_amount": 1250.00
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 2,
+      "total": 15,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.goods_received_note:view` permission |
+  | 404 | Good Received Note not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{grn_id}}
+}

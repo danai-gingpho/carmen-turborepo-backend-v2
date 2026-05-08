@@ -1,0 +1,76 @@
+meta {
+  name: 05 - Register Confirm
+  type: http
+  seq: 5
+}
+
+docs {
+  ## Register Confirm
+  ยืนยันการลงทะเบียนสำหรับผู้ใช้ที่ได้รับเชิญ โดยตรวจสอบโทเค็นการเชิญและ reference code เพื่อตั้งรหัสผ่านและเปิดใช้งานบัญชีในแพลตฟอร์ม Carmen ERP
+
+  Completes the registration process for an invited user by verifying the invitation token and reference code, then setting their password and activating their account in the Carmen ERP platform.
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Public — no auth required
+
+  ### Sample Body
+  ```json
+  {
+    "email_token": "eyJhbGciOiJIUzI1NiJ9.<truncated>",
+    "reference_code": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "password": "P@ssw0rd!23",
+    "user_info": {
+      "first_name": "John",
+      "middle_name": "",
+      "last_name": "Doe"
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid or expired email_token or reference_code |
+}
+
+post {
+  url: {{host}}/api/auth/register-confirm
+  body: json
+  auth: none
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+body:json {
+  {
+    "email_token": "eyJhbGciOiJIUzI1NiJ9.<truncated>",
+    "reference_code": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "password": "P@ssw0rd!23",
+    "user_info": {
+      "first_name": "John",
+      "middle_name": "",
+      "last_name": "Doe"
+    }
+  }
+}

@@ -1,0 +1,50 @@
+import { z } from 'zod';
+import { EmbeddedProductSchema, ValidateSchema } from '@/common/dto/embedded.dto';
+import { stage_status } from '@/procurement/purchase-request/dto/stage_role/purchase-request.stage-role.dto';
+
+// Create Store Requisition Detail Schema
+export const CreateStoreRequisitionDetailSchema = z.object({
+  description: z.string().optional().nullable(),
+  current_stage_status: z.nativeEnum(stage_status).optional(),
+})
+  .merge(EmbeddedProductSchema.extend({
+    product_id: ValidateSchema.shape.uuid,
+  }))
+  .extend({
+    requested_qty: z.number(),
+    comment: z.string().optional().nullable(),
+    info: z.any().optional(),
+    dimension: z.any().optional(),
+  });
+
+// Update Store Requisition Detail Schema
+export const UpdateStoreRequisitionDetailSchema = CreateStoreRequisitionDetailSchema.extend({
+  id: ValidateSchema.shape.uuid,
+});
+
+// Base detail schema for state changes
+const BaseStateChangeDetailSchema = z.object({
+  id: ValidateSchema.shape.uuid,
+  stage_status: z.nativeEnum(stage_status),
+  stage_message: z.string().nullable(),
+});
+
+// Approve Role - Approve Store Requisition Detail Schema
+export const ApproveRoleApproveStoreRequisitionDetailSchema = BaseStateChangeDetailSchema.extend({
+  approved_qty: z.number(),
+});
+
+// Issue Role - Issue Store Requisition Detail Schema
+export const IssueRoleApproveStoreRequisitionDetailSchema = BaseStateChangeDetailSchema.extend({
+  issued_qty: z.number(),
+});
+
+// State Change Schema (for submit, review, reject)
+export const StoreRequisitionStateChangeSchema = BaseStateChangeDetailSchema;
+
+// Types
+export type CreateStoreRequisitionDetail = z.infer<typeof CreateStoreRequisitionDetailSchema>;
+export type UpdateStoreRequisitionDetail = z.infer<typeof UpdateStoreRequisitionDetailSchema>;
+export type ApproveRoleApproveStoreRequisitionDetail = z.infer<typeof ApproveRoleApproveStoreRequisitionDetailSchema>;
+export type IssueRoleApproveStoreRequisitionDetail = z.infer<typeof IssueRoleApproveStoreRequisitionDetailSchema>;
+export type StoreRequisitionStateChange = z.infer<typeof StoreRequisitionStateChangeSchema>;

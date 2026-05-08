@@ -1,0 +1,88 @@
+meta {
+  name: Submit purchase-request
+  type: http
+  seq: 15
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/purchase-request/:id/submit
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "stage_role": "create",
+    "details": []
+  }
+}
+
+docs {
+  ## Submit Purchase Request
+  ส่งใบขอซื้อฉบับร่างเข้าสู่เวิร์กโฟลว์การอนุมัติ เมื่อส่งแล้วสถานะจะเปลี่ยนจากฉบับร่างเป็นรอดำเนินการ และไม่สามารถแก้ไขได้อย่างอิสระอีกต่อไป
+
+  Submits a draft purchase request into the approval workflow, making it available for review by the next approver (e.g., HOD). Once submitted, the PR moves from draft to pending status and can no longer be freely edited.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase request ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+  | `Content-Type` | Yes | `application/json` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "stage_role": "create",
+    "details": []
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Validation error in request body |
+  | 401 | Missing or invalid bearer token |
+  | 403 | Insufficient permissions |
+  | 404 | Purchase request not found |
+}
+
+params:path {
+  id: {{pr_id}}
+}

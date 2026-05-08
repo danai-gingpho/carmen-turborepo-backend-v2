@@ -1,0 +1,97 @@
+meta {
+  name: Update business unit platform_business-unit
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{host}}/api-system/business-unit/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "cluster_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "code": "BU-001",
+    "name": "Bangkok Grand Hotel Updated",
+    "alias_name": "BGH",
+    "description": "Updated main property in Bangkok CBD",
+    "default_currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "is_hq": true,
+    "is_active": true
+  }
+}
+
+docs {
+  ## Update Business Unit
+  อัปเดตข้อมูลหน่วยธุรกิจที่มีอยู่
+
+  Modifies the configuration or details of an existing hotel property or operational unit, such as its name, address, or cluster association.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `id` | string (UUID) | Business unit ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Body
+  ```json
+  {
+    "cluster_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "code": "BU-001",
+    "name": "Bangkok Grand Hotel Updated",
+    "alias_name": "BGH",
+    "description": "Updated main property in Bangkok CBD",
+    "default_currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "is_hq": true,
+    "is_active": true
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Validation fails |
+  | 401 | Missing or invalid bearer token |
+  | 404 | Business unit not found |
+}
+
+params:path {
+  id: 7e5b89e7-89fa-4db9-88d0-48fa2b1761d7
+}

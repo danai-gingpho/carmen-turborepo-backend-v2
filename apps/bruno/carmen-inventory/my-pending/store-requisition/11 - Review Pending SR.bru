@@ -1,0 +1,84 @@
+meta {
+  name: Review my-pending
+  type: http
+  seq: 11
+}
+
+patch {
+  url: {{host}}/api/my-pending/store-requisition/{{bu_code}}/:id/review
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {}
+}
+
+docs {
+  ## Review a Store Requisition
+  ส่งใบเบิกสินค้ากลับตรวจสอบ ช่วยให้ผู้อนุมัติสามารถให้ข้อเสนอแนะหรือขอแก้ไขก่อนตัดสินใจอนุมัติหรือปฏิเสธคำขอเบิกสินค้า Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Allows an approver to review a store requisition and provide feedback or modifications before making a final approve/reject decision on the internal stock request.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Store requisition ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.store_requisition:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "doc_status": "reviewing"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User is not assigned to this approval stage |
+  | 404 | Store requisition not found |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  bu_code: {{bu_code}}
+  id: {{sr_id}}
+}

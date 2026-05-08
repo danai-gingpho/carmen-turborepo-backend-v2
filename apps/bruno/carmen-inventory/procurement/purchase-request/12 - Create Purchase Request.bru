@@ -1,0 +1,136 @@
+meta {
+  name: Create purchase-request
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/purchase-request
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "stage_role": "create",
+    "details": {
+      "pr_date": null,
+      "description": "",
+      "requestor_id": "",
+      "workflow_id": "",
+      "department_id": "",
+      "purchase_request_detail": {
+        "add": [
+          {
+            "description": "",
+            "comment": "",
+            "current_stage_status": "submit",
+            "product_id": "",
+            "location_id": "",
+            "delivery_point_id": "",
+            "delivery_date": null,
+            "requested_qty": 0,
+            "requested_unit_id": "",
+            "requested_unit_conversion_factor": 0,
+            "currency_id": "",
+            "exchange_rate": 0,
+            "exchange_rate_date": null,
+            "foc_qty": 0,
+            "foc_unit_id": "",
+            "foc_unit_conversion_rate": 0,
+            "foc_base_qty": 0,
+            "inventory_unit_id": ""
+          }
+        ]
+      }
+    }
+  }
+}
+
+docs {
+  ## Create Purchase Request
+  สร้างใบขอซื้อใหม่สำหรับแผนกเพื่อขอสินค้าหรือบริการที่ต้องการ ใบขอซื้อจะเริ่มต้นในสถานะฉบับร่าง และสามารถส่งเข้าสู่เวิร์กโฟลว์การอนุมัติได้
+
+  Creates a new purchase request for a department to request items or services they need. The PR starts in draft status and includes line items with product details, quantities, and estimated costs. Once created, it can be submitted for approval through the configured workflow.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+  | `Content-Type` | Yes | `application/json` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "stage_role": "create",
+    "details": {
+      "pr_date": "2026-04-29T08:30:00.000Z",
+      "description": "Kitchen supplies for May 2026",
+      "requestor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "workflow_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+      "department_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f",
+      "purchase_request_detail": {
+        "add": [
+          {
+            "description": "Olive oil 1L",
+            "comment": "",
+            "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c50",
+            "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c51",
+            "delivery_point_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c52",
+            "delivery_date": "2026-05-10T00:00:00.000Z",
+            "requested_qty": 10,
+            "requested_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c53",
+            "requested_unit_conversion_factor": 1,
+            "currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c54",
+            "exchange_rate": 1.0,
+            "exchange_rate_date": "2026-04-29T08:30:00.000Z"
+          }
+        ]
+      }
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Validation error in request body |
+  | 401 | Missing or invalid bearer token |
+  | 403 | Insufficient permissions |
+}

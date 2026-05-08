@@ -1,0 +1,41 @@
+meta {
+  name: 06 - Fetch User
+  type: http
+  seq: 6
+}
+
+docs {
+  ## Fetch User
+  ซิงค์ข้อมูลผู้ใช้จาก Keycloak เข้าสู่ระบบแพลตฟอร์ม
+
+  Synchronize users from Keycloak into the platform database.
+
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "uuid"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-03-27T00:00:00.000Z"
+  }
+  ```
+}
+
+post {
+  url: {{host}}/api-system/user/fetch-user
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

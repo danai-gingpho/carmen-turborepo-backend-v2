@@ -1,0 +1,43 @@
+name: Deploy Dev
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: development
+
+    steps:
+      - name: Deploy via SSH (mirrors scripts/start-dev.sh)
+        uses: appleboy/ssh-action@v1
+        with:
+          host: dev.blueledgers.com
+          username: ${{ secrets.DEV_SSH_USER }}
+          key: ${{ secrets.DEV_SSH_KEY }}
+          port: ${{ secrets.DEV_SSH_PORT }}
+          command_timeout: 30m
+          script: |
+            set -e
+            PROJECT_DIR=$HOME/carmen-turborepo-backend-v2
+
+            echo "=== [1/4] Pull origin/main ==="
+            cd "$PROJECT_DIR"
+            git fetch origin main
+            git checkout main
+            git reset --hard origin/main
+
+            echo "=== [2/4] Install dependencies ==="
+            ./scripts/start-dev.sh install
+
+            echo "=== [3/4] Build ==="
+            ./scripts/start-dev.sh build all
+
+            echo "=== [4/4] Restart services ==="
+            ./scripts/start-dev.sh restart all
+
+            echo "=== Deployment complete ==="
+            ./scripts/start-dev.sh status || true

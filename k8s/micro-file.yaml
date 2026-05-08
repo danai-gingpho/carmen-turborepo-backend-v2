@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micro-file
+  namespace: carmen-backend
+  labels:
+    app: micro-file
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micro-file
+  template:
+    metadata:
+      labels:
+        app: micro-file
+    spec:
+      containers:
+        - name: micro-file
+          image: carmen-micro-file:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp
+              containerPort: 5007
+            - name: http
+              containerPort: 6007
+          envFrom:
+            - configMapRef:
+                name: service-discovery
+            - secretRef:
+                name: carmen-backend-secret
+            - secretRef:
+                name: micro-file-env
+                optional: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micro-file
+  namespace: carmen-backend
+  labels:
+    app: micro-file
+spec:
+  type: ClusterIP
+  selector:
+    app: micro-file
+  ports:
+    - name: tcp
+      port: 5007
+      targetPort: 5007
+    - name: http
+      port: 6007
+      targetPort: 6007

@@ -1,0 +1,84 @@
+meta {
+  name: Create credit-note-reason
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/credit-note-reason
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "Damaged Goods",
+    "description": "Items received were damaged during transit",
+    "note": "Common for fragile items"
+  }
+}
+
+docs {
+  ## Create Credit Note Reason
+  สร้างเหตุผลใหม่สำหรับเลือกเมื่อออกใบลดหนี้ให้ผู้ขาย เช่น สินค้าเสียหาย ส่งไม่ครบ หรือปัญหาด้านคุณภาพ
+
+  Creates a new reason that can be selected when issuing vendor credit notes.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.credit_note:create`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Damaged Goods",
+    "description": "Items received were damaged during transit",
+    "note": "Common for fragile items"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `name` is empty or missing |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.credit_note:create` permission |
+}

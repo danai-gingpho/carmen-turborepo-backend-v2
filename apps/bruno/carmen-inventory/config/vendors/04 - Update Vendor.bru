@@ -1,0 +1,134 @@
+meta {
+  name: Update config_vendors
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{host}}/api/config/{{bu_code}}/vendors/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "code": "VND-2024-0001",
+    "name": "Siam Fresh Co., Ltd.",
+    "business_type": ["019638a6-2a00-7c4f-8e46-9b7a52c80c4e"],
+    "description": "Fresh produce and food ingredients supplier",
+    "info": [],
+    "vendor_address": {
+      "add": [],
+      "update": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c50",
+          "address_type": "mailing_address",
+          "address_line1": "88/12 Mu 4, Phahonyothin Road",
+          "address_line2": "Khlong Nueng",
+          "sub_district": "Khlong Nueng",
+          "district": "Khlong Luang",
+          "city": "Pathum Thani",
+          "province": "Pathum Thani",
+          "postal_code": "12120",
+          "country": "Thailand"
+        }
+      ],
+      "remove": []
+    },
+    "vendor_contact": {
+      "add": [],
+      "update": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c51",
+          "name": "Wannapa Srisuwan",
+          "email": "wannapa.s@siamfresh.co.th",
+          "phone": "0812345678",
+          "is_primary": true,
+          "description": "Primary sales contact",
+          "info": []
+        }
+      ],
+      "remove": []
+    }
+  }
+}
+
+docs {
+  ## Update Vendor
+  อัปเดตข้อมูลผู้ขายที่มีอยู่
+
+  Updates an existing vendor/supplier record including addresses and contacts.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Vendor ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.vendor:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "code": "VND-2024-0001",
+    "name": "Siam Fresh Co., Ltd.",
+    "description": "Fresh produce and food ingredients supplier",
+    "vendor_address": {
+      "add": [],
+      "update": [{ "id": "019638a6-...", "address_line1": "Updated address" }],
+      "remove": []
+    },
+    "vendor_contact": {
+      "add": [],
+      "update": [{ "id": "019638a6-...", "phone": "0899999999" }],
+      "remove": []
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `vendor_management.vendor:update` permission |
+  | 404 | Vendor not found |
+}
+
+params:path {
+  id: 
+}

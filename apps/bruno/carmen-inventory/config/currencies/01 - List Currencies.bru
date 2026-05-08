@@ -1,0 +1,112 @@
+meta {
+  name: List config_currencies
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/currencies
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List Currencies
+  แสดงรายการสกุลเงินทั้งหมดพร้อมการแบ่งหน้าและค้นหา
+
+  Returns all currencies configured for the business unit with pagination and search support.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `search` | string | No | — | Search by name or code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `configuration.currency:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "code": "THB",
+        "name": "Thai Baht",
+        "symbol": "฿",
+        "exchange_rate": 1,
+        "is_default": true,
+        "is_active": true,
+        "audit": {
+          "created": {
+            "at": "2026-04-29T08:30:00.000Z",
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "John Doe"
+          },
+          "updated": {
+            "at": "2026-04-29T09:15:00.000Z",
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+            "name": "Jane Smith"
+          }
+        }
+      },
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "code": "USD",
+        "name": "US Dollar",
+        "symbol": "$",
+        "exchange_rate": 36.5,
+        "is_default": false,
+        "is_active": true,
+        "audit": {
+          "created": {
+            "at": "2026-04-29T08:35:00.000Z",
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "John Doe"
+          }
+        }
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 1,
+      "total": 8,
+      "prev": null,
+      "next": null
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T09:15:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  > No service-specific errors thrown by this endpoint.
+}

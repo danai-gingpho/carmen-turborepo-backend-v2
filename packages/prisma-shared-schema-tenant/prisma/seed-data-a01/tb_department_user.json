@@ -1,0 +1,93 @@
+[
+  {
+    "id": "b7f317bf-6a64-495d-b36b-0bd9de1e5e64",
+    "user_id": "b33c6500-b0c3-4e99-8467-db4a10de069e",
+    "department_id": "9722b9f0-7646-4f06-a0f5-2f7ffccdedef",
+    "is_hod": true,
+    "doc_version": 0
+  },
+  {
+    "id": "4bc07e43-8b0d-4050-bdf9-6e15fdd23917",
+    "user_id": "c7092848-78f7-4cfe-bb6d-095c286a1019",
+    "department_id": "9722b9f0-7646-4f06-a0f5-2f7ffccdedef",
+    "is_hod": true,
+    "doc_version": 0
+  },
+  {
+    "id": "8f850271-b459-43c1-93a1-28aadad2745d",
+    "user_id": "d9aef974-0dd1-4acd-93b7-93c8ccc8cfeb",
+    "department_id": "9722b9f0-7646-4f06-a0f5-2f7ffccdedef",
+    "is_hod": false,
+    "doc_version": 0
+  },
+  {
+    "id": "08be6ae7-9987-413c-8d2a-d507fe86a457",
+    "user_id": "e88e8da4-ad87-4255-befc-1556d1b66b69",
+    "department_id": "9722b9f0-7646-4f06-a0f5-2f7ffccdedef",
+    "is_hod": false,
+    "doc_version": 0
+  },
+  {
+    "id": "c316abf2-ed7d-4998-9e2f-985cb4c96911",
+    "user_id": "57c0721a-4afd-4e8f-b118-f0480c537215",
+    "department_id": "114512b8-5983-4ae0-b9c5-0fb4de8b1059",
+    "is_hod": false,
+    "doc_version": 0
+  },
+  {
+    "id": "90f1f16f-90e8-4c14-9b67-c307dc2ff5ab",
+    "user_id": "59c4ce87-84e5-48e5-b246-7d0f6d2c5594",
+    "department_id": "6a6e0e3c-d09c-46f6-9609-9ad0c35af09b",
+    "is_hod": false,
+    "doc_version": 0
+  },
+  {
+    "id": "58ef304a-659a-446f-868c-419fb1fd4eaf",
+    "user_id": "d3ba9c08-162f-4e81-8337-75d3d56f6aff",
+    "department_id": "9722b9f0-7646-4f06-a0f5-2f7ffccdedef",
+    "is_hod": false,
+    "doc_version": 0
+  },
+  {
+    "id": "06f569cf-a0ea-4d3e-9cf5-0507b504676d",
+    "user_id": "c7092848-78f7-4cfe-bb6d-095c286a1019",
+    "department_id": "dbc424a8-ee07-4821-a500-19f51610710d",
+    "is_hod": true,
+    "doc_version": 0
+  },
+  {
+    "id": "d6249dd1-f303-40ad-a12c-96121bd4f3d1",
+    "user_id": "e88e8da4-ad87-4255-befc-1556d1b66b69",
+    "department_id": "dbc424a8-ee07-4821-a500-19f51610710d",
+    "is_hod": false,
+    "doc_version": 0
+  },
+  {
+    "id": "bd4a1262-d64e-4963-b32a-6382d2c5f89d",
+    "user_id": "3c5280a7-492e-421d-b739-7447455ce99e",
+    "department_id": "49cf5059-e283-48f2-a323-fb2bfe077889",
+    "is_hod": false,
+    "doc_version": 0
+  },
+  {
+    "id": "2ff10959-9154-4fe0-8be6-db8d5868baa7",
+    "user_id": "d9aef974-0dd1-4acd-93b7-93c8ccc8cfeb",
+    "department_id": "49cf5059-e283-48f2-a323-fb2bfe077889",
+    "is_hod": true,
+    "doc_version": 0
+  },
+  {
+    "id": "068d6fa7-104d-4c00-90b0-45754d1fd91b",
+    "user_id": "d9aef974-0dd1-4acd-93b7-93c8ccc8cfeb",
+    "department_id": "33912bf4-eb2e-4bb2-943e-9f27acc9b924",
+    "is_hod": true,
+    "doc_version": 0
+  },
+  {
+    "id": "16b8ba3d-9367-415c-95d1-bd91a00b4aec",
+    "user_id": "57c0721a-4afd-4e8f-b118-f0480c537215",
+    "department_id": "33912bf4-eb2e-4bb2-943e-9f27acc9b924",
+    "is_hod": false,
+    "doc_version": 0
+  }
+]

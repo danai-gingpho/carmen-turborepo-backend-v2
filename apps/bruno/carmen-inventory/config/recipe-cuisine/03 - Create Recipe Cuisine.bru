@@ -1,0 +1,97 @@
+meta {
+  name: Create config_recipe-cuisine
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/recipe-cuisine
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "Thai",
+    "description": "Thai cuisine known for its balance of spicy, sour, sweet and salty flavors",
+    "note": "Popular in hospitality menus",
+    "is_active": true,
+    "region": "ASIA",
+    "popular_dishes": null,
+    "key_ingredients": null,
+    "info": null,
+    "dimension": null
+  }
+}
+
+docs {
+  ## Create Recipe Cuisine
+  สร้างประเภทอาหารใหม่สำหรับจัดหมวดหมู่สูตรอาหาร เช่น อาหารไทย อาหารอิตาเลียน
+
+  Defines a new cuisine type for recipe classification (e.g., Mediterranean, Mexican) for organized menu planning.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Thai",
+    "description": "Thai cuisine known for its balance of spicy, sour, sweet and salty flavors",
+    "note": "Popular in hospitality menus",
+    "is_active": true,
+    "region": "ASIA",
+    "popular_dishes": null,
+    "key_ingredients": null,
+    "info": null,
+    "dimension": null
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Request body fails validation |
+  | 401 | Bearer token is missing or invalid |
+  | 403 | User lacks recipe cuisine create permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

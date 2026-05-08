@@ -1,0 +1,100 @@
+meta {
+  name: Add attachments purchase-request-template-comment
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/purchase-request-template-comment/:id/attachment
+  body: multipartForm
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  files: @file(/Users/samutpra/Pictures/logo.png)
+  files: @file(/Users/samutpra/Pictures/logo_CARMEN_Classic-Blue_low-res.png)
+}
+
+docs {
+  ## Add Attachments to Purchase Request Template Comment
+  อัปโหลดไฟล์แนบหลายไฟล์เข้ากับคอมเมนต์ที่มีอยู่แล้วใน request เดียว
+
+  Batch-uploads one or more file attachments to an existing purchase-request-template comment without changing its message text.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `files` | binary (repeatable) | Yes | Attachments (1–10 files, max 10 MB each) |
+
+  Allowed MIME types: image/jpeg, image/png, image/webp, image/gif, application/pdf.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "attachments": [
+        {
+          "fileName": "photo.jpg",
+          "fileToken": "tok-abc-123",
+          "fileUrl": "",
+          "contentType": "image/jpeg",
+          "size": 204800
+        }
+      ]
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > Note: `fileUrl` ใน response จะว่าง — frontend ต้องเรียก
+  > `GET /api/{bu_code}/documents/presigned-url/{fileToken}` เพื่อแสดงไฟล์
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | No files provided; file count/size/mime exceeds limit |
+  | 401 | Missing or invalid Bearer token |
+  | 502 | File service (S3 upload) upstream failure |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

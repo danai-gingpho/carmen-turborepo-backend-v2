@@ -1,0 +1,90 @@
+meta {
+  name: Update unit-comment
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/unit-comment/:id
+  body: multipartForm
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  ~message: Updated comment text
+  ~type: user
+  ~remove_attachments: ["tok-old-1","tok-old-2"]
+  ~files: @file(/Users/samutpra/Pictures/logo.png)
+}
+
+docs {
+  ## Patch Unit Comment (multipart with attachment add/remove)
+  แก้ไขความคิดเห็นของ unit พร้อมเพิ่ม/ลบไฟล์แนบใน request เดียว
+
+  Updates an existing unit comment including adding new file attachments and removing old ones in a single request.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `product_management.unit:update`
+  - **Roles**: Purchase
+
+  ### Body (multipart/form-data)
+  At least one field is required:
+  - `message` (text, optional) — Updated comment text (≤ 4000 characters)
+  - `type` (text, optional) — `user` | `system`
+  - `files` (binary, repeatable, optional) — New files to add (max 10, max 10 MB each)
+  - `remove_attachments` (text, optional) — JSON array of fileTokens to remove, e.g. `["tok-1","tok-2"]`
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | No fields provided, file too large, or unsupported mime type |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `product_management.unit:update` permission |
+  | 502 | File service upload failure (S3 error) |
+}

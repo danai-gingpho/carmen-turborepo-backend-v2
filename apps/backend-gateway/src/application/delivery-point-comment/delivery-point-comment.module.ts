@@ -1,0 +1,29 @@
+import { Module } from '@nestjs/common';
+import { DeliveryPointCommentService } from './delivery-point-comment.service';
+import { DeliveryPointCommentController } from './delivery-point-comment.controller';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { envConfig } from 'src/libs/config.env';
+
+@Module({
+  imports: [ClientsModule.register([
+      {
+        name: 'BUSINESS_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: envConfig.BUSINESS_SERVICE_HOST,
+          port: Number(envConfig.BUSINESS_SERVICE_TCP_PORT),
+        },
+      },
+      {
+        name: 'FILE_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: envConfig.FILE_SERVICE_HOST,
+          port: Number(envConfig.FILE_SERVICE_TCP_PORT),
+        },
+      },
+    ])],
+  controllers: [DeliveryPointCommentController],
+  providers: [DeliveryPointCommentService],
+})
+export class DeliveryPointCommentModule {}

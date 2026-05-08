@@ -1,0 +1,117 @@
+meta {
+  name: Update config_recipe-equipment
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{host}}/api/config/{{bu_code}}/recipe-equipment/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "code": "",
+    "name": "",
+    "description": "",
+    "category_id": "",
+    "brand": "",
+    "model": "",
+    "serial_no": "",
+    "capacity": "",
+    "power_rating": "",
+    "station": "",
+    "operation_instructions": "",
+    "safety_notes": "",
+    "cleaning_instructions": "",
+    "maintenance_schedule": "",
+    "last_maintenance_date": "2026-04-29T00:00:00.000Z",
+    "next_maintenance_date": "2026-04-29T00:00:00.000Z",
+    "note": "",
+    "is_active": false,
+    "is_poolable": false,
+    "available_qty": 0,
+    "total_qty": 0,
+    "usage_count": 0,
+    "average_usage_time": 0,
+    "attachments": null,
+    "manuals_urls": null,
+    "info": null,
+    "dimension": null
+  }
+}
+
+docs {
+  ## Update Recipe Equipment
+  อัปเดตอุปกรณ์ทำอาหารทั้งหมด การเปลี่ยนแปลงส่งผลต่อสูตรอาหารที่อ้างอิงอุปกรณ์นี้
+
+  Fully updates an existing kitchen equipment type definition. Changes affect how recipes reference this equipment.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Recipe equipment ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "code": "EQ-001",
+    "name": "Commercial Oven",
+    "description": "Large capacity commercial oven for high-volume baking",
+    "category_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "brand": "Rational",
+    "model": "SCC-61",
+    "is_active": true,
+    "total_qty": 2
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission to update recipe equipment |
+  | 404 | Recipe equipment not found |
+}
+
+params:path {
+  id: 
+}

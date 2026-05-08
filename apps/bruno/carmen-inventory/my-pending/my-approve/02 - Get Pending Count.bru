@@ -1,0 +1,67 @@
+meta {
+  name: Find all pending count my-pending
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/my-approve/pending
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Combined Count of All Pending Approvals (SR + PR + PO)
+  ดึงจำนวนรวมของเอกสารที่รออนุมัติทั้งหมด (ใบเบิกสินค้า + ใบขอซื้อ + ใบสั่งซื้อ) ช่วยให้ผู้อนุมัติจัดลำดับความสำคัญของงาน Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Provides a dashboard summary count of all documents awaiting the current user's approval across store requisitions, purchase requests, and purchase orders, helping approvers prioritize their workload.
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "total": 15,
+      "sr": 5,
+      "pr": 10,
+      "po": 0
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks required permission |
+}

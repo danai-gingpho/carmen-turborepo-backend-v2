@@ -1,0 +1,72 @@
+meta {
+  name: Remove attachment physical-count-detail-comment
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/physical-count-detail-comment/:id/attachment/:fileToken
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+  fileToken:
+}
+
+docs {
+  ## Remove Physical Count Detail Comment Attachment
+  ลบไฟล์แนบเดี่ยวออกจากคอมเมนต์ผ่าน fileToken พร้อมลบออกจาก S3
+
+  Removes a single attachment from a physical count detail comment by fileToken, deleting from both DB and S3.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+  | `fileToken` | string | File token of the attachment to remove |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.physical_count:update`
+  - **Roles**: Purchase
+
+  ### Sample Response
+  ```json
+  {
+    "data": { "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d" },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > Note: To remove multiple attachments or combine add/remove in one request, use `04 - Update` with `remove_attachments` field.
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | Comment or attachment not found |
+  | 403 | User lacks `inventory_management.physical_count:update` permission |
+}

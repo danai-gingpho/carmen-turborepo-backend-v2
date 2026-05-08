@@ -1,0 +1,71 @@
+meta {
+  name: Print to pdf purchase-request
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/purchase-request/:id/print
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Print Purchase Request to PDF
+  สร้างเอกสาร PDF สำหรับพิมพ์ใบขอซื้อ รวมถึงรายการสินค้า ยอดรวม และประวัติการอนุมัติ ใช้สำหรับลงนาม จัดเก็บเอกสาร หรือส่งให้ผู้ขาย
+
+  Generates a printable PDF document of the purchase request for physical signatures, filing, or sending to vendors. Includes all line items, totals, and approval history.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase request ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  Returns a binary PDF file stream (`application/pdf`).
+
+  ```json
+  {
+    "data": "<binary stream>",
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.purchase_request:view` permission |
+  | 404 | Purchase request not found |
+}
+
+params:path {
+  id: {{pr_id}}
+}

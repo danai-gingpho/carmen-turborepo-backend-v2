@@ -1,0 +1,78 @@
+meta {
+  name: Remove credit-note-comment
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{host}}/api/{{bu_code}}/credit-note-comment/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+docs {
+  ## Delete Credit Note Comment
+  ลบความคิดเห็นของ credit-note (soft delete) พร้อมลบไฟล์แนบจาก S3
+
+  Soft-deletes a credit note comment and cleans up all attached files from S3.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.credit_note:update`
+  - **Roles**: Purchase
+
+  ### Gateway behavior
+  1. Fetch comment via `credit-note-comment.find-by-id` to get `attachments[].fileToken`
+  2. Delete all files from S3 via `file.delete` (best-effort, log warn on failure)
+  3. Send `credit-note-comment.delete` to business service to soft-delete (set `deleted_at`)
+
+  > S3 cleanup runs **before** the DB soft-delete to prevent orphan files.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.credit_note:update` permission |
+  | 404 | Comment not found |
+}

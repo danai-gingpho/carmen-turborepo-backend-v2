@@ -1,0 +1,81 @@
+meta {
+  name: Find details by physical count id physical-count
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/physical-count/:id/details
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+vars:pre-request {
+  physical_count_id:
+}
+
+docs {
+  ## List Physical Count Details
+  ดึงรายการสินค้าทั้งหมดในการตรวจนับสินค้า แสดงจำนวนในระบบเทียบกับจำนวนที่นับได้จริง สำหรับการกระทบยอดสินค้าคงคลัง
+
+  Returns all product line items included in a physical count, showing system quantities alongside any recorded actual quantities for inventory reconciliation.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Physical Count ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.physical_count:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "product_name": "Rice 5kg",
+        "system_qty": 100,
+        "actual_qty": 95,
+        "unit_name": "KG"
+      }
+    ],
+    "paginate": { "page": 1, "perpage": 10, "pages": 5, "total": 48, "prev": null, "next": 2 },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | Physical count not found |
+  | 403 | User lacks `inventory_management.physical_count:view` permission |
+}
+
+params:path {
+  id: {{physical_count_id}}
+}

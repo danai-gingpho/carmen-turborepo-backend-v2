@@ -1,0 +1,94 @@
+meta {
+  name: Update request-for-pricing-detail-comment
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/request-for-pricing-detail-comment/:id
+  body: multipartForm
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  ~message: Updated comment text
+  ~type: user
+  ~remove_attachments: ["tok-old-1","tok-old-2"]
+  ~files: @file(/Users/samutpra/Pictures/logo.png)
+}
+
+docs {
+  ## Patch Request For Pricing Detail Comment
+  แก้ไขความคิดเห็นของ request-for-pricing-detail พร้อมเพิ่ม/ลบไฟล์แนบใน request เดียว
+
+  Patches an existing request-for-pricing-detail comment. Supports updating message text and adding/removing file attachments atomically in a single multipart request.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `message` | text | No | Updated comment text (≤ 4000 chars) |
+  | `type` | text | No | `user` (default) or `system` |
+  | `files` | binary (repeatable) | No | New attachments to add (max 10, max 10 MB each) |
+  | `remove_attachments` | text | No | JSON-encoded array of fileTokens to remove. e.g. `["tok-1","tok-2"]` |
+
+  Allowed MIME types for `files`: image/jpeg, image/png, image/webp, image/gif, application/pdf.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | No fields provided; file count/size/mime exceeds limit; `remove_attachments` not valid JSON |
+  | 401 | Missing or invalid Bearer token |
+  | 404 | Comment not found |
+  | 502 | File service (S3 upload) upstream failure |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

@@ -1,0 +1,2211 @@
+[
+  {
+    "id": "fa3055d5-576b-4b62-98c3-119a56dc0c0f",
+    "name": "Store Requisition",
+    "workflow_type": "store_requisition_workflow",
+    "data": {
+      "document_reference_pattern": "",
+      "stages": [
+        {
+          "name": "Request Creation",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": true,
+                "current_approve": true,
+                "next_step": true
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": true
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": true
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Stage 1",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "is_hod": true,
+          "assigned_users": []
+        },
+        {
+          "name": "Stage 2",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Stage 3",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Completed",
+          "description": "",
+          "sla": "0",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        }
+      ],
+      "routing_rules": [
+        {
+          "name": "rule 1",
+          "description": "test create rule 1",
+          "trigger_stage": "Request Creation",
+          "condition": {
+            "field": "amount",
+            "operator": "eq",
+            "value": "10000"
+          },
+          "action": {
+            "type": "NEXT_STAGE",
+            "parameters": {
+              "target_stage": "Completed"
+            }
+          }
+        }
+      ],
+      "notifications": [],
+      "notification_templates": [],
+      "products": []
+    },
+    "is_active": true,
+    "description": null
+  },
+  {
+    "id": "27692960-a986-483e-950f-22d5142db403",
+    "name": "TEST 4",
+    "workflow_type": "purchase_request_workflow",
+    "data": {
+      "id": "169d224f-40a6-4466-a9d0-ccf17c13038b",
+      "name": "General Purchase Workflow",
+      "type": "Purchase Request",
+      "status": "active",
+      "description": "Workflow for general purchase requests in a hotel environment",
+      "document_reference_pattern": "",
+      "stages": [
+        {
+          "name": "Request Creation",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "หัวหน้าแผนก",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "approve"
+        },
+        {
+          "name": "ฝ่ายจัดซื้อ",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "purchase"
+        },
+        {
+          "name": "ผู้อำนวยการจัดซื้อ",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "ผู้จัดการทั่วไป",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "เจ้าของบริษัท",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "role": "approve",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": true
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Completed",
+          "description": "",
+          "sla": "0",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        }
+      ],
+      "routing_rules": [],
+      "notifications": [],
+      "notification_templates": [],
+      "products": []
+    },
+    "is_active": true,
+    "description": null
+  },
+  {
+    "id": "f224d743-7cfa-46f6-8f72-85b14c6a355e",
+    "name": "Market list",
+    "workflow_type": "purchase_request_workflow",
+    "data": {
+      "document_reference_pattern": "",
+      "stages": [
+        {
+          "name": "Request Creation",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": true,
+                "current_approve": true,
+                "next_step": true
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": true
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": true
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Stage 1",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "is_hod": true,
+          "assigned_users": []
+        },
+        {
+          "name": "Stage 2",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Stage 3",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Completed",
+          "description": "",
+          "sla": "0",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        }
+      ],
+      "routing_rules": [
+        {
+          "name": "rule 1",
+          "description": "test create rule 1",
+          "trigger_stage": "Request Creation",
+          "condition": {
+            "field": "amount",
+            "operator": "eq",
+            "value": "10000"
+          },
+          "action": {
+            "type": "NEXT_STAGE",
+            "parameters": {
+              "target_stage": "Completed"
+            }
+          }
+        }
+      ],
+      "notifications": [],
+      "notification_templates": [],
+      "products": []
+    },
+    "is_active": true,
+    "description": ""
+  },
+  {
+    "id": "7b2274f2-de28-49d9-98c7-057142530d15",
+    "name": "TEST 2",
+    "workflow_type": "purchase_request_workflow",
+    "data": {
+      "id": "a5442513-b8bf-43cc-ae8c-806c4be22a0b",
+      "name": "General Purchase Workflow",
+      "type": "Purchase Request",
+      "status": "active",
+      "description": "Workflow for general purchase requests in a hotel environment",
+      "document_reference_pattern": "",
+      "stages": [
+        {
+          "name": "Request Creation",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Purchasing Review",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "purchase"
+        },
+        {
+          "name": "Department Approval",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "approve"
+        },
+        {
+          "name": "Finance Review",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Final Approval",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Completed",
+          "description": "",
+          "sla": "0",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        }
+      ],
+      "routing_rules": [],
+      "notifications": [],
+      "notification_templates": [],
+      "products": []
+    },
+    "is_active": true,
+    "description": null
+  },
+  {
+    "id": "271a9314-98b0-4c14-a42d-6da4ec5d882f",
+    "name": "111",
+    "workflow_type": "purchase_request_workflow",
+    "data": {
+      "document_reference_pattern": "PR-{YYYY}-{MM}-{####}",
+      "stages": [
+        {
+          "name": "Create Request",
+          "description": "Initial stage for creating and submitting requests",
+          "sla": "24",
+          "sla_unit": "hours",
+          "role": "create",
+          "creator_access": "only_creator",
+          "available_actions": {
+            "submit": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": true
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Completed",
+          "description": "Workflow completed successfully",
+          "sla": "0",
+          "sla_unit": "hours",
+          "role": "approve",
+          "creator_access": "only_creator",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        }
+      ],
+      "routing_rules": [],
+      "notifications": [],
+      "notification_templates": [],
+      "products": []
+    },
+    "is_active": true,
+    "description": ""
+  },
+  {
+    "id": "c0a2c4fe-072f-41cf-94fd-4cbe9e791e66",
+    "name": "2",
+    "workflow_type": "purchase_request_workflow",
+    "data": {
+      "id": "169d224f-40a6-4466-a9d0-ccf17c13038b",
+      "name": "General Purchase Workflow",
+      "type": "Purchase Request",
+      "status": "active",
+      "description": "Workflow for general purchase requests in a hotel environment",
+      "document_reference_pattern": "",
+      "stages": [
+        {
+          "name": "Request Creation",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "create"
+        },
+        {
+          "name": "หัวหน้าแผนก",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "approve",
+          "is_hod": true
+        },
+        {
+          "name": "ฝ่ายจัดซื้อ",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "purchase"
+        },
+        {
+          "name": "ผู้อำนวยการจัดซื้อ",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "ผู้จัดการทั่วไป",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "เจ้าของบริษัท",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "role": "approve",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": true
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Completed",
+          "description": "",
+          "sla": "0",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        }
+      ],
+      "routing_rules": [],
+      "notifications": [],
+      "notification_templates": [],
+      "products": []
+    },
+    "is_active": true,
+    "description": ""
+  },
+  {
+    "id": "ab2457b4-90f5-43cf-b0c8-9ae25d63504d",
+    "name": "test1",
+    "workflow_type": "purchase_request_workflow",
+    "data": {
+      "id": "169d224f-40a6-4466-a9d0-ccf17c13038b",
+      "name": "General Purchase Workflow",
+      "type": "Purchase Request",
+      "status": "active",
+      "description": "Workflow for general purchase requests in a hotel environment",
+      "document_reference_pattern": "",
+      "stages": [
+        {
+          "name": "Request Creation",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "create"
+        },
+        {
+          "name": "หัวหน้าแผนก",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "approve",
+          "is_hod": true
+        },
+        {
+          "name": "ฝ่ายจัดซื้อ",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "purchase"
+        },
+        {
+          "name": "ผู้อำนวยการจัดซื้อ",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "ผู้จัดการทั่วไป",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "เจ้าของบริษัท",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "role": "approve",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": true
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": true,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Completed",
+          "description": "",
+          "sla": "0",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        }
+      ],
+      "routing_rules": [],
+      "notifications": [],
+      "notification_templates": [],
+      "products": []
+    },
+    "is_active": true,
+    "description": ""
+  },
+  {
+    "id": "ac710822-d422-4e29-8439-87327e960a0e",
+    "name": "General",
+    "workflow_type": "purchase_request_workflow",
+    "data": {
+      "id": "94fef073-0ac3-452a-b0db-e66c48f84c5d",
+      "name": "General Purchase Workflow",
+      "type": "Purchase Request",
+      "status": "active",
+      "description": "Workflow for general purchase requests in a hotel environment",
+      "document_reference_pattern": "",
+      "stages": [
+        {
+          "name": "Request Creation",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "create"
+        },
+        {
+          "name": "HOD",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "approve",
+          "is_hod": true
+        },
+        {
+          "name": "Stage 2",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": true,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": [],
+          "role": "purchase"
+        },
+        {
+          "name": "Stage 3",
+          "description": "",
+          "sla": "24",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        },
+        {
+          "name": "Completed",
+          "description": "",
+          "sla": "0",
+          "sla_unit": "hours",
+          "available_actions": {
+            "submit": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "approve": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "reject": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            },
+            "sendback": {
+              "is_active": false,
+              "recipients": {
+                "requestor": false,
+                "current_approve": false,
+                "next_step": false
+              }
+            }
+          },
+          "hide_fields": {
+            "price_per_unit": false,
+            "total_price": false
+          },
+          "assigned_users": []
+        }
+      ],
+      "routing_rules": [
+        {
+          "name": "rule 1",
+          "description": "",
+          "trigger_stage": "Request Creation",
+          "condition": {
+            "field": "amount",
+            "operator": "lt",
+            "value": "-1"
+          },
+          "action": {
+            "type": "NEXT_STAGE",
+            "parameters": {
+              "target_stage": "Completed"
+            }
+          }
+        }
+      ],
+      "notifications": [],
+      "notification_templates": [],
+      "products": []
+    },
+    "is_active": true,
+    "description": ""
+  }
+]

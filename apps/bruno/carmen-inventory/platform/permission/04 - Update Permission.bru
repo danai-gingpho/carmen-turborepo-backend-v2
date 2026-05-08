@@ -1,0 +1,93 @@
+meta {
+  name: Update application-permission
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{host}}/api-system/permission/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "Create Purchase Request",
+    "description": "Permission to create new purchase requests",
+    "code": "procurement.purchase_request:create",
+    "resource": "procurement.purchase_request",
+    "action": "create",
+    "is_active": true
+  }
+}
+
+docs {
+  ## Update Permission
+  อัปเดตข้อมูลสิทธิ์การใช้งานที่มีอยู่
+
+  Modifies an existing feature permission definition, such as renaming it or changing its scope. Changes propagate to all roles that reference this permission across tenants.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `id` | string (UUID) | Permission ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Create Purchase Request",
+    "description": "Permission to create new purchase requests",
+    "code": "procurement.purchase_request:create",
+    "resource": "procurement.purchase_request",
+    "action": "create",
+    "is_active": true
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Validation fails |
+  | 401 | Missing or invalid bearer token |
+  | 404 | Permission not found |
+}
+
+params:path {
+  id:
+}

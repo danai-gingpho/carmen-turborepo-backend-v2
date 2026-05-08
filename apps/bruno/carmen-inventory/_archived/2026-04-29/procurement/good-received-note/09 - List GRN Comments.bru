@@ -1,0 +1,94 @@
+meta {
+  name: 09 - List GRN Comments
+  type: http
+  seq: 9
+}
+
+docs {
+  ## List GRN Comments (Legacy URL)
+  ดึงรายการความคิดเห็นและบันทึกทั้งหมดที่แนบกับใบรับสินค้า
+
+  Retrieves all comments and notes attached to a goods receiving record. Used by receiving staff and managers to review communication about delivery issues, quality concerns, or special handling instructions.
+
+  > **Note**: This file uses the legacy URL `/good-received-note/:good_received_note_id/comments`.
+  > The active controller endpoint is `GET /api/:bu_code/good-received-note-comment/:good_received_note_id`
+  > (see `good-received-note-comment/` folder). This file may be mismatched or stale.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `good_received_note_id` | string (UUID) | Good Received Note ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "good_received_note_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "message": "Delivery arrived 2 hours late — vendor notified",
+        "type": "user",
+        "attachments": [],
+        "created_at": "2026-04-29T08:30:00.000Z",
+        "created_by_id": "019638a6-2a00-7c4f-8e46-9b7a52c80ca0"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 1,
+      "total": 5,
+      "prev": null,
+      "next": null
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/good-received-note/:good_received_note_id/comments
+  body: none
+  auth: bearer
+}
+
+params:path {
+  good_received_note_id: {{grn_id}}
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

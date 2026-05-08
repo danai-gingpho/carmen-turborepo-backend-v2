@@ -1,0 +1,53 @@
+{
+  "name": "@repo/prisma-shared-schema-tenant",
+  "version": "1.0.0",
+  "description": "Shared prisma schema for tenant",
+  "author": "CarmenSoftware.dev@gmail.com",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "commonjs",
+  "keywords": [],
+  "license": "ISC",
+  "exports": {
+    ".": "./dist/index.js",
+    "./dist": "./dist/index.js",
+    "./dist/*": "./dist/*",
+    "./generated": "./generated/index.ts",
+    "./generated/*": "./generated/*"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:manual": "ts-node test-client.ts",
+    "demo:hooks": "ts-node demo-hooks.ts",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev --skip-generate",
+    "db:deploy": "prisma migrate deploy",
+    "db:migrate:reset": "prisma migrate reset",
+    "db:seed": "ts-node prisma/seed.ts",
+    "db:seed:reset": "prisma migrate reset --force && ts-node prisma/seed.ts",
+    "db:mock": "ts-node prisma/seed.ts && ts-node prisma/mock.ts",
+    "db:mock:reset": "prisma migrate reset --force && ts-node prisma/seed.ts && ts-node prisma/mock.ts",
+    "db:seed:a01": "ts-node prisma/seed-from-a01-all.ts"
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.51.1",
+    "@prisma/client": "^6.19.1",
+    "@repo/prisma-shared-schema-platform": "*",
+    "@repo/log-events-library": "*"
+  },
+  "devDependencies": {
+    "@mainamiru/prisma-types-generator": "^1.1.14",
+    "@mermaid-js/mermaid-cli": "^11.12.0",
+    "@types/node": "^24.10.1",
+    "@vitest/ui": "^4.0.10",
+    "prisma": "^6.19.1",
+    "prisma-erd-generator": "^2.1.0",
+    "prisma-json-types-generator": "^3.5.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "vitest": "^4.0.10"
+  }
+}

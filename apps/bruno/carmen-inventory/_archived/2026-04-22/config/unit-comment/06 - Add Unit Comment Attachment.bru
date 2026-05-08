@@ -1,0 +1,63 @@
+meta {
+  name: 06 - Add Unit Comment Attachment
+  type: http
+  seq: 6
+}
+
+docs {
+  ## Add Unit Comment Attachment
+  แนบไฟล์เข้ากับความคิดเห็น
+
+  Adds a file attachment to a comment. Requires the file to be uploaded first (via the file service) so that `fileToken` is available.
+
+  ### Path Parameters
+  - `id` — Comment ID / รหัสความคิดเห็น
+  - `bu_code` — Business unit code / รหัสหน่วยธุรกิจ
+
+  ### Request Body (AddAttachmentDto)
+  - `fileName` — Original file name / ชื่อไฟล์ต้นฉบับ (required)
+  - `fileToken` — File token (`bu_code/uuid`) / โทเคนไฟล์ (required)
+  - `fileUrl` — Presigned URL (optional)
+  - `contentType` — MIME content type (required)
+  - `size` — File size in bytes (optional)
+
+  ### Sample Response
+  ```json
+  {
+    "data": { "id": "uuid" },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-03-27T00:00:00.000Z"
+  }
+  ```
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/  url: {{host}}/api/config/{{bu_code}}/unit-comment/:id/:id/attachment
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "fileName": "document.pdf",
+    "fileToken": "{{bu_code}}/uuid-here",
+    "fileUrl": "",
+    "contentType": "application/pdf",
+    "size": 1024
+  }
+}

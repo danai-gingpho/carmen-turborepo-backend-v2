@@ -1,0 +1,79 @@
+meta {
+  name: 03 - Register
+  type: http
+  seq: 3
+}
+
+docs {
+  ## Register
+  ลงทะเบียนบัญชีผู้ใช้ใหม่ในระบบ Keycloak และแพลตฟอร์ม Carmen สำหรับเพิ่มพนักงานโรงแรมเข้าสู่ระบบ ERP
+
+  Creates a new user account in both Keycloak and the Carmen platform. Used to onboard new hotel staff such as purchasers, department heads, or property managers into the ERP system.
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Public — no auth required
+  > Note: controller has `@ApiBearerAuth()` but `@UseGuards(KeycloakGuard)` is commented out. Runtime is unguarded.
+
+  ### Sample Body
+  ```json
+  {
+    "username": "johndoe",
+    "email": "john.doe@carmensoftware.com",
+    "password": "P@ssw0rd!23",
+    "user_info": {
+      "first_name": "John",
+      "middle_name": "",
+      "last_name": "Doe",
+      "telephone": "0812345678"
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 409 | User with the same email or username already exists |
+}
+
+post {
+  url: {{host}}/api/auth/register
+  body: json
+  auth: none
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+body:json {
+  {
+    "username": "johndoe",
+    "email": "john.doe@carmensoftware.com",
+    "password": "P@ssw0rd!23",
+    "user_info": {
+      "first_name": "John",
+      "middle_name": "",
+      "last_name": "Doe",
+      "telephone": "0812345678"
+    }
+  }
+}

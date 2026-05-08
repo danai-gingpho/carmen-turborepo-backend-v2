@@ -1,0 +1,84 @@
+meta {
+  name: Scan po good-received-note
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/good-received-note/scan-po/:qr_code
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Scan PO QR Code
+  สแกน QR code ของใบสั่งซื้อเพื่อเริ่มกระบวนการรับสินค้า ใช้โดยเจ้าหน้าที่รับสินค้าที่จุดรับสินค้าเพื่อดึงรายละเอียดใบสั่งซื้ออย่างรวดเร็วเมื่อมีการส่งมอบ
+
+  Looks up a purchase order by scanning its QR code to begin the goods receiving process. QR code format: `<bu_code>|<po_id>`.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `qr_code` | string | QR code value in format `bu_code\|po_id` |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "grn_no": "GRN-2026-0042",
+      "grn_date": "2026-04-29T08:30:00.000Z",
+      "doc_status": "draft",
+      "vendor_name": "ABC Supplies Co., Ltd.",
+      "currency_code": "THB",
+      "good_received_note_detail": []
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission |
+  | 404 | Purchase Order not found for scanned QR code |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  qr_code: {{qr_code}}
+}

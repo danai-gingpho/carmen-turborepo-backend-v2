@@ -1,0 +1,106 @@
+meta {
+  name: Get inventory movement
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/products/:product_id/inventory-movement?start_at=&end_at=
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  start_at:
+  end_at:
+  ~location_id:
+  ~version:
+}
+
+params:query {
+  start_at:
+  end_at:
+  ~location_id:
+}
+
+params:path {
+  product_id: bb96415b-dff0-40ec-aa2f-2b4099418314
+}
+
+docs {
+  ## Get Inventory Movement (Stock Card) by Product
+  ดึงรายการเคลื่อนไหวสินค้า (สมุดสต็อก) ในช่วงวันที่ที่กำหนด
+
+  Returns the stock-card movement history for a product across the date range [start_at, end_at]. Each row represents one inventory cost-layer event. In FIFO mode `cost_average` is suffixed with `*`; in AVG mode it has no suffix.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `product_id` | string (UUID) | Product ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `start_at` | string | Yes | — | Start date (YYYY-MM-DD or ISO) |
+  | `end_at` | string | Yes | — | End date (YYYY-MM-DD or ISO) |
+  | `location_id` | string (UUID) | No | — | Filter by location |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `product_management.product:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "calculation_method": "FIFO",
+      "data": [
+        {
+          "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "location_name": "Main Warehouse",
+          "location_code": "WH-001",
+          "data": [
+            {
+              "date": "2026-04-29T03:00:00.000Z",
+              "status": "good_received_note",
+              "in_qty": 10,
+              "out_qty": 0,
+              "total_qty": 10,
+              "cost": 1250.00,
+              "total_cost": 12500.00,
+              "cost_average": "1250*"
+            }
+          ]
+        }
+      ]
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `product_management.product:view` permission |
+  | 404 | Product not found |
+}

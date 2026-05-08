@@ -1,0 +1,79 @@
+meta {
+  name: Duplicate pr purchase-request
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/purchase-request/duplicate-pr
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {}
+}
+
+docs {
+  ## Duplicate Purchase Request
+  ทำสำเนาใบขอซื้อที่มีอยู่หนึ่งรายการขึ้นไป โดยคงรายการสินค้าและรายละเอียดไว้ เหมาะสำหรับการจัดซื้อซ้ำที่แผนกสั่งสินค้าเดิมเป็นประจำ
+
+  Creates copies of one or more existing purchase requests, preserving their line items and details. Useful for recurring procurement needs where departments regularly order the same items.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+  | `Content-Type` | Yes | `application/json` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Validation error in request body |
+  | 401 | Missing or invalid bearer token |
+  | 403 | Insufficient permissions |
+  | 404 | Source purchase request not found |
+}

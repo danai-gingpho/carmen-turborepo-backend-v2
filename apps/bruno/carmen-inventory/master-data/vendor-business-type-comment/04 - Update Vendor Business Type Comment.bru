@@ -1,0 +1,89 @@
+meta {
+  name: Update vendor-business-type-comment
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/vendor-business-type-comment/:id
+  body: multipartForm
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+params:path {
+  id: {{test_id}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  ~message: Updated comment text
+  ~type: user
+  ~remove_attachments: ["tok-old-1","tok-old-2"]
+  ~files: @file(/Users/samutpra/Pictures/logo.png)
+}
+
+docs {
+  ## Patch Vendor Business Type Comment
+  แก้ไขความคิดเห็นพร้อมเพิ่ม/ลบไฟล์แนบใน request เดียว
+
+  Updates an existing comment, optionally adding new file attachments or removing existing ones in a single multipart request.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Comment ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `message` | text | No* | Updated comment text (≤ 4000 chars) |
+  | `type` | text | No* | `user` or `system` |
+  | `files` | binary (repeatable) | No* | New files to add (0–10) |
+  | `remove_attachments` | text | No* | JSON-encoded array of fileTokens to remove, e.g. `["tok-1","tok-2"]` |
+
+  *At least one field must be provided.
+
+  ### Sample Response
+  ```json
+  {
+    "data": { "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d" },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | No fields provided; file exceeds 10 MB; unsupported mime type; more than 10 files |
+  | 401 | Missing or invalid bearer token |
+  | 502 | S3 file upload failure (rolled back) |
+}

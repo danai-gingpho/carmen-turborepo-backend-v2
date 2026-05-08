@@ -1,0 +1,66 @@
+meta {
+  name: Get config_app_config
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/app-config/:key
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+docs {
+  ## Get Application Config Entry by Key
+  ดู Application Config รายการเดียวตาม key (mask sensitive fields)
+
+  Returns one tb_application_config row by key. Sensitive fields are masked.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `key` | string | Config key (e.g., `report_email`) |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "key": "report_email",
+      "value": {
+        "smtp": { "host": "smtp.gmail.com", "port": 587, "username": "noreply@carmensoftware.com", "password": "***", "from": "noreply@carmensoftware.com", "enabled": true },
+        "recipients": ["admin@carmensoftware.com"],
+        "cc": [],
+        "subject_prefix": "[Carmen]"
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | Config key not found for this business unit |
+}

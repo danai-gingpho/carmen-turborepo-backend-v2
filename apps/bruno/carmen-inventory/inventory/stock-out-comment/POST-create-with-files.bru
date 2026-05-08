@@ -1,0 +1,120 @@
+meta {
+  name: Create with files stock-out-comment
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/stock-out-comment/{{stock_out_id}}
+  body: multipartForm
+  auth: bearer
+}
+
+params:query {
+  ~version: latest
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  message: Comment with attached photos
+  type: user
+  files: @file(/Users/samutpra/Pictures/logo.png)
+  files: @file(/Users/samutpra/Pictures/logo_CARMEN_Classic-Blue_low-res.png)
+}
+
+vars:pre-request {
+  stock_out_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## Create Stock Out Comment (with file uploads)
+  สร้างความคิดเห็นใหม่สำหรับรายการเบิกสินค้าออกจากคลัง พร้อมแนบไฟล์ใน request เดียว ไม่ต้อง upload file แยกก่อน
+
+  Creates a new comment on a stock-out transaction with optional file attachments in a single multipart request.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `stock_out_id` | string (UUID) | Stock Out ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.stock_out:update`
+  - **Roles**: Purchase
+
+  ### Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `message` | text | No* | Comment text (≤ 4000 chars) |
+  | `type` | text | No | `user` or `system` (default: `user`) |
+  | `files` | binary (repeatable) | No* | File attachments |
+
+  *At least one of `message` or `files` must be provided.
+
+  **File constraints**: max 10 files, max 10 MB each; allowed: image/jpeg, image/png, image/webp, image/gif, application/pdf
+
+  ### Gateway behavior
+  1. Upload all files to S3 via `file.upload`
+  2. If any upload fails — rollback (delete successfully uploaded files from S3) and respond 502
+  3. Forward `{ stock_out_id, message, type, attachments: [...] }` to business service
+  4. If business service returns error — rollback and delete uploaded files from S3
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "stock_out_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "attachments": [
+        {
+          "fileName": "photo.jpg",
+          "fileToken": "BU001/019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "fileUrl": "",
+          "contentType": "image/jpeg",
+          "size": 204800
+        }
+      ]
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > Note: `fileUrl` ใน response จะว่าง — frontend ต้องเรียก `GET /api/{bu_code}/documents/presigned-url/{fileToken}` เพื่อแสดงไฟล์
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Neither message nor files provided |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.stock_out:update` permission |
+  | 404 | Stock Out not found |
+  | 502 | S3 upload failed |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

@@ -1,0 +1,85 @@
+meta {
+  name: Get stock balance inventory-transaction
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/inventory-transaction/stock-balance
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~product_id: 
+}
+
+docs {
+  ## View Stock Balance
+  ดูยอดคงเหลือสินค้ารวมตามสินค้าและสถานที่ แสดงจำนวนคงเหลือปัจจุบันของสินค้าในแต่ละคลัง
+
+  View aggregated stock balance per product/location, showing current on-hand quantities.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `product_id` | string (UUID) | No | — | Filter by product |
+  | `search` | string | No | — | Search keyword |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "product_name": "Rice 5kg",
+        "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "location_name": "Main Store",
+        "qty": 150.5,
+        "unit_name": "KG"
+      }
+    ],
+    "paginate": { "page": 1, "perpage": 10, "pages": 5, "total": 48, "prev": null, "next": 2 },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+}
+
+params:query {
+  page: 1
+  perpage: 10
+  ~product_id:
+  ~search:
+}

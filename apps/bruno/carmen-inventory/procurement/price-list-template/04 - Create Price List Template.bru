@@ -1,0 +1,123 @@
+meta {
+  name: Create price-list-template
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/price-list-template
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "",
+    "description": "",
+    "note": "",
+    "status": "draft",
+    "currency_id": "",
+    "currency_code": "",
+    "validity_period": 0,
+    "vendor_instructions": "",
+    "send_reminders": false,
+    "reminder_days": [],
+    "escalation_after_days": 0,
+    "products": {
+      "add": [],
+      "remove": [],
+      "update": []
+    },
+    "info": null,
+    "dimension": null
+  }
+}
+
+docs {
+  ## Create Price List Template
+  สร้างแม่แบบรายการราคาใหม่ด้วยรายการสินค้าที่กำหนดไว้ล่วงหน้า
+
+  Creates a reusable price list template with a predefined set of products, streamlining the process of requesting standardized pricing from multiple vendors.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.price_list:create`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Standard Beverage Template",
+    "description": "Default product lineup for beverage vendor RFP",
+    "note": "",
+    "status": "draft",
+    "currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "currency_code": "THB",
+    "validity_period": 30,
+    "vendor_instructions": "Please quote in THB inclusive of VAT.",
+    "send_reminders": true,
+    "reminder_days": [7, 3, 1],
+    "escalation_after_days": 14,
+    "products": {
+      "add": [
+        {
+          "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "product_name": "Sparkling Water 500ml",
+          "unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "unit_name": "Bottle"
+        }
+      ],
+      "remove": [],
+      "update": []
+    },
+    "info": null,
+    "dimension": null
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Required fields missing or invalid values |
+  | 401 | Bearer token missing or invalid |
+  | 403 | User lacks `vendor_management.price_list:create` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

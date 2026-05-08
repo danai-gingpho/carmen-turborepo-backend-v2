@@ -1,0 +1,158 @@
+meta {
+  name: Create price-list
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/price-list
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "",
+    "description": "",
+    "status": "",
+    "vendor_name": "",
+    "currency_id": "",
+    "currency_code": "",
+    "effective_from_date": null,
+    "effective_to_date": null,
+    "is_active": true,
+    "vendor_id": "",
+    "note": "",
+    "info": null,
+    "dimension": null,
+    "pricelist_detail": {
+      "add": [
+        {
+          "sequence_no": 0,
+          "product_id": "",
+          "product_name": "",
+          "unit_id": "",
+          "unit_name": "",
+          "tax_profile_id": "",
+          "tax_profile_name": "",
+          "tax_rate": 0,
+          "moq_qty": 0,
+          "price_without_tax": 0,
+          "tax_amt": 0,
+          "price": 0,
+          "lead_time_days": 0,
+          "is_active": false,
+          "description": "",
+          "note": "",
+          "info": null,
+          "dimension": null
+        }
+      ],
+      "update": [],
+      "delete": []
+    }
+  }
+}
+
+docs {
+  ## Create Price List
+  สร้างรายการราคาใหม่สำหรับผู้ขาย พร้อมราคาสินค้าและวันที่มีผล
+
+  Records a new vendor price list with product prices and validity dates, establishing the pricing basis for procurement purchase orders and cost comparison.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.price_list:create`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Q2 2026 Beverage Price List",
+    "description": "Quarterly price agreement with Bangkok Beverage Co.",
+    "status": "draft",
+    "vendor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "vendor_name": "Bangkok Beverage Co., Ltd.",
+    "currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "currency_code": "THB",
+    "effective_from_date": "2026-04-01",
+    "effective_to_date": "2026-06-30",
+    "is_active": true,
+    "note": "",
+    "info": null,
+    "dimension": null,
+    "pricelist_detail": {
+      "add": [
+        {
+          "sequence_no": 1,
+          "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "product_name": "Sparkling Water 500ml",
+          "unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "unit_name": "Bottle",
+          "tax_profile_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "tax_profile_name": "VAT 7%",
+          "tax_rate": 7,
+          "moq_qty": 24,
+          "price_without_tax": 14.02,
+          "tax_amt": 0.98,
+          "price": 15.00,
+          "lead_time_days": 3,
+          "is_active": true,
+          "description": "",
+          "note": "",
+          "info": null,
+          "dimension": null
+        }
+      ],
+      "update": [],
+      "delete": []
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Required fields missing or invalid date format |
+  | 401 | Bearer token missing or invalid |
+  | 403 | User lacks `vendor_management.price_list:create` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

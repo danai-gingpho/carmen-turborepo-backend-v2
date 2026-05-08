@@ -1,0 +1,779 @@
+[
+  {
+    "id": "dbc424a8-ee07-4821-a500-19f51610710d",
+    "code": "KD00",
+    "name": "KC Department",
+    "description": "acvcc",
+    "is_active": false
+  },
+  {
+    "id": "49cf5059-e283-48f2-a323-fb2bfe077889",
+    "code": "FINA",
+    "name": "Finance Department",
+    "description": "",
+    "is_active": false
+  },
+  {
+    "id": "33912bf4-eb2e-4bb2-943e-9f27acc9b924",
+    "code": "MAID",
+    "name": "Maid Service Department",
+    "description": "",
+    "is_active": true
+  },
+  {
+    "id": "b01d72e8-1c38-4ea6-88a0-7d25a0f9b2d4",
+    "code": "VALI",
+    "name": "Valid Department 1753858820201",
+    "description": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "is_active": false
+  },
+  {
+    "id": "9722b9f0-7646-4f06-a0f5-2f7ffccdedef",
+    "code": "FRON",
+    "name": "Front Office",
+    "description": null,
+    "is_active": true
+  },
+  {
+    "id": "3f027f2a-a853-400c-91ee-b984017642b3",
+    "code": "HOUS",
+    "name": "Housekeeping",
+    "description": null,
+    "is_active": true
+  },
+  {
+    "id": "367adacc-6462-487e-a709-b9463256a16d",
+    "code": "KITC",
+    "name": "Kitchen",
+    "description": null,
+    "is_active": true
+  },
+  {
+    "id": "c09f97e0-86ab-4e90-8552-95ed0ea2468e",
+    "code": "FOOD",
+    "name": "Food & Beverage",
+    "description": null,
+    "is_active": true
+  },
+  {
+    "id": "114512b8-5983-4ae0-b9c5-0fb4de8b1059",
+    "code": "ADMI",
+    "name": "Admin",
+    "description": null,
+    "is_active": true
+  },
+  {
+    "id": "6a6e0e3c-d09c-46f6-9609-9ad0c35af09b",
+    "code": "ACCO",
+    "name": "Accounting",
+    "description": null,
+    "is_active": true
+  },
+  {
+    "id": "e60e03e0-3a14-4279-93ca-a8f295e9f43f",
+    "code": "HUMA",
+    "name": "Human Resources",
+    "description": null,
+    "is_active": true
+  },
+  {
+    "id": "9d7f1f75-9c22-4649-845b-bd02336b8ea8",
+    "code": "SALE",
+    "name": "Sales & Marketing",
+    "description": null,
+    "is_active": true
+  },
+  {
+    "id": "be4ce29c-9d22-4134-b0d0-1fc44fe9b420",
+    "code": "S000",
+    "name": "Spa",
+    "description": null,
+    "is_active": true
+  },
+  {
+    "id": "ca2e1a1a-b238-4392-a6be-1d4083431bc4",
+    "code": "ENGI",
+    "name": "Engineering",
+    "description": null,
+    "is_active": true
+  },
+  {
+    "id": "919461ae-6221-47f4-89e5-1f32453a3ef3",
+    "code": "ETD0",
+    "name": "E2E Test Department",
+    "description": "Department created by E2E test",
+    "is_active": true
+  },
+  {
+    "id": "a7f2e7d9-df2d-40eb-8263-b565f95ae083",
+    "code": "VIEW",
+    "name": "View Test Department",
+    "description": "Test department for viewing",
+    "is_active": true
+  },
+  {
+    "id": "fe41a10e-cad1-414f-9183-78366941ea22",
+    "code": "HD00",
+    "name": "HR Department",
+    "description": "Human Resources",
+    "is_active": true
+  },
+  {
+    "id": "8b2dd0bd-3a98-4916-8f84-7f2c3730c01e",
+    "code": "UPDA",
+    "name": "Update Test Department",
+    "description": "Initial description",
+    "is_active": true
+  },
+  {
+    "id": "40de1b0d-6313-459a-b885-d978b27c96ab",
+    "code": "DELE",
+    "name": "Delete Test Department",
+    "description": "Department to be deleted",
+    "is_active": true
+  },
+  {
+    "id": "1090c326-7c15-4314-ae34-5c3216098d8f",
+    "code": "VAL1",
+    "name": "Valid Department Name",
+    "description": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "is_active": false
+  },
+  {
+    "id": "0187c528-360f-432f-adc9-221dbbc5f22c",
+    "code": "UNIQ",
+    "name": "Unique Department",
+    "description": "First department",
+    "is_active": true
+  },
+  {
+    "id": "47fb76c6-7d78-49fe-92e0-5cc1b2b4403e",
+    "code": "BTD1",
+    "name": "Bulk Test Dept 1",
+    "description": "First bulk department",
+    "is_active": true
+  },
+  {
+    "id": "0f703159-a594-45cb-943c-bee198b5e4e9",
+    "code": "MOBI",
+    "name": "Mobile Test Department",
+    "description": "Testing mobile navigation",
+    "is_active": true
+  },
+  {
+    "id": "43a0f1d8-7a42-441b-9a14-86e6b40f5612",
+    "code": "PTD1",
+    "name": "Performance Test Department 1",
+    "description": "Department 1 for performance testing",
+    "is_active": true
+  },
+  {
+    "id": "0da0c2d3-1a19-45b8-b42f-56db84a59113",
+    "code": "INTE",
+    "name": "Integration Test Department",
+    "description": "Department for integration testing",
+    "is_active": true
+  },
+  {
+    "id": "c5f5d372-ed0a-4487-b60f-d2a46a418cd2",
+    "code": "CONS",
+    "name": "Consistency Test Department",
+    "description": "Testing data consistency",
+    "is_active": true
+  },
+  {
+    "id": "2be305ad-ff39-4e42-a07d-778e6d86a49c",
+    "code": "UTD1",
+    "name": "Update Test Department 1753857603688",
+    "description": "Initial description",
+    "is_active": true
+  },
+  {
+    "id": "65ecf588-f6de-4eae-8a67-33607296173a",
+    "code": "DTD1",
+    "name": "Delete Test Department 1753857603929",
+    "description": "Department to be deleted",
+    "is_active": true
+  },
+  {
+    "id": "e8550e2c-488c-4051-97ba-0461bd89629c",
+    "code": "ETD1",
+    "name": "E2E Test Department 1753857604002",
+    "description": "Department created by E2E test",
+    "is_active": true
+  },
+  {
+    "id": "47b4986d-1e47-45a3-a3c9-6446c80804c0",
+    "code": "HTD1",
+    "name": "HR Test Dept 1753857604065",
+    "description": "Human Resources",
+    "is_active": true
+  },
+  {
+    "id": "568cf30f-cdb7-4cc4-a92c-6b4fca08dec5",
+    "code": "VTD1",
+    "name": "View Test Department 1753857604084",
+    "description": "Test department for viewing",
+    "is_active": true
+  },
+  {
+    "id": "1fa96b87-2c10-4a1a-87a6-2aa525d86e37",
+    "code": "ITD1",
+    "name": "IT Test Dept 1753857604065",
+    "description": "Information Technology",
+    "is_active": true
+  },
+  {
+    "id": "f8dc55a2-77ce-432a-aebf-2f7800e4e68a",
+    "name": "HR Test Dept 1753857615458",
+    "description": "Human Resources",
+    "is_active": true,
+    "code": "HTD2"
+  },
+  {
+    "id": "0599bd6e-1f9b-46bb-8c90-eb2628836aae",
+    "name": "Finance Test Dept 1753857604065",
+    "description": "Financial Operations",
+    "is_active": false,
+    "code": "FTD1"
+  },
+  {
+    "id": "f5ab154f-ebd4-4f84-b4f6-1c45399b7af7",
+    "name": "IT Test Dept 1753857615458",
+    "description": "Information Technology",
+    "is_active": true,
+    "code": "ITD2"
+  },
+  {
+    "id": "799f5220-1cb8-49af-a583-b2b23f2ea692",
+    "name": "Finance Test Dept 1753857615458",
+    "description": "Financial Operations",
+    "is_active": false,
+    "code": "FTD2"
+  },
+  {
+    "id": "b020008a-48cd-498b-908f-696bee7a383c",
+    "name": "HR Test Dept 1753857635528",
+    "description": "Human Resources",
+    "is_active": true,
+    "code": "HTD3"
+  },
+  {
+    "id": "59dcd1ec-8d00-4630-a15f-20718e0a26b4",
+    "name": "Valid Department 1753857635927",
+    "description": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "is_active": false,
+    "code": "VAL2"
+  },
+  {
+    "id": "f1d2a3d9-a5d9-41b0-a636-b0ee2655e521",
+    "name": "IT Test Dept 1753857635528",
+    "description": "Information Technology",
+    "is_active": true,
+    "code": "ITD3"
+  },
+  {
+    "id": "8a61bcbd-2f7e-43fd-944d-40f0ccbc3798",
+    "name": "Unique Department 1753857642626",
+    "description": "First department",
+    "is_active": true,
+    "code": "UNI1"
+  },
+  {
+    "id": "0f8a4eca-3402-4d0f-8101-607636ee2dfc",
+    "name": "Finance Test Dept 1753857635528",
+    "description": "Financial Operations",
+    "is_active": false,
+    "code": "FTD3"
+  },
+  {
+    "id": "7764ee9c-12d6-43c7-8748-b969bf70c328",
+    "name": "Bulk Test Dept 1 1753857646160",
+    "description": "First bulk department",
+    "is_active": true,
+    "code": "BTD2"
+  },
+  {
+    "id": "b8b5a59d-82f8-452f-a55b-af9fa36180a4",
+    "name": "Bulk Test Dept 1 1753857648261",
+    "description": "First bulk department",
+    "is_active": true,
+    "code": "BTD3"
+  },
+  {
+    "id": "1ddcb78e-05fc-407b-8c0d-720ead18b7a3",
+    "name": "Bulk Test Dept 2 1753857646160",
+    "description": "Second bulk department",
+    "is_active": true,
+    "code": "BTD4"
+  },
+  {
+    "id": "3468a57b-1e9b-4420-9b00-74d1e9f020e8",
+    "name": "Bulk Test Dept 1 1753857654481",
+    "description": "First bulk department",
+    "is_active": true,
+    "code": "BTD5"
+  },
+  {
+    "id": "5d497a06-f53e-401e-b09e-fa9f72c09bbc",
+    "name": "Bulk Test Dept 2 1753857648261",
+    "description": "Second bulk department",
+    "is_active": true,
+    "code": "BTD6"
+  },
+  {
+    "id": "663af7a1-43e1-455b-baeb-fdfa57ec4533",
+    "name": "Bulk Test Dept 1 1753857658150",
+    "description": "First bulk department",
+    "is_active": true,
+    "code": "BTD7"
+  },
+  {
+    "id": "2792e2f5-4973-4d39-89fe-7907916b2c21",
+    "name": "Bulk Test Dept 3 1753857646160",
+    "description": "Third bulk department",
+    "is_active": false,
+    "code": "BTD8"
+  },
+  {
+    "id": "003489f6-3b2c-454f-8c87-3477957daede",
+    "name": "Bulk Test Dept 3 1753857648261",
+    "description": "Third bulk department",
+    "is_active": false,
+    "code": "BTD9"
+  },
+  {
+    "id": "c12412c5-bc4e-423e-9075-4984fd7dea5a",
+    "name": "Bulk Test Dept 2 1753857654481",
+    "description": "Second bulk department",
+    "is_active": true,
+    "code": "BT10"
+  },
+  {
+    "id": "c98d7bee-f766-485b-8336-7c3c79f76be5",
+    "name": "Bulk Test Dept 2 1753857658150",
+    "description": "Second bulk department",
+    "is_active": true,
+    "code": "BT11"
+  },
+  {
+    "id": "b5e4d949-b52f-4953-9661-407733d069f6",
+    "name": "Bulk Test Dept 3 1753857654481",
+    "description": "Third bulk department",
+    "is_active": false,
+    "code": "BT12"
+  },
+  {
+    "id": "b86aeed6-466a-4838-ae59-a35d3430dd98",
+    "name": "Bulk Test Dept 3 1753857658150",
+    "description": "Third bulk department",
+    "is_active": false,
+    "code": "BT13"
+  },
+  {
+    "id": "bb96564b-40d8-4f2e-8fd7-fe8cb6685df2",
+    "name": "Mobile Test Department 1753857677924",
+    "description": "Testing mobile navigation",
+    "is_active": true,
+    "code": "MTD1"
+  },
+  {
+    "id": "0e834816-dbdf-4e49-bb3e-f8aea94aeeb8",
+    "name": "Perf Test Dept 1 1753857685739",
+    "description": "Department 1 for performance testing",
+    "is_active": true,
+    "code": "PTD2"
+  },
+  {
+    "id": "dde8fe07-e6d3-47bf-9a29-7e29e839374c",
+    "name": "Sequential Test Dept 1753857687291",
+    "description": "For sequential operations test",
+    "is_active": true,
+    "code": "STD1"
+  },
+  {
+    "id": "f995466c-deb2-45c8-86fd-f3fa84d919e2",
+    "name": "Perf Test Dept 2 1753857685739",
+    "description": "Department 2 for performance testing",
+    "is_active": false,
+    "code": "PTD3"
+  },
+  {
+    "id": "86cb0874-f94b-4c43-a292-77f9bf39036c",
+    "name": "Integration Test Department 1753857695468",
+    "description": "Department for integration testing",
+    "is_active": true,
+    "code": "ITD4"
+  },
+  {
+    "id": "c5f96e7c-23d9-4bdf-a6ba-cbe2658d599e",
+    "name": "Perf Test Dept 3 1753857685739",
+    "description": "Department 3 for performance testing",
+    "is_active": true,
+    "code": "PTD4"
+  },
+  {
+    "id": "0f413f63-3f96-47a9-a9f8-66317a426945",
+    "name": "Consistency Test Department 1753857697886",
+    "description": "Initial description for consistency test",
+    "is_active": true,
+    "code": "CTD1"
+  },
+  {
+    "id": "282ab665-8f2b-4db2-9857-73f8b5dbdec2",
+    "name": "Perf Test Dept 4 1753857685739",
+    "description": "Department 4 for performance testing",
+    "is_active": false,
+    "code": "PTD5"
+  },
+  {
+    "id": "b807d04c-a02b-4bd5-84cd-e83b30e96e7f",
+    "name": "CRUD Lifecycle Dept 1753857706879",
+    "description": "Testing full CRUD lifecycle",
+    "is_active": true,
+    "code": "CLD1"
+  },
+  {
+    "id": "d4646e7b-ae11-4539-88a4-7b88653e3c57",
+    "name": "Perf Test Dept 5 1753857685739",
+    "description": "Department 5 for performance testing",
+    "is_active": true,
+    "code": "PTD6"
+  },
+  {
+    "id": "5359bde5-4e1f-4288-9b4d-6415fed5e2b5",
+    "name": "Delete Test Department 1753857727702",
+    "description": "Department to be deleted",
+    "is_active": true,
+    "code": "DTD2"
+  },
+  {
+    "id": "fceda315-a25e-4345-9b75-3be2eb087d6f",
+    "name": "View Test Department 1753857727711",
+    "description": "Test department for viewing",
+    "is_active": true,
+    "code": "VTD2"
+  },
+  {
+    "id": "98dcd896-5866-4c05-9ff7-d25813a232ca",
+    "name": "Update Test Department 1753857727709",
+    "description": "Initial description",
+    "is_active": true,
+    "code": "UTD2"
+  },
+  {
+    "id": "d4ce9807-f4ca-4c8b-b5e6-c4a8e3a946fb",
+    "name": "E2E Test Department 1753857727709",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ETD2"
+  },
+  {
+    "id": "c3b3e72b-8bcf-448d-8627-a16991004d35",
+    "name": "E2E Test Department 1753857732051",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ETD3"
+  },
+  {
+    "id": "0ff33f9c-615d-45e3-8f22-941ad7e43c4b",
+    "name": "View Test Department 1753857741436",
+    "description": "Test department for viewing",
+    "is_active": true,
+    "code": "VTD3"
+  },
+  {
+    "id": "71e9d8a2-37c3-408c-97f4-cbf81093717b",
+    "name": "Update Test Department 1753857741314",
+    "description": "Initial description",
+    "is_active": true,
+    "code": "UTD3"
+  },
+  {
+    "id": "9523c383-d7b3-4397-9c14-cdb6624bfd04",
+    "name": "E2E Test Department 1753857754944",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ETD4"
+  },
+  {
+    "id": "4d3ada31-8dcb-4775-bc81-ecabe330ed0b",
+    "name": "Delete Test Department 1753857755676",
+    "description": "Department to be deleted",
+    "is_active": true,
+    "code": "DTD3"
+  },
+  {
+    "id": "c7d4a309-bcd7-4c4e-9bb2-08884f8fe4fa",
+    "name": "Update Test Department 1753857762266",
+    "description": "Initial description",
+    "is_active": true,
+    "code": "UTD4"
+  },
+  {
+    "id": "cd2d3b96-1214-4069-b773-090fe6dd5115",
+    "name": "View Test Department 1753857762323",
+    "description": "Test department for viewing",
+    "is_active": true,
+    "code": "VTD4"
+  },
+  {
+    "id": "d8b0eea2-896c-44bc-b3b8-a7ae4a76b601",
+    "name": "Delete Test Department 1753857764900",
+    "description": "Department to be deleted",
+    "is_active": true,
+    "code": "DTD4"
+  },
+  {
+    "id": "63ccb9e5-99be-49f4-a1f8-a8e4878aba59",
+    "name": "E2E Test Department 1753857772495",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ETD5"
+  },
+  {
+    "id": "7ba6a453-67f5-4611-9902-8f8634297b5d",
+    "name": "View Test Department 1753857772976",
+    "description": "Test department for viewing",
+    "is_active": true,
+    "code": "VTD5"
+  },
+  {
+    "id": "422937a6-a2ff-4d81-9da1-c99d73e50af0",
+    "name": "Update Test Department 1753857782331",
+    "description": "Initial description",
+    "is_active": true,
+    "code": "UTD5"
+  },
+  {
+    "id": "50549b6b-dd4b-43b7-b08d-69d16775bf66",
+    "name": "Delete Test Department 1753857786172",
+    "description": "Department to be deleted",
+    "is_active": true,
+    "code": "DTD5"
+  },
+  {
+    "id": "4ba771b8-da11-4922-98ad-53e9ae84dedc",
+    "name": "E2E Test Department 1753857786768",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ETD6"
+  },
+  {
+    "id": "7e869cee-b365-4b56-b537-e65f7097d3bd",
+    "name": "View Test Department 1753857792149",
+    "description": "Test department for viewing",
+    "is_active": true,
+    "code": "VTD6"
+  },
+  {
+    "id": "fb77f604-c7a3-4d2d-9eac-c49a0859ebb7",
+    "name": "Update Test Department 1753857796476",
+    "description": "Initial description",
+    "is_active": true,
+    "code": "UTD6"
+  },
+  {
+    "id": "e373eb80-5929-4f2b-b244-cdae4f5fb843",
+    "name": "Delete Test Department 1753857802426",
+    "description": "Department to be deleted",
+    "is_active": true,
+    "code": "DTD6"
+  },
+  {
+    "id": "4e2ab7aa-240e-476c-baa5-07c4fad31d1e",
+    "name": "E2E Test Department 1753857871680",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ETD7"
+  },
+  {
+    "id": "3c1575bf-1796-4f9b-aa78-ca9cce5b2e42",
+    "name": "E2E Test Department 1753858087303",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ETD8"
+  },
+  {
+    "id": "24b59eb0-4f2b-4649-89ee-018dbeea04fc",
+    "name": "E2E Test Department 1753858214186",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ETD9"
+  },
+  {
+    "id": "f8e7767b-38ae-4384-aa62-fdcef3935d37",
+    "name": "Delete Test Department 1753858253573",
+    "description": "Department to be deleted",
+    "is_active": true,
+    "code": "DTD7"
+  },
+  {
+    "id": "8a7304e6-f981-461d-bfa9-91d85b77db1f",
+    "name": "Update Test Department 1753858253567",
+    "description": "Initial description",
+    "is_active": true,
+    "code": "UTD7"
+  },
+  {
+    "id": "5ad1ba85-f558-4d62-b7e9-7c722ac945fa",
+    "name": "View Test Department 1753858253567",
+    "description": "Test department for viewing",
+    "is_active": true,
+    "code": "VTD7"
+  },
+  {
+    "id": "6d019ed3-1f52-467f-abb5-7cc860e5bd65",
+    "name": "E2E Test Department 1753858253573",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ET10"
+  },
+  {
+    "id": "eb2aac4f-ad1f-4635-8cdd-46a59a52f636",
+    "name": "E2E Test Department 1753858412774",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ET11"
+  },
+  {
+    "id": "f536e5b3-dba0-48a6-a494-dcd1bc87d886",
+    "name": "E2E Test Department 1753858551444",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ET12"
+  },
+  {
+    "id": "a593624f-4007-4f5b-abf6-918bd68395a5",
+    "name": "Update Test Department 1753858788916",
+    "description": "Initial description",
+    "is_active": true,
+    "code": "UTD8"
+  },
+  {
+    "id": "f084976f-d13d-49cc-84e9-778fc2f89001",
+    "name": "HR Test Dept 1753858788916",
+    "description": "Human Resources",
+    "is_active": true,
+    "code": "HTD4"
+  },
+  {
+    "id": "b251a0c1-64cd-4496-979d-dd93ea3d986f",
+    "name": "E2E Test Department 1753858788970",
+    "description": "Department created by E2E test",
+    "is_active": true,
+    "code": "ET13"
+  },
+  {
+    "id": "fdc2e462-4750-46a6-8804-675f5c4c4431",
+    "name": "Delete Test Department 1753858788985",
+    "description": "Department to be deleted",
+    "is_active": true,
+    "code": "DTD8"
+  },
+  {
+    "id": "2061eb4f-63cd-4cc9-ae62-4fd82f38037c",
+    "name": "View Test Department 1753858788984",
+    "description": "Test department for viewing",
+    "is_active": true,
+    "code": "VTD8"
+  },
+  {
+    "id": "f58ff153-b47e-4052-b0d4-f7c6505841dc",
+    "name": "IT Test Dept 1753858788916",
+    "description": "Information Technology",
+    "is_active": true,
+    "code": "ITD5"
+  },
+  {
+    "id": "8dce192f-5912-4089-addf-097c53541154",
+    "name": "HR Test Dept 1753858799792",
+    "description": "Human Resources",
+    "is_active": true,
+    "code": "HTD5"
+  },
+  {
+    "id": "ce8d03c9-d412-461b-9cc4-a4a3e447227b",
+    "name": "HR Test Dept 1753858805175",
+    "description": "Human Resources",
+    "is_active": true,
+    "code": "HTD6"
+  },
+  {
+    "id": "0ac08b42-10f4-42f4-926a-fa069427ce12",
+    "name": "Finance Test Dept 1753858788916",
+    "description": "Financial Operations",
+    "is_active": false,
+    "code": "FTD4"
+  },
+  {
+    "id": "b7117fcc-e5cb-47e6-a9ef-9350dcbfbac0",
+    "name": "IT Test Dept 1753858799792",
+    "description": "Information Technology",
+    "is_active": true,
+    "code": "ITD6"
+  },
+  {
+    "id": "9075c08e-0554-4d2f-a3da-87bbba0bcaca",
+    "name": "Finance Test Dept 1753858799792",
+    "description": "Financial Operations",
+    "is_active": false,
+    "code": "FTD5"
+  },
+  {
+    "id": "82daaf8f-37f2-450f-9599-ba259c1b9615",
+    "name": "Finance Test Dept 1753858805175",
+    "description": "Financial Operations",
+    "is_active": false,
+    "code": "FTD6"
+  },
+  {
+    "id": "46896112-9575-4a80-ac16-327f1306f81a",
+    "name": "Unique Department 1753858824293",
+    "description": "First department",
+    "is_active": true,
+    "code": "UNI2"
+  },
+  {
+    "id": "fbef4713-1580-49bf-9cc7-103f5e4d2875",
+    "name": "Bulk Test Dept 1 1753858828058",
+    "description": "First bulk department",
+    "is_active": true,
+    "code": "BT14"
+  },
+  {
+    "id": "cf1c58b8-bf78-48ee-ace1-a712c18d023d",
+    "name": "Bulk Test Dept 1 1753858829275",
+    "description": "First bulk department",
+    "is_active": true,
+    "code": "BT15"
+  },
+  {
+    "id": "1577c14a-c7b6-4be5-ade9-336b6a850c00",
+    "name": "Bulk Test Dept 1 1753858831091",
+    "description": "First bulk department",
+    "is_active": true,
+    "code": "BT16"
+  },
+  {
+    "id": "84673360-3418-4d5d-a21f-6908b0fd8d8e",
+    "name": "Bulk Test Dept 2 1753858828058",
+    "description": "Second bulk department",
+    "is_active": true,
+    "code": "BT17"
+  },
+  {
+    "id": "9b1a5d56-01b6-492c-9e5f-b314db63e34b",
+    "name": "Bulk Test Dept 1 1753858833085",
+    "description": "First bulk department",
+    "is_active": true,
+    "code": "BT18"
+  },
+  {
+    "id": "0d9d3e3a-6a51-42ab-8b0e-23d914ee0d1f",
+    "name": "IT Test Dept 1753858805175",
+    "description": "Information Technology",
+    "is_active": false,
+    "code": "ITD7"
+  }
+]

@@ -1,0 +1,98 @@
+meta {
+  name: Create with files purchase-order-detail-comment
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/purchase-order-detail-comment/{{purchase_order_detail_id}}
+  body: multipartForm
+  auth: bearer
+}
+
+params:query {
+  ~version: latest
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  message: Comment with attached photos
+  type: user
+  files: @file(/Users/samutpra/Pictures/logo.png)
+  files: @file(/Users/samutpra/Pictures/logo_CARMEN_Classic-Blue_low-res.png)
+}
+
+vars:pre-request {
+  purchase_order_detail_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## Create Purchase Order Detail Comment (with file uploads)
+  สร้างความคิดเห็นใหม่สำหรับ purchase-order-detail พร้อมแนบไฟล์ใน request เดียว ไม่ต้อง upload file แยกก่อน
+
+  Creates a new comment for a purchase order detail line item with optional file attachments. `purchase_order_detail_id` is specified in the URL path (not body).
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `purchase_order_detail_id` | string (UUID) | Purchase Order Detail ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_order:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `message` | text | Conditional | Comment text (≤ 4000 chars). Required if no files. |
+  | `type` | text | No | `user` \| `system` (default: `user`) |
+  | `files` | binary (repeatable) | Conditional | Attachment files. Required if no message. |
+
+  Constraints: max 10 files, max 10 MB each, allowed: image/jpeg, image/png, image/webp, image/gif, application/pdf.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "purchase_order_detail_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "message": "Item quantity confirmed with vendor",
+      "type": "user",
+      "attachments": []
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > `fileUrl` ใน response จะว่าง — frontend ต้องเรียก
+  > `GET /api/{bu_code}/documents/presigned-url/{fileToken}` เพื่อแสดงไฟล์
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Neither `message` nor `files` provided; file count/size/mime validation failed |
+  | 401 | Missing or invalid bearer token |
+  | 502 | File service (S3) upload failure |
+}

@@ -1,0 +1,180 @@
+meta {
+  name: Create config_products
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/products
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "Olive Oil 1L",
+    "code": "PRD-001",
+    "local_name": "น้ำมันมะกอก 1 ลิตร",
+    "description": "Extra virgin olive oil 1 liter",
+    "inventory_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "product_status_type": "active",
+    "product_item_group_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "product_info": {
+      "is_used_in_recipe": true,
+      "is_sold_directly": false,
+      "barcode": "8850123456789",
+      "sku": "SKU-PRD-001",
+      "price_deviation_limit": 5.0,
+      "qty_deviation_limit": 10.0,
+      "tax_profile_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "tax_profile_name": "VAT 7%",
+      "tax_rate": 7,
+      "info": []
+    },
+    "locations": {
+      "add": [
+        {
+          "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+        }
+      ]
+    },
+    "order_units": {
+      "add": [
+        {
+          "from_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "from_unit_qty": 1,
+          "to_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "to_unit_qty": 12,
+          "description": "1 carton = 12 bottles",
+          "is_default": true,
+          "is_active": true
+        }
+      ]
+    },
+    "ingredient_units": {
+      "add": [
+        {
+          "from_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "from_unit_qty": 1,
+          "to_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "to_unit_qty": 1000,
+          "description": "1 liter = 1000 ml",
+          "is_default": true,
+          "is_active": true
+        }
+      ]
+    }
+  }
+}
+
+docs {
+  ## Create Product
+  สร้างสินค้าใหม่ในระบบพร้อมข้อมูลหน่วยสั่งซื้อ หน่วยส่วนผสม และสถานที่จัดเก็บ
+
+  Adds a new product to the master catalog with its SKU, description, category, order units, ingredient units, and location assignments. The product becomes available for use in purchase requests, purchase orders, and inventory transactions.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `product_management.product:create`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Olive Oil 1L",
+    "code": "PRD-001",
+    "local_name": "น้ำมันมะกอก 1 ลิตร",
+    "description": "Extra virgin olive oil 1 liter",
+    "inventory_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "product_status_type": "active",
+    "product_item_group_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "product_info": {
+      "is_used_in_recipe": true,
+      "is_sold_directly": false,
+      "barcode": "8850123456789",
+      "sku": "SKU-PRD-001",
+      "price_deviation_limit": 5.0,
+      "qty_deviation_limit": 10.0,
+      "tax_profile_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "tax_profile_name": "VAT 7%",
+      "tax_rate": 7,
+      "info": []
+    },
+    "locations": {
+      "add": [{ "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d" }]
+    },
+    "order_units": {
+      "add": [
+        {
+          "from_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "from_unit_qty": 1,
+          "to_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "to_unit_qty": 12,
+          "description": "1 carton = 12 bottles",
+          "is_default": true,
+          "is_active": true
+        }
+      ]
+    },
+    "ingredient_units": {
+      "add": [
+        {
+          "from_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "from_unit_qty": 1,
+          "to_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "to_unit_qty": 1000,
+          "description": "1 liter = 1000 ml",
+          "is_default": true,
+          "is_active": true
+        }
+      ]
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Request body fails validation |
+  | 401 | Bearer token is missing or invalid |
+  | 403 | User lacks `product_management.product:create` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

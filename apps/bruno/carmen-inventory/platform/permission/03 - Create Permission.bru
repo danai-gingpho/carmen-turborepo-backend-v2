@@ -1,0 +1,83 @@
+meta {
+  name: Create application-permission
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api-system/permission
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "name": "Create Purchase Request",
+    "description": "Permission to create new purchase requests",
+    "code": "procurement.purchase_request:create",
+    "resource": "procurement.purchase_request",
+    "action": "create",
+    "is_active": true
+  }
+}
+
+docs {
+  ## Create Permission
+  สร้างสิทธิ์การใช้งานใหม่
+
+  Defines a new granular feature permission in the ERP platform, such as access to create, approve, or view specific procurement or inventory operations. Once created, this permission can be assigned to application roles.
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Body
+  ```json
+  {
+    "name": "Create Purchase Request",
+    "description": "Permission to create new purchase requests",
+    "code": "procurement.purchase_request:create",
+    "resource": "procurement.purchase_request",
+    "action": "create",
+    "is_active": true
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `name` is missing or validation fails |
+  | 401 | Missing or invalid bearer token |
+}

@@ -1,0 +1,137 @@
+meta {
+  name: Update config_recipe
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{host}}/api/config/{{bu_code}}/recipe/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "code": "RCP-001",
+    "name": "Tom Yum Kung (Updated)",
+    "description": "Classic Thai spicy shrimp soup — updated",
+    "note": "Best served hot with jasmine rice",
+    "is_active": true,
+    "images": null,
+    "category_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "cuisine_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "difficulty": "MEDIUM",
+    "base_yield": 4,
+    "base_yield_unit": "portion",
+    "default_variant_id": null,
+    "prep_time": 15,
+    "cook_time": 20,
+    "total_ingredient_cost": 120.00,
+    "labor_cost": 30.00,
+    "overhead_cost": 10.00,
+    "cost_per_portion": 40.00,
+    "suggested_price": 180.00,
+    "selling_price": 175.00,
+    "target_food_cost_percentage": 30.0,
+    "actual_food_cost_percentage": 28.5,
+    "gross_margin": 115.00,
+    "gross_margin_percentage": 65.7,
+    "labor_cost_percentage": 17.1,
+    "overhead_percentage": 5.7,
+    "carbon_footprint": 0.8,
+    "deduct_from_stock": true,
+    "status": "ACTIVE",
+    "tags": null,
+    "allergens": null
+  }
+}
+
+docs {
+  ## Update Recipe
+  อัปเดตสูตรอาหารทั้งหมดรวมถึงรายการส่วนผสม ปริมาณ และคำแนะนำการเตรียม
+
+  Fully replaces a recipe record including its ingredient list, quantities, and preparation instructions. All fields must be provided.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Recipe ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "code": "RCP-001",
+    "name": "Tom Yum Kung (Updated)",
+    "description": "Classic Thai spicy shrimp soup — updated",
+    "note": "Best served hot with jasmine rice",
+    "is_active": true,
+    "category_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "cuisine_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "difficulty": "MEDIUM",
+    "base_yield": 4,
+    "base_yield_unit": "portion",
+    "prep_time": 15,
+    "cook_time": 20,
+    "total_ingredient_cost": 120.00,
+    "labor_cost": 30.00,
+    "overhead_cost": 10.00,
+    "cost_per_portion": 40.00,
+    "suggested_price": 180.00,
+    "selling_price": 175.00,
+    "target_food_cost_percentage": 30.0,
+    "deduct_from_stock": true,
+    "status": "ACTIVE"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Request body fails validation |
+  | 401 | Bearer token is missing or invalid |
+  | 403 | User lacks recipe update permission |
+  | 404 | Recipe not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: 019638a6-2a00-7c4f-8e46-9b7a52c80c4d
+}

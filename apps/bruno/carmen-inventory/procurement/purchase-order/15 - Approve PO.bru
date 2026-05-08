@@ -1,0 +1,94 @@
+meta {
+  name: Approve purchase-order
+  type: http
+  seq: 15
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/purchase-order/:id/approve
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "stage_role": "create",
+    "details": []
+  }
+}
+
+docs {
+  ## Approve Purchase Order
+  อนุมัติใบสั่งซื้อในขั้นตอนปัจจุบันของเวิร์กโฟลว์ ผู้มีอำนาจอนุมัติแต่ละคน (เช่น FC, GM) ลงนามเพื่ออนุมัติการสั่งซื้อ
+
+  Advances a purchase order through its approval workflow at the current stage. Each authorized approver (e.g., FC, GM) signs off to authorize the vendor commitment and expenditure.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase order ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "stage_role": "approve",
+    "details": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "stage_status": "approve"
+      }
+    ]
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | PO is not in a state that allows approval |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User does not have the approver role for this stage |
+  | 404 | Purchase order not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{po_id}}
+}

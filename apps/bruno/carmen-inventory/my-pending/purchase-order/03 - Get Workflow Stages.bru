@@ -1,0 +1,79 @@
+meta {
+  name: Find all workflow stages by po my-pending
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/api/my-pending/purchase-order/{{bu_code}}/workflow-stages
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Workflow Stages of Purchase Orders
+  ดึงขั้นตอนการอนุมัติที่กำหนดไว้สำหรับใบสั่งซื้อในหน่วยธุรกิจ แสดงลำดับขั้นตอนที่ใบสั่งซื้อต้องผ่าน Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Retrieves the approval workflow stages configured for purchase orders in the business unit, showing the sequence of approval steps that a purchase order must pass through.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_order:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "workflowStages": [
+        { "stage": 1, "role": "HOD", "label": "Head of Department" },
+        { "stage": 2, "role": "FC", "label": "Finance Controller" },
+        { "stage": 3, "role": "GM", "label": "General Manager" }
+      ]
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks `procurement.purchase_order:view` permission |
+  | 404 | Workflow stages not found for this business unit |
+}
+
+params:path {
+  bu_code: {{bu_code}}
+}

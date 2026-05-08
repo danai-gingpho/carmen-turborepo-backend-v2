@@ -1,0 +1,69 @@
+meta {
+  name: Export to excel good-received-note
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/good-received-note/:id/export
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Export Good Received Note to Excel
+  ส่งออกใบรับสินค้าเป็นไฟล์ Excel พร้อมรายการสินค้าที่รับทั้งหมด จำนวน และรายละเอียดผู้ขาย ใช้สำหรับการเก็บเอกสาร แชร์กับแผนกบัญชีเพื่อจับคู่ใบแจ้งหนี้
+
+  Exports a goods receiving record to Excel with all received items, quantities, and vendor details. Returns a binary file download (Content-Disposition: attachment).
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Good Received Note ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  Returns an Excel file binary stream with headers:
+  - `Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
+  - `Content-Disposition: attachment; filename="GRN-2026-0042.xlsx"`
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission |
+  | 404 | Good Received Note not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{grn_id}}
+}

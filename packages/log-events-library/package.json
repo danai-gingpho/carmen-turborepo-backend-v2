@@ -1,0 +1,30 @@
+{
+  "name": "@repo/log-events-library",
+  "version": "1.0.0",
+  "description": "Audit logging library for database operations with file-based storage",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build:package": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2",
+    "zod": "^3.23.8",
+    "nestjs-zod": "^3.0.0"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0 || ^11.0.0",
+    "@nestjs/core": "^10.0.0 || ^11.0.0",
+    "@prisma/client": "^5.0.0 || ^6.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@types/node": "^22.0.0",
+    "@types/uuid": "^9.0.0",
+    "rxjs": "^7.8.1",
+    "typescript": "^5.0.0"
+  }
+}

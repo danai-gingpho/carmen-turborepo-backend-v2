@@ -1,0 +1,80 @@
+meta {
+  name: Find history by detail id purchase-request
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/purchase-request/detail/:detail_id/history
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Detail History
+  ดึงประวัติการเปลี่ยนแปลงและบันทึกตรวจสอบของรายการใบขอซื้อเฉพาะ รวมถึงการเปลี่ยนแปลงราคา การปรับจำนวน และการดำเนินการอนุมัติ
+
+  Retrieves the change history and audit trail for a specific PR line item, including price changes, quantity adjustments, and approval actions taken at each workflow stage.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `detail_id` | string (UUID) | Purchase request detail ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "field_name": "unit_price",
+        "old_value": "100.00",
+        "new_value": "120.00",
+        "changed_by_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "changed_by_name": "John Doe",
+        "changed_at": "2026-04-29T08:30:00.000Z",
+        "stage": "HOD"
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.purchase_request:view` permission |
+  | 404 | Purchase request detail not found |
+}
+
+params:path {
+  detail_id: {{pr_detail_id}}
+}

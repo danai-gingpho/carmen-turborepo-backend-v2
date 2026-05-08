@@ -1,0 +1,144 @@
+meta {
+  name: Update config_locations
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{host}}/api/config/{{bu_code}}/locations/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+body:json {
+  {
+    "code": "LOC-001",
+    "name": "Main Store Updated",
+    "description": "Primary inventory store for dry goods — updated",
+    "is_active": true,
+    "location_type": "inventory",
+    "delivery_point_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "info": {
+      "floor": 1,
+      "building": "Block A",
+      "capacity": 600,
+      "responsibleDepartment": "Purchasing",
+      "itemCount": 50,
+      "lastCount": "2026-04-29"
+    },
+    "users": {
+      "add": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+        }
+      ],
+      "remove": []
+    },
+    "products": {
+      "add": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "min_qty": 5.0,
+          "max_qty": 100.0,
+          "re_order_qty": 20.0,
+          "par_qty": 50.0
+        }
+      ],
+      "update": [],
+      "remove": []
+    }
+  }
+}
+
+docs {
+  ## Patch Location
+  อัปเดตข้อมูลสถานที่/คลังสินค้าที่มีอยู่
+
+  Modifies an existing storage location configuration, such as its name, type, or capacity settings. Changes affect how inventory is organized and tracked at this location.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Location ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `configuration.location:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "code": "LOC-001",
+    "name": "Main Store Updated",
+    "description": "Primary inventory store for dry goods — updated",
+    "is_active": true,
+    "location_type": "inventory",
+    "delivery_point_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "info": {
+      "floor": 1,
+      "building": "Block A",
+      "capacity": 600,
+      "responsibleDepartment": "Purchasing",
+      "itemCount": 50,
+      "lastCount": "2026-04-29"
+    },
+    "users": {
+      "add": [{"id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"}],
+      "remove": []
+    },
+    "products": {
+      "add": [{"id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d", "min_qty": 5.0, "max_qty": 100.0, "re_order_qty": 20.0, "par_qty": 50.0}],
+      "update": [],
+      "remove": []
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Request body fails validation |
+  | 401 | Bearer token is missing or invalid |
+  | 403 | User lacks `configuration.location:update` permission |
+  | 404 | Location with the specified ID not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: 47414c16-9d52-4b16-8428-4a4c4e89986e
+}

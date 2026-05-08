@@ -1,0 +1,91 @@
+meta {
+  name: Reject good-received-note
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/good-received-note/:id/reject
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {}
+}
+
+docs {
+  ## Reject Good Received Note
+  ปฏิเสธใบรับสินค้าเมื่อการส่งมอบไม่ผ่านมาตรฐานคุณภาพหรือสินค้าที่ได้รับไม่ถูกต้อง ใบรับสินค้าจะถูกยกเลิกและไม่มีผลต่อสินค้าคงคลัง
+
+  Rejects a goods receiving record when the delivery does not meet quality standards or goods are incorrect. Voids the GRN so it does not affect inventory levels.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Good Received Note ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "reason": "Goods did not match purchase order specifications"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | GRN cannot be rejected (invalid status) |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.goods_received_note:update` permission |
+  | 404 | Good Received Note not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{grn_id}}
+}

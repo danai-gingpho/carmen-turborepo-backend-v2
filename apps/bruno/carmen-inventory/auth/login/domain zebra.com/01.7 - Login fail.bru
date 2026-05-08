@@ -1,0 +1,72 @@
+meta {
+  name: 01.7 - Login fail
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/api/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+body:json {
+  {
+    "email": "tt@zebra.com",
+    "password": "tttttt"
+  }
+}
+
+script:post-response {
+  if (res.body.data) {
+    bru.setEnvVar('access_token', res.body.data.access_token);
+    bru.setEnvVar('refresh_token', res.body.data.refresh_token);
+  } else {
+    bru.setEnvVar('access_token', '');
+    bru.setEnvVar('refresh_token', '');
+  }
+}
+
+docs {
+  ## Login Fail (zebra.com)
+  ทดสอบการเข้าสู่ระบบด้วยข้อมูลที่ไม่ถูกต้องสำหรับโดเมน zebra.com เพื่อตรวจสอบการจัดการข้อผิดพลาด
+
+  Test login with invalid credentials for the zebra.com domain to verify error handling behavior.
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Public — no auth required
+
+  ### Sample Body
+  ```json
+  {
+    "email": "tt@zebra.com",
+    "password": "tttttt"
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": null,
+    "paginate": null,
+    "status": 401,
+    "success": false,
+    "message": "Unauthorized",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Invalid credentials (wrong email/password) |
+}

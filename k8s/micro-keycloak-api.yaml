@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micro-keycloak-api
+  namespace: carmen-backend
+  labels:
+    app: micro-keycloak-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micro-keycloak-api
+  template:
+    metadata:
+      labels:
+        app: micro-keycloak-api
+    spec:
+      containers:
+        - name: micro-keycloak-api
+          image: carmen-micro-keycloak-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp
+              containerPort: 5013
+            - name: http
+              containerPort: 6013
+          envFrom:
+            - configMapRef:
+                name: service-discovery
+            - secretRef:
+                name: carmen-backend-secret
+            - secretRef:
+                name: micro-keycloak-api-env
+                optional: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micro-keycloak-api
+  namespace: carmen-backend
+  labels:
+    app: micro-keycloak-api
+spec:
+  type: ClusterIP
+  selector:
+    app: micro-keycloak-api
+  ports:
+    - name: tcp
+      port: 5013
+      targetPort: 5013
+    - name: http
+      port: 6013
+      targetPort: 6013

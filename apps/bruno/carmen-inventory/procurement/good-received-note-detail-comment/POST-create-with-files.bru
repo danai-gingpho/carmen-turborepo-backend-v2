@@ -1,0 +1,109 @@
+meta {
+  name: Create with files good-received-note-detail-comment
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/good-received-note-detail-comment/{{good_received_note_detail_id}}
+  body: multipartForm
+  auth: bearer
+}
+
+params:query {
+  ~version: latest
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  message: Comment with attached photos
+  type: user
+  files: @file(/Users/samutpra/Pictures/logo.png)
+  files: @file(/Users/samutpra/Pictures/logo_CARMEN_Classic-Blue_low-res.png)
+}
+
+vars:pre-request {
+  good_received_note_detail_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## Create Good Received Note Detail Comment with File Uploads
+  สร้างความคิดเห็นใหม่สำหรับรายการในใบรับสินค้า พร้อมแนบไฟล์ใน request เดียว ไม่ต้อง upload file แยกก่อน
+
+  Creates a new comment on a good-received-note detail line, uploading any attached files to S3 atomically. The `good_received_note_detail_id` is supplied as a URL path parameter, not a body field.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `good_received_note_detail_id` | string (UUID) | Good Received Note Detail ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:update`
+  - **Roles**: Purchase
+
+  ### Sample Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `message` | text | Conditional | Comment text (≤ 4000 chars). Required if no files. |
+  | `type` | text | No | `user` (default) or `system` |
+  | `files` | binary (repeatable) | Conditional | Attached files. Required if no message. |
+
+  Constraints: max 10 files, max 10 MB each, allowed types: image/jpeg, image/png, image/webp, image/gif, application/pdf.
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "good_received_note_detail_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "message": "Item quantity discrepancy noted — 2 units short.",
+      "type": "user",
+      "attachments": [
+        {
+          "fileName": "detail-photo.jpg",
+          "fileToken": "bu001/019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "fileUrl": "",
+          "contentType": "image/jpeg",
+          "size": 153600
+        }
+      ],
+      "created_at": "2026-04-29T08:30:00.000Z"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  > `fileUrl` is always empty. Use `GET /api/{bu_code}/documents/presigned-url/{fileToken}` to obtain a download URL.
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Neither `message` nor `files` provided; file exceeds size/type constraints |
+  | 401 | Bearer token missing or invalid |
+  | 403 | User lacks `procurement.goods_received_note:update` permission |
+  | 502 | File service upstream failure during S3 upload |
+
+  > S3 uploads are rolled back automatically if the business service returns an error.
+}

@@ -1,0 +1,98 @@
+meta {
+  name: Create comment physical-count
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/physical-count/:id/details/:detail_id/comments
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "message": "Found discrepancy in this item count",
+    "attachments": []
+  }
+}
+
+vars:pre-request {
+  physical_count_id:
+  physical_count_detail_id:
+}
+
+docs {
+  ## Add Comment to Physical Count Detail
+  เพิ่มหมายเหตุอธิบายในรายการสินค้าที่ตรวจนับ เช่น สาเหตุของผลต่าง (เสียหาย แตกหัก หรือวางผิดที่) เพื่อสนับสนุนเส้นทางการตรวจสอบ
+
+  Records an explanatory note on a specific counted item, such as reasons for variances (e.g., spoilage, breakage, or misplacement) to support audit trails.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Physical Count ID |
+  | `detail_id` | string (UUID) | Physical Count Detail ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.physical_count:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "message": "Found discrepancy in this item count",
+    "attachments": []
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "message": "Found discrepancy in this item count",
+      "attachments": [],
+      "created_at": "2026-04-29T08:30:00.000Z",
+      "created_by_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid request body |
+  | 404 | Physical count detail not found |
+  | 403 | User lacks `inventory_management.physical_count:update` permission |
+}
+
+params:path {
+  id: {{physical_count_id}}
+  detail_id: {{physical_count_detail_id}}
+}

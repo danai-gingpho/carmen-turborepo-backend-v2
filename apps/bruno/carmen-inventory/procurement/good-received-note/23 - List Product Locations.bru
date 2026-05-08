@@ -1,0 +1,97 @@
+meta {
+  name: Find locations by grn id and product id good-received-note
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/good-received-note/:grn_id/product/:product_id/location
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List Locations for a Specific Product in a GRN
+  แสดงรายการตำแหน่งจัดเก็บแบบไม่ซ้ำที่รับสินค้ารายการหนึ่งในใบรับสินค้า ใช้สำหรับดูว่าสินค้าแต่ละตัวถูกรับที่ตำแหน่งไหนบ้าง
+
+  Lists distinct locations where a given product was received on a GRN with pagination and filtering.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `grn_id` | string (UUID) | Good Received Note ID |
+  | `product_id` | string (UUID) | Product ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `search` | string | No | — | Full-text search |
+  | `searchfields` | string | No | `location_code,location_name` | Comma-separated fields to search |
+  | `filter` | string | No | — | Comma-separated `field:value` pairs |
+  | `sort` | string | No | `location_code:asc` | Comma-separated `field:asc\|desc` |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.goods_received_note:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "location_code": "WH-MAIN",
+        "location_name": "Main Warehouse"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 1,
+      "total": 1,
+      "prev": null,
+      "next": null
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.goods_received_note:view` permission |
+  | 404 | Good Received Note or product not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  grn_id: b10e8a74-8223-4de9-972e-439e00bdbf34
+  product_id: 00b9bdf3-b6dd-4745-b486-c78bb707e7d1
+}

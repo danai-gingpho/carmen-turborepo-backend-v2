@@ -1,0 +1,106 @@
+meta {
+  name: Price compare price-list
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/price-list/price-compare
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Compare Price List
+  เปรียบเทียบราคาสินค้าจากผู้ขายข้ามรายการราคาที่ใช้งานอยู่ทั้งหมด
+
+  Compares vendor prices for a specific product across all active price lists, enabling procurement staff to identify the best-value supplier for purchase orders.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `product_id` | string (UUID) | Yes | — | Product to compare prices for |
+  | `at_date` | string (yyyy-MM-dd) | Yes | — | Date for effective price lookup |
+  | `currency_id` | string (UUID) | Yes | — | Currency to normalise prices in |
+  | `unit_id` | string (UUID) | No | — | Filter by purchase unit |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.price_list:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "no": "PL-2026-0001",
+        "name": "Q2 2026 Beverage Price List",
+        "vendor": {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "name": "Bangkok Beverage Co., Ltd."
+        },
+        "currency": {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "code": "THB"
+        },
+        "price": 15.00,
+        "moq_qty": 24,
+        "lead_time_days": 3
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 1,
+      "total": 3,
+      "prev": null,
+      "next": null
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | `product_id`, `at_date`, or `currency_id` missing; `at_date` is not a valid date |
+  | 401 | Bearer token missing or invalid |
+  | 403 | User lacks `vendor_management.price_list:view` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:query {
+  product_id: 00e2dcb0-d398-4ef1-9e86-c11cfe905a42
+  unit_id: b5b22dba-fff4-4662-8e43-b25566402461
+  at_date: 2026-04-28
+  currency_id: 93dabe25-1668-4c5b-bceb-3e0b83b78002
+}

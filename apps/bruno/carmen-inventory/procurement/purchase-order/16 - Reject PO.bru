@@ -1,0 +1,95 @@
+meta {
+  name: Reject purchase-order
+  type: http
+  seq: 16
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/purchase-order/:id/reject
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "stage_role": "create",
+    "details": []
+  }
+}
+
+docs {
+  ## Reject Purchase Order
+  ปฏิเสธใบสั่งซื้อในขั้นตอนอนุมัติปัจจุบัน ปิดใบสั่งซื้อและป้องกันไม่ให้ส่งไปยังผู้ขาย
+
+  Rejects a purchase order at the current approval stage, closing it and preventing it from being sent to the vendor. Used when an approver determines the order should not proceed due to budget, pricing, or business reasons.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase order ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "stage_role": "approve",
+    "details": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "stage_status": "reject",
+        "stage_message": "Price is too high, please renegotiate with vendor"
+      }
+    ]
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | PO is not in a state that allows rejection |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User does not have the approver role for this stage |
+  | 404 | Purchase order not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{po_id}}
+}

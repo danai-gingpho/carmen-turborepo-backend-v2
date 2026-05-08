@@ -1,0 +1,78 @@
+meta {
+  name: Find dimensions by detail id purchase-request
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/purchase-request/detail/:detail_id/dimension
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Detail Dimensions
+  ดึงมิติการจัดสรรต้นทุน (เช่น แผนก ศูนย์ต้นทุน โครงการ) ที่เชื่อมโยงกับรายการใบขอซื้อเฉพาะ ใช้สำหรับรายงานทางการเงินและติดตามงบประมาณ
+
+  Retrieves cost allocation dimensions (e.g., department, cost center, project) associated with a specific PR line item. Used for financial reporting and budget tracking across organizational units.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `detail_id` | string (UUID) | Purchase request detail ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "dimension_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+        "dimension_name": "Department",
+        "dimension_value_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f",
+        "dimension_value": "Kitchen",
+        "allocation_percent": 100
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.purchase_request:view` permission |
+  | 404 | Purchase request detail not found |
+}
+
+params:path {
+  detail_id: {{pr_detail_id}}
+}

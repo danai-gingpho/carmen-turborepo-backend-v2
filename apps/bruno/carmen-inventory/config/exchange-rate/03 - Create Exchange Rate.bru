@@ -1,0 +1,75 @@
+meta {
+  name: 03 - Create Exchange Rate
+  type: http
+  seq: 3
+}
+
+docs {
+  ## Create an Exchange Rate
+  สร้างอัตราแลกเปลี่ยนใหม่ (รายการเดียว)
+
+  Creates a new single exchange rate record with effective date and conversion factor.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "currency_id": "93dabe25-1668-4c5b-bceb-3e0b83b78002",
+    "at_date": "2026-03-18T00:00:00.000Z",
+    "exchange_rate": 34.5
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  > No service-specific errors thrown by this endpoint.
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/exchange-rate
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+      "currency_id": "93dabe25-1668-4c5b-bceb-3e0b83b78002",
+      "at_date": "2026-03-18T00:00:00.000Z",
+      "exchange_rate": 34.50
+    }
+}

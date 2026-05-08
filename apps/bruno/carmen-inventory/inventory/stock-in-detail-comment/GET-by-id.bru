@@ -1,0 +1,79 @@
+meta {
+  name: By id stock-in-detail
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/stock-in-detail/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+docs {
+  ## Get Stock In Detail by ID (standalone)
+  ดึงรายการย่อยของ stock-in ตาม ID ผ่าน standalone endpoint
+
+  Retrieves a single stock-in detail record by ID via the standalone stock-in-detail controller.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Stock In Detail ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.stock_in:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "description": "Rice Jasmine 50kg bag",
+      "qty": 10.5,
+      "cost_per_unit": 1250.00,
+      "total_cost": 13125.00,
+      "product_name": "Rice Jasmine",
+      "location_name": "Main Store",
+      "created_at": "2026-04-29T08:30:00.000Z"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.stock_in:view` permission |
+  | 404 | Stock In Detail not found |
+}

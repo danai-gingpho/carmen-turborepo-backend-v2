@@ -1,0 +1,84 @@
+meta {
+  name: Submit my-pending
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{host}}/api/my-pending/store-requisition/{{bu_code}}/:id/submit
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {}
+}
+
+docs {
+  ## Submit a Store Requisition
+  ส่งใบเบิกสินค้าฉบับร่างเข้าสู่ขั้นตอนอนุมัติ สถานะจะเปลี่ยนจากร่างไปยังขั้นตอนอนุมัติแรกเพื่อให้ผู้อนุมัติที่กำหนดพิจารณา Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Submits a draft store requisition into the approval workflow, moving it from draft status to the first approval stage for designated approvers to review.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Store requisition ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.store_requisition:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "doc_status": "pending_approval"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks permission to submit store requisitions |
+  | 404 | Store requisition not found |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  bu_code: {{bu_code}}
+  id: {{sr_id}}
+}

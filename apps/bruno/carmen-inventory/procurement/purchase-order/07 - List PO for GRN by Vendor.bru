@@ -1,0 +1,87 @@
+meta {
+  name: Find all for grn by vendor purchase-order
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/purchase-order/grn/vendor/:vendor_id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List PO for GRN by Vendor
+  แสดงรายการใบสั่งซื้อ (สถานะส่งแล้ว/รับบางส่วน) กรองตามผู้ขาย พร้อมรายละเอียดแยกตาม location สำหรับใช้ในการสร้างใบรับสินค้า
+
+  Lists purchase orders (sent/partial status) filtered by vendor ID, with detail lines broken down by delivery location. Used by GRN creation to list POs for a specific vendor.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `vendor_id` | string (UUID) | Vendor ID to filter purchase orders |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_order:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "po_no": "PO-2026-0001",
+        "po_status": "sent",
+        "description": "PO for kitchen supplies",
+        "order_date": "2026-04-29T08:30:00.000Z",
+        "vendor_name": "ABC Food Supplies Co., Ltd.",
+        "currency_code": "THB",
+        "total_amount": 15000.00,
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 2,
+      "total": 15,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.purchase_order:view` permission |
+}
+
+params:path {
+  vendor_id: 008d219a-3cad-4a70-bfbe-dc70f95a6433
+}

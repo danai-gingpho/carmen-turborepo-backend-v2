@@ -1,0 +1,74 @@
+meta {
+  name: Get user platform-user
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api-system/user/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get User
+  ดึงข้อมูลผู้ใช้รายการเดียวตาม ID
+
+  Retrieves detailed information about a specific platform user, including their profile, role assignments, and associated business units. Used to review or audit individual user access across the ERP system.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `id` | string (UUID) | User ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  Platform admin only — managed at Keycloak realm role level
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "username": "john.doe",
+      "email": "john.doe@carmensoftware.com",
+      "alias_name": "JD",
+      "platform_role": "user",
+      "is_active": true,
+      "created_at": "2026-04-29T08:30:00.000Z"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 404 | User not found |
+}
+
+params:path {
+  id:
+}

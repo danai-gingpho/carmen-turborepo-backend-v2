@@ -1,0 +1,81 @@
+meta {
+  name: Get history report
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/report/history
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~page:
+  ~per_page:
+  ~report_type:
+}
+
+docs {
+  ## Get Report History
+  ดึงประวัติการสร้างรายงาน
+
+  Returns report generation history with pagination. Includes both synchronous and asynchronous report jobs for the business unit.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `per_page` | number | No | 10 | Items per page |
+  | `report_type` | string | No | — | Filter by report type identifier |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "job_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "report_type": "inventory_summary",
+        "format": 1,
+        "status": 3,
+        "file_url": "https://storage.example.com/reports/inventory_summary_2026-04-29.pdf?token=abc123",
+        "file_size": 204800,
+        "row_count": 250,
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+}

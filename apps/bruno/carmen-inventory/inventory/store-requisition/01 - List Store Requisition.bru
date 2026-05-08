@@ -1,0 +1,90 @@
+meta {
+  name: List store-requisition
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/store-requisition
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List Store Requisitions
+  แสดงรายการใบเบิกสินค้าทั้งหมดพร้อมการแบ่งหน้าและตัวกรอง
+
+  Lists all store requisitions across business units with pagination and filtering.
+
+  > Note: This endpoint uses `GET /api/store-requisition` (no `bu_code`) — a cross-tenant list endpoint. Authentication still required.
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+  | `page` | integer | No | 1 | Page number |
+  | `perpage` | integer | No | 10 | Items per page |
+  | `search` | string | No | — | Search keyword |
+  | `bu_code` | string | No | — | Business unit code filter |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.store_requisition:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "sr_no": "SR-2026-0001",
+        "sr_date": "2026-04-29T08:30:00.000Z",
+        "expected_date": "2026-04-30T08:30:00.000Z",
+        "description": "Kitchen supplies for April",
+        "doc_status": "draft",
+        "requestor_name": "John Doe",
+        "department_name": "Kitchen",
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 1,
+      "total": 3,
+      "prev": null,
+      "next": null
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.store_requisition:view` permission |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

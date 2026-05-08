@@ -1,0 +1,93 @@
+meta {
+  name: Compare locations config_location-product
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/location-product/products/:location_1/:location_2
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Compare Products Between Two Locations
+  เปรียบเทียบสินค้าระหว่าง 2 สถานที่ แสดงเฉพาะสินค้าที่อยู่ในทั้ง 2 สถานที่
+
+  Returns products that exist in both locations (intersection), with quantity settings from each location side-by-side.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `location_1` | string (UUID) | First location ID |
+  | `location_2` | string (UUID) | Second location ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "product_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "product_code": "PRD-001",
+        "product_name": "Chicken Breast",
+        "location_1": {
+          "on_hand_qty": 100,
+          "on_order_qty": 50,
+          "re_order_qty": 20
+        },
+        "location_2": {
+          "on_hand_qty": 80,
+          "on_order_qty": 30,
+          "re_order_qty": 15
+        }
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 1,
+      "total": 25,
+      "prev": null,
+      "next": null
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | One or both locations not found |
+  | 400 | Invalid UUID format for `location_1` or `location_2` |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  location_1: 3ad9d3e6-ca78-44de-9812-1f62adf26600
+  location_2: 4298bb2a-a412-4eb0-a13f-8f46643509c1
+}

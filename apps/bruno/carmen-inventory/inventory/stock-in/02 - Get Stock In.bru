@@ -1,0 +1,107 @@
+meta {
+  name: By id stock-in
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/stock-in/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get a Stock In by ID
+  ดึงรายละเอียดทั้งหมดของรายการรับสินค้าเข้าคลังตาม ID รวมถึงรายการสินค้า จำนวน ต้นทุน และเหตุผลในการรับสินค้า
+
+  Retrieves the full details of a stock-in transaction including all items added to inventory, their quantities, costs, and the reason for the addition (e.g., GRN receipt, return, or manual adjustment).
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Stock In ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.stock_in:view`
+  - **Roles**: HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "si_no": "SI-2026-0001",
+      "si_date": "2026-04-29T08:30:00.000Z",
+      "description": "Stock in from GRN-2026-0042",
+      "doc_status": "draft",
+      "adjustment_type_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "note": "Manual inventory addition",
+      "stock_in_detail": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f",
+          "sequence_no": 1,
+          "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c50",
+          "product_name": "Rice Jasmine",
+          "qty": 10.5,
+          "cost_per_unit": 1250.00,
+          "total_cost": 13125.00
+        }
+      ],
+      "audit": {
+        "created": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name": "John Doe"
+        },
+        "updated": {
+          "at": "2026-04-29T08:30:00.000Z",
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "name": "Jane Smith"
+        }
+      }
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.stock_in:view` permission |
+  | 404 | Stock In not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{stock_in_id}}
+}

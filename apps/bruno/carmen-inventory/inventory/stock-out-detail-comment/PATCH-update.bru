@@ -1,0 +1,120 @@
+meta {
+  name: Update stock-out-detail
+  type: http
+  seq: 11
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/stock-out-detail/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "sequence_no": 1,
+    "description": "Rice Jasmine for kitchen (updated)",
+    "qty": 6.0,
+    "note": "Quantity adjusted after inventory check",
+    "product_name": "Rice Jasmine",
+    "product_local_name": "ข้าวหอมมะลิ",
+    "location_code": "MAIN-01",
+    "location_name": "Main Store",
+    "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "info": null,
+    "dimension": null
+  }
+}
+
+docs {
+  ## Patch Stock Out Detail (standalone)
+  แก้ไขรายการย่อยเบิกสินค้าออกจากคลัง ผ่าน standalone controller
+
+  Modifies a stock-out detail record via the standalone stock-out-detail controller.
+
+  > Note: This file is located in the `stock-out-detail-comment/` folder for organizational reasons but maps to the standalone `stock-out-detail` controller at `PATCH /api/:bu_code/stock-out-detail/:id`.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Stock Out Detail ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.stock_out:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "sequence_no": 1,
+    "description": "Rice Jasmine for kitchen (updated)",
+    "qty": 6.0,
+    "note": "Quantity adjusted after inventory check",
+    "product_name": "Rice Jasmine",
+    "product_local_name": "ข้าวหอมมะลิ",
+    "location_code": "MAIN-01",
+    "location_name": "Main Store",
+    "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "info": null,
+    "dimension": null
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "so_no": "SO-2026-0001"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Cannot update detail of non-draft Stock Out |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.stock_out:update` permission |
+  | 404 | Stock Out Detail not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{stock_out_detail_id}}
+}

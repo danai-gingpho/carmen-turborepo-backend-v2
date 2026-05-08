@@ -1,0 +1,92 @@
+meta {
+  name: By id store-requisition
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/store-requisition/:id
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Store Requisition by ID
+  ค้นหาใบเบิกสินค้าตาม ID พร้อมรายละเอียดทั้งหมด
+
+  Retrieves the full details of a store requisition including requested items, quantities, requesting department, and current approval status.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Store Requisition ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.store_requisition:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "sr_no": "SR-2026-0001",
+      "sr_date": "2026-04-29T08:30:00.000Z",
+      "expected_date": "2026-04-30T08:30:00.000Z",
+      "description": "Kitchen supplies for April",
+      "doc_status": "draft",
+      "from_location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "from_location_name": "Main Store",
+      "to_location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "to_location_name": "Kitchen",
+      "requestor_name": "John Doe",
+      "department_name": "Kitchen",
+      "store_requisition_detail": [],
+      "created_at": "2026-04-29T08:30:00.000Z",
+      "updated_at": "2026-04-29T08:30:00.000Z"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `inventory_management.store_requisition:view` permission |
+  | 404 | Store Requisition not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{sr_id}}
+}

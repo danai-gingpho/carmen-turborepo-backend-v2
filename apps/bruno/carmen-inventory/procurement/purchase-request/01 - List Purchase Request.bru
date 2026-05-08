@@ -1,0 +1,92 @@
+meta {
+  name: List purchase-request
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/purchase-request
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List Purchase Requests
+  แสดงรายการใบขอซื้อทั้งหมดของผู้ใช้ปัจจุบัน พร้อมการแบ่งหน้า ค้นหา และกรองตามสถานะ ใช้สำหรับเจ้าหน้าที่แผนกและผู้อนุมัติในการดูและติดตามเอกสารใบขอซื้อ
+
+  Lists all purchase requests for the current user, filtered by status, search term, and pagination. Used by department staff and approvers to view and track PR documents in the procurement workflow.
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `bu_code` | string | Yes | — | Business unit code |
+  | `search` | string | No | — | Search by PR number, description |
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `filter` | string | No | — | Filter expression (e.g., `pr_status\|string:in_progress,draft`) |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "pr_no": "PR-2026-0001",
+        "pr_date": "2026-04-29T08:30:00.000Z",
+        "description": "Kitchen supplies for May 2026",
+        "pr_status": "draft",
+        "requestor_name": "John Doe",
+        "department_name": "Kitchen",
+        "base_total_amount": 5000.00,
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 5,
+      "total": 42,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks `procurement.purchase_request:view` permission |
+}
+
+params:query {
+  bu_code: T02
+  filter: pr_status|string:in_progress,draft
+}

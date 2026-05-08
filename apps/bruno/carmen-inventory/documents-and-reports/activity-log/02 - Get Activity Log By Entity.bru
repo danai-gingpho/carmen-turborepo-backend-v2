@@ -1,0 +1,90 @@
+meta {
+  name: Find by entity activity-log
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/activity-log/entity/:entity_type
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+params:path {
+  entity_type: purchase_request
+}
+
+docs {
+  ## Get Activity Logs by Entity Type
+  ดึงรายการบันทึกกิจกรรมตามประเภทเอกสาร
+
+  Retrieves all activity records for a specific document type (e.g., purchase_request, purchase_order, good_received_note). Used to review the complete history of actions taken on a particular category of business documents.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `entity_type` | string | Entity type (e.g. `purchase_request`, `purchase_order`, `good_received_note`) |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "action": "update",
+        "entity_type": "purchase_request",
+        "entity_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "actor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "actor_username": "john.doe",
+        "actor_firstname": "John",
+        "actor_lastname": "Doe",
+        "description": "Updated purchase request PR-2026-0001 status to approved",
+        "ip_address": "192.168.1.1",
+        "created_at": "2026-04-29T08:30:00.000Z"
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 3,
+      "total": 25,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks permission to view activity logs |
+}

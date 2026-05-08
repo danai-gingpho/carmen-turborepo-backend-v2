@@ -1,0 +1,23 @@
+meta {
+  name: Get product cost estimate cost
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/cost/product/:product_id/location/:location_id/qty/:qty
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}

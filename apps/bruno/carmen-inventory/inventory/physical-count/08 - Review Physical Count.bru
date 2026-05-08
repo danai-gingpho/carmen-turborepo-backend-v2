@@ -1,0 +1,110 @@
+meta {
+  name: Review items physical-count
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/physical-count/:id/review
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "items": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "actual_qty": 95
+      }
+    ]
+  }
+}
+
+vars:pre-request {
+  physical_count_id: 2d834681-4e3e-461b-8d44-791c9565dd38
+  physical_count_detail_id: 
+}
+
+docs {
+  ## Patch Physical Count Review Items
+  เปรียบเทียบจำนวนที่นับได้กับจำนวนในระบบ และคำนวณผลต่างของแต่ละรายการ ช่วยให้พนักงานคลังสินค้าตรวจสอบความคลาดเคลื่อนก่อนส่งขั้นสุดท้าย
+
+  Compares the counted quantities against system stock levels and calculates variances for each item, enabling warehouse staff to review discrepancies before final submission.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Physical Count ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.physical_count:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "items": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "actual_qty": 95
+      }
+    ]
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "product_name": "Rice 5kg",
+        "system_qty": 100,
+        "actual_qty": 95,
+        "variance": -5
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid request body |
+  | 404 | Physical count not found |
+  | 403 | User lacks `inventory_management.physical_count:update` permission |
+}
+
+params:query {
+  ~version: 
+}
+
+params:path {
+  id: {{physical_count_id}}
+}

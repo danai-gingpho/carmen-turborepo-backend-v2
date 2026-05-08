@@ -1,0 +1,71 @@
+meta {
+  name: List schedules report
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/report/schedules
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+docs {
+  ## List Report Schedules
+  ดึงรายการกำหนดการรายงาน
+
+  Returns all report schedules for this business unit, including active and inactive ones. Used to manage recurring report jobs.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "name": "Daily Inventory Report",
+        "report_type": "inventory_summary",
+        "format": "viewer_url",
+        "cron_expression": "0 8 * * *",
+        "delivery": { "type": "viewer_url" },
+        "notifications": { "web": true, "email": true },
+        "recipients": ["019638a6-2a00-7c4f-8e46-9b7a52c80c4d"],
+        "is_active": true,
+        "last_run_at": "2026-04-29T08:00:00.000Z",
+        "next_run_at": "2026-04-30T08:00:00.000Z"
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+}

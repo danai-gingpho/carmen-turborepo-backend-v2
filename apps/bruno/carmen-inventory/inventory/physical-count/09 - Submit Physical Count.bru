@@ -1,0 +1,78 @@
+meta {
+  name: Submit physical-count
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/physical-count/:id/submit
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~version: 
+  ~version: 
+}
+
+params:path {
+  id: {{physical_count_id}}
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+vars:pre-request {
+  physical_count_id: 267d6ba6-cf66-4b7f-927f-a7c52bfa68be
+}
+
+docs {
+  ## Submit Physical Count
+  ส่งการตรวจนับสินค้าขั้นสุดท้าย และสร้างรายการปรับปรุงสินค้าคงคลังอัตโนมัติเพื่อปรับจำนวนในระบบให้ตรงกับจำนวนที่นับได้จริง
+
+  Finalizes a physical count and automatically generates inventory adjustment records to reconcile system stock levels with the actual counted quantities.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Physical Count ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.physical_count:update`
+  - **Roles**: Purchase
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "status": "completed"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Physical count cannot be submitted (wrong status) |
+  | 404 | Physical count not found |
+  | 403 | User lacks `inventory_management.physical_count:update` permission |
+}

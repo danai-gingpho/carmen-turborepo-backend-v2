@@ -1,0 +1,163 @@
+meta {
+  name: Update my-pending
+  type: http
+  seq: 11
+}
+
+patch {
+  url: {{host}}/api/my-pending/purchase-request/{{bu_code}}/:id/save
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "stage_role": "create",
+    "details": {
+      "pr_date": null,
+      "description": "",
+      "requestor_id": "",
+      "workflow_id": "",
+      "department_id": "",
+      "purchase_request_detail": {
+        "add": [
+          {
+            "description": "",
+            "comment": "",
+            "current_stage_status": "submit",
+            "product_id": "",
+            "location_id": "",
+            "delivery_point_id": "",
+            "delivery_date": null,
+            "requested_qty": 0,
+            "requested_unit_id": "",
+            "requested_unit_conversion_factor": 0,
+            "currency_id": "",
+            "exchange_rate": 0,
+            "exchange_rate_date": null,
+            "foc_qty": 0,
+            "foc_unit_id": "",
+            "foc_unit_conversion_rate": 0,
+            "foc_base_qty": 0,
+            "inventory_unit_id": ""
+          }
+        ]
+      }
+    },
+    "doc_version": null,
+    "purchase_request_detail": {
+      "add": [
+        {
+          "description": "",
+          "comment": "",
+          "current_stage_status": "submit",
+          "product_id": "",
+          "location_id": "",
+          "delivery_point_id": "",
+          "delivery_date": null,
+          "requested_qty": 0,
+          "requested_unit_id": "",
+          "requested_unit_conversion_factor": 0,
+          "currency_id": "",
+          "exchange_rate": 0,
+          "exchange_rate_date": null,
+          "foc_qty": 0,
+          "foc_unit_id": "",
+          "foc_unit_conversion_rate": 0,
+          "foc_base_qty": 0,
+          "inventory_unit_id": ""
+        }
+      ],
+      "update": [],
+      "remove": []
+    }
+  }
+}
+
+docs {
+  ## Patch Update a Purchase Request
+  บันทึกการเปลี่ยนแปลงใบขอซื้อฉบับร่าง ช่วยให้ผู้ขอสามารถแก้ไขรายการสินค้า จำนวน หรือเหตุผลก่อนส่งเข้าขั้นตอนอนุมัติ Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Saves changes to a draft purchase request, allowing the requestor to modify items, quantities, or justification before submitting it for approval.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase request ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Body
+  ```json
+  {
+    "stage_role": "create",
+    "details": {
+      "pr_date": "2026-04-29T08:30:00.000Z",
+      "description": "Updated purchase request for kitchen supplies",
+      "requestor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "workflow_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "department_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "purchase_request_detail": {
+        "add": [],
+        "update": [],
+        "remove": []
+      }
+    },
+    "doc_version": 1
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks permission to update purchase requests |
+  | 404 | Purchase request not found |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  bu_code: {{bu_code}}
+  id: {{pr_id}}
+}

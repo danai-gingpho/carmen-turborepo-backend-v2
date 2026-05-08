@@ -1,0 +1,342 @@
+{
+  "configuration.adjustment_type:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "configuration.business_type:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "configuration.currency:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "configuration.delivery_point:create": [
+    "Purchase"
+  ],
+  "configuration.delivery_point:delete": [
+    "Purchase"
+  ],
+  "configuration.delivery_point:update": [
+    "Purchase"
+  ],
+  "configuration.delivery_point:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "configuration.department:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "configuration.exchange_rate:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "configuration.extra_cost:create": [
+    "Purchase"
+  ],
+  "configuration.extra_cost:delete": [
+    "Purchase"
+  ],
+  "configuration.extra_cost:update": [
+    "Purchase"
+  ],
+  "configuration.extra_cost:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "configuration.location:create": [
+    "Purchase"
+  ],
+  "configuration.location:delete": [
+    "Purchase"
+  ],
+  "configuration.location:update": [
+    "Purchase"
+  ],
+  "configuration.location:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "configuration.tax_profile:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "inventory_management.period_end:execute": [
+    "Purchase"
+  ],
+  "inventory_management.period_end:view": [
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "inventory_management.physical_count:create": [
+    "Purchase"
+  ],
+  "inventory_management.physical_count:delete": [
+    "Purchase"
+  ],
+  "inventory_management.physical_count:update": [
+    "Purchase"
+  ],
+  "inventory_management.physical_count:view": [
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "inventory_management.spot_check:create": [
+    "Purchase"
+  ],
+  "inventory_management.spot_check:delete": [
+    "Purchase"
+  ],
+  "inventory_management.spot_check:update": [
+    "Purchase"
+  ],
+  "inventory_management.spot_check:view": [
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "inventory_management.stock_in:create": [
+    "Purchase"
+  ],
+  "inventory_management.stock_in:delete": [
+    "Purchase"
+  ],
+  "inventory_management.stock_in:update": [
+    "Purchase"
+  ],
+  "inventory_management.stock_in:view": [
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "inventory_management.stock_out:create": [
+    "Purchase"
+  ],
+  "inventory_management.stock_out:delete": [
+    "Purchase"
+  ],
+  "inventory_management.stock_out:update": [
+    "Purchase"
+  ],
+  "inventory_management.stock_out:view": [
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "inventory_management.store_requisition:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "inventory_management.store_requisition:view_all": [
+    "Purchase",
+    "Approval"
+  ],
+  "inventory_management.store_requisition:view_department": [
+    "HOD"
+  ],
+  "inventory_management.store_requisition_template:create": [
+    "Requestor",
+    "HOD",
+    "Purchase"
+  ],
+  "inventory_management.store_requisition_template:delete": [
+    "Requestor",
+    "HOD",
+    "Purchase"
+  ],
+  "inventory_management.store_requisition_template:update": [
+    "Requestor",
+    "HOD",
+    "Purchase"
+  ],
+  "inventory_management.store_requisition_template:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "procurement.credit_note:create": [
+    "Purchase"
+  ],
+  "procurement.credit_note:delete": [
+    "Purchase"
+  ],
+  "procurement.credit_note:update": [
+    "Purchase"
+  ],
+  "procurement.credit_note:view": [
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "procurement.goods_received_note:commit": [
+    "Purchase"
+  ],
+  "procurement.goods_received_note:create": [
+    "Purchase"
+  ],
+  "procurement.goods_received_note:delete": [
+    "Purchase"
+  ],
+  "procurement.goods_received_note:update": [
+    "Purchase"
+  ],
+  "procurement.goods_received_note:view": [
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "procurement.purchase_order:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "procurement.purchase_request:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "procurement.purchase_request:view_all": [
+    "Purchase",
+    "Approval"
+  ],
+  "procurement.purchase_request:view_department": [
+    "HOD"
+  ],
+  "procurement.purchase_request_template:create": [
+    "Requestor",
+    "HOD",
+    "Purchase"
+  ],
+  "procurement.purchase_request_template:delete": [
+    "Requestor",
+    "HOD",
+    "Purchase"
+  ],
+  "procurement.purchase_request_template:update": [
+    "Requestor",
+    "HOD",
+    "Purchase"
+  ],
+  "procurement.purchase_request_template:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "procurement.vendor_comparison:view": [
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "product_management.category:create": [
+    "Purchase"
+  ],
+  "product_management.category:delete": [
+    "Purchase"
+  ],
+  "product_management.category:update": [
+    "Purchase"
+  ],
+  "product_management.category:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "product_management.product:create": [
+    "Purchase"
+  ],
+  "product_management.product:delete": [
+    "Purchase"
+  ],
+  "product_management.product:update": [
+    "Purchase"
+  ],
+  "product_management.product:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "product_management.report:view": [
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "product_management.unit:create": [
+    "Purchase"
+  ],
+  "product_management.unit:delete": [
+    "Purchase"
+  ],
+  "product_management.unit:update": [
+    "Purchase"
+  ],
+  "product_management.unit:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "vendor_management.price_comparison:view": [
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "vendor_management.price_list:create": [
+    "Purchase"
+  ],
+  "vendor_management.price_list:delete": [
+    "Purchase"
+  ],
+  "vendor_management.price_list:update": [
+    "Purchase"
+  ],
+  "vendor_management.price_list:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ],
+  "vendor_management.vendor:create": [
+    "Purchase"
+  ],
+  "vendor_management.vendor:delete": [
+    "Purchase"
+  ],
+  "vendor_management.vendor:update": [
+    "Purchase"
+  ],
+  "vendor_management.vendor:view": [
+    "Requestor",
+    "HOD",
+    "Purchase",
+    "Approval"
+  ]
+}

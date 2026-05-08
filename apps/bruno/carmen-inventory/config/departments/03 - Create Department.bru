@@ -1,0 +1,110 @@
+meta {
+  name: Create config_departments
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/departments
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "code": "DEPT-001",
+    "name": "Kitchen",
+    "description": "Kitchen department",
+    "is_active": true,
+    "department_users": {
+      "add": [
+        {
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891"
+        }
+      ]
+    },
+    "hod_users": {
+      "add": [
+        {
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567892"
+        }
+      ]
+    }
+  }
+}
+
+docs {
+  ## Create a Department
+  สร้างแผนกใหม่
+
+  Creates a new department in the business unit.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "code": "DEPT-001",
+    "name": "Kitchen",
+    "description": "Kitchen department",
+    "is_active": true,
+    "department_users": {
+      "add": [
+        {
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891"
+        }
+      ]
+    },
+    "hod_users": {
+      "add": [
+        {
+          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567892"
+        }
+      ]
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  > No service-specific errors thrown by this endpoint.
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}

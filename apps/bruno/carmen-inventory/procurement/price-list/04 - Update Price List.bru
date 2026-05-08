@@ -1,0 +1,156 @@
+meta {
+  name: Update price-list
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/price-list/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "id": "",
+    "pricelist_no": "",
+    "name": "",
+    "description": "",
+    "status": "",
+    "vendor_name": "",
+    "currency_id": "",
+    "currency_code": "",
+    "effective_from_date": null,
+    "effective_to_date": null,
+    "is_active": true,
+    "doc_version": 0,
+    "vendor_id": "",
+    "note": "",
+    "info": null,
+    "dimension": null,
+    "pricelist_detail": {
+      "add": [
+        {
+          "sequence_no": 0,
+          "product_id": "",
+          "product_name": "",
+          "unit_id": "",
+          "unit_name": "",
+          "tax_profile_id": "",
+          "tax_profile_name": "",
+          "tax_rate": 0,
+          "moq_qty": 0,
+          "price_without_tax": 0,
+          "tax_amt": 0,
+          "price": 0,
+          "lead_time_days": 0,
+          "is_active": false,
+          "description": "",
+          "note": "",
+          "info": null,
+          "dimension": null
+        }
+      ],
+      "update": [],
+      "delete": []
+    }
+  }
+}
+
+docs {
+  ## Patch Price List
+  อัปเดตข้อมูลรายการราคาที่มีอยู่ เช่น ปรับราคาสินค้า หรือวันที่มีผล
+
+  Modifies an existing vendor price list, such as adjusting product prices, extending validity dates, or correcting pricing errors in procurement agreements.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Price list ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.price_list:update`
+  - **Roles**: Purchase
+
+  ### Sample Body
+  ```json
+  {
+    "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "pricelist_no": "PL-2026-0001",
+    "name": "Q2 2026 Beverage Price List (Revised)",
+    "description": "Updated quarterly price agreement.",
+    "status": "active",
+    "vendor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "vendor_name": "Bangkok Beverage Co., Ltd.",
+    "currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "currency_code": "THB",
+    "effective_from_date": "2026-04-01",
+    "effective_to_date": "2026-06-30",
+    "is_active": true,
+    "doc_version": 1,
+    "note": "",
+    "info": null,
+    "dimension": null,
+    "pricelist_detail": {
+      "add": [],
+      "update": [
+        {
+          "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "price": 14.50,
+          "moq_qty": 24,
+          "is_active": true
+        }
+      ],
+      "delete": []
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid field values or date format |
+  | 401 | Bearer token missing or invalid |
+  | 403 | User lacks `vendor_management.price_list:update` permission |
+  | 404 | Price list not found |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{price_list_id}}
+}

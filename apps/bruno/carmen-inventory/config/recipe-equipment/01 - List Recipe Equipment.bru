@@ -1,0 +1,95 @@
+meta {
+  name: List config_recipe-equipment
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/config/{{bu_code}}/recipe-equipment
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## List Recipe Equipment
+  ดึงรายการอุปกรณ์ทำอาหารทั้งหมดสำหรับการวางแผนกำลังการผลิตครัวและการประเมินความเป็นไปได้
+
+  Returns all kitchen equipment types configured for the business unit for capacity planning and recipe feasibility assessment.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "11111111-1111-1111-1111-111111111111",
+        "code": "EQ-001",
+        "name": "Commercial Oven",
+        "description": "Large capacity commercial oven",
+        "is_active": true,
+        "audit": {
+          "created": { "at": "2026-04-29T08:30:00.000Z", "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "name": "John Doe" },
+          "updated": { "at": "2026-04-29T09:15:00.000Z", "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891", "name": "Jane Smith" }
+        }
+      },
+      {
+        "id": "22222222-2222-2222-2222-222222222222",
+        "code": "EQ-002",
+        "name": "Stand Mixer",
+        "description": "Heavy-duty stand mixer",
+        "is_active": true,
+        "audit": {
+          "created": { "at": "2026-04-29T08:00:00.000Z", "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "name": "John Doe" }
+        }
+      }
+    ],
+    "paginate": {
+      "total": 2,
+      "page": 1,
+      "perpage": 10,
+      "pages": 1
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T09:15:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission to view recipe equipment |
+}

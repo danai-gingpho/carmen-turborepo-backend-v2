@@ -1,0 +1,75 @@
+meta {
+  name: Import csv config_price-list
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{host}}/api/config/{{bu_code}}/price-list/import-csv
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version:
+}
+
+body:json {
+  {}
+}
+
+docs {
+  ## Import Price Lists from CSV
+  นำเข้ารายการราคาจากไฟล์ CSV
+
+  Bulk imports vendor price list data from a CSV file, creating or updating price lists and their line items. Invalid rows are skipped and reported, enabling efficient mass updates of procurement pricing.
+
+  Note: This endpoint uses `multipart/form-data` with a `file` field (CSV file upload). The `body:json` block above is a placeholder; use file upload in the Bruno UI.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `vendor_management.price_list:create`
+  - **Roles**: Purchase
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "imported": 10,
+      "skipped": 2,
+      "errors": []
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | No file provided or invalid file type (must be CSV) |
+  | 401 | Bearer token is missing or invalid |
+  | 403 | User lacks `vendor_management.price_list:create` permission |
+}

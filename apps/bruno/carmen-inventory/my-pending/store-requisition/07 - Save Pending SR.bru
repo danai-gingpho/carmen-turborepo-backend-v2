@@ -1,0 +1,136 @@
+meta {
+  name: Update my-pending
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{host}}/api/my-pending/store-requisition/{{bu_code}}/:id/save
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "stage_role": "create",
+    "details": {
+      "sr_date": null,
+      "expected_date": null,
+      "description": "",
+      "requestor_id": "",
+      "info": null,
+      "dimension": null,
+      "workflow_id": "",
+      "department_id": "",
+      "from_location_id": "",
+      "to_location_id": "",
+      "store_requisition_detail": {
+        "add": [
+          {
+            "description": "",
+            "current_stage_status": "submit",
+            "product_id": "",
+            "requested_qty": 0,
+            "info": null,
+            "dimension": null
+          }
+        ],
+        "update": [],
+        "remove": []
+      },
+      "doc_version": 0
+    }
+  }
+}
+
+docs {
+  ## Patch Update a Store Requisition
+  บันทึกการเปลี่ยนแปลงใบเบิกสินค้าฉบับร่าง ช่วยให้ผู้ขอสามารถแก้ไขรายการสินค้า จำนวน หรือรายละเอียดการจัดส่งก่อนส่งเข้าขั้นตอนอนุมัติ Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Saves changes to a draft store requisition, allowing the requestor to modify requested items, quantities, or delivery details before submitting for approval.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Store requisition ID |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "stage_role": "create",
+    "details": {
+      "sr_date": "2026-04-29T08:30:00.000Z",
+      "expected_date": "2026-04-29T08:30:00.000Z",
+      "description": "Updated kitchen supplies",
+      "requestor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "info": null,
+      "dimension": null,
+      "workflow_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "department_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "from_location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "to_location_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "store_requisition_detail": {
+        "add": [],
+        "update": [],
+        "remove": []
+      },
+      "doc_version": 1
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks permission to update store requisitions |
+  | 404 | Store requisition not found |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  bu_code: {{bu_code}}
+  id: {{sr_id}}
+}

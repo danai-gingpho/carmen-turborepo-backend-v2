@@ -1,0 +1,84 @@
+meta {
+  name: Find all by status my-pending
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{host}}/api/my-pending/purchase-request/{{bu_code}}/status/:status
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Purchase Requests by Status
+  ค้นหารายการใบขอซื้อตามสถานะการอนุมัติ (เช่น ร่าง รออนุมัติ อนุมัติแล้ว ปฏิเสธ) ช่วยให้ผู้ใช้ดูคำขอในขั้นตอนเฉพาะของเวิร์กโฟลว์จัดซื้อ Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Filters purchase requests by their current approval status (e.g., draft, pending, approved, rejected), allowing users to view requests at a specific stage in the procurement workflow.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `status` | string | Request status (e.g., `pending`, `approved`, `rejected`, `draft`) |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "pr_no": "PR-2026-0001",
+        "pr_date": "2026-04-29T08:30:00.000Z",
+        "pr_status": "pending_approval",
+        "requestor_name": "John Doe",
+        "department_name": "Kitchen",
+        "purchase_request_detail": []
+      }
+    ],
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks `procurement.purchase_request:view` permission |
+}
+
+params:path {
+  bu_code: {{bu_code}}
+  status: pending
+}

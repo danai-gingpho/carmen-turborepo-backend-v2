@@ -1,0 +1,88 @@
+meta {
+  name: Update config_exchange-rate
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{host}}/api/config/{{bu_code}}/exchange-rate/:id
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "currency_id": "93dabe25-1668-4c5b-bceb-3e0b83b78002",
+    "at_date": "2026-04-29T00:00:00.000Z",
+    "exchange_rate": 35.75
+  }
+}
+
+docs {
+  ## Update an Exchange Rate
+  อัปเดตข้อมูลอัตราแลกเปลี่ยนที่มีอยู่
+
+  Updates an existing exchange rate record such as the conversion factor or effective date.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Exchange rate ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "currency_id": "93dabe25-1668-4c5b-bceb-3e0b83b78002",
+    "at_date": "2026-04-29T00:00:00.000Z",
+    "exchange_rate": 35.75
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 404 | Exchange rate not found for given ID |
+  | 400 | Invalid UUID format for `id` |
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: 
+}

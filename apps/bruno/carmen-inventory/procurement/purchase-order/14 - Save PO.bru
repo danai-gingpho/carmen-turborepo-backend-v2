@@ -1,0 +1,159 @@
+meta {
+  name: Save purchase-order
+  type: http
+  seq: 14
+}
+
+patch {
+  url: {{host}}/api/{{bu_code}}/purchase-order/:id/save
+  body: json
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+body:json {
+  {
+    "vendor_id": "",
+    "vendor_name": "",
+    "delivery_date": "",
+    "currency_id": "",
+    "currency_code": "",
+    "exchange_rate": 0,
+    "description": "",
+    "order_date": "",
+    "credit_term_id": "",
+    "credit_term_name": "",
+    "credit_term_value": 0,
+    "buyer_id": "",
+    "buyer_name": "",
+    "email": "user@example.com",
+    "remarks": "",
+    "note": "",
+    "details": {
+      "add": [
+        {
+          "sequence": 0,
+          "product_id": "",
+          "product_name": "",
+          "product_local_name": "",
+          "order_unit_id": "",
+          "order_unit_name": "",
+          "order_unit_conversion_factor": 1,
+          "order_qty": 0,
+          "base_unit_id": "",
+          "base_unit_name": "",
+          "base_qty": 0,
+          "price": 0,
+          "sub_total_price": 0,
+          "net_amount": 0,
+          "total_price": 0,
+          "tax_profile_id": "",
+          "tax_profile_name": "",
+          "tax_rate": 0,
+          "tax_amount": 0,
+          "is_tax_adjustment": false,
+          "discount_rate": 0,
+          "discount_amount": 0,
+          "is_discount_adjustment": false,
+          "is_foc": false,
+          "pr_detail": [],
+          "description": "",
+          "note": ""
+        }
+      ],
+      "update": [],
+      "remove": []
+    }
+  }
+}
+
+vars:pre-request {
+  po_id: df32410a-2e54-40c2-9b57-017208ed10c0
+}
+
+docs {
+  ## Save Purchase Order Changes
+  บันทึกการเปลี่ยนแปลงใบสั่งซื้อที่กำลังจัดเตรียม รวมถึงเพิ่มรายการใหม่ แก้ไขจำนวนหรือราคา และลบรายการ
+
+  Saves incremental changes to a purchase order that is still being prepared, including adding new items, modifying quantities or pricing, and removing line items. Used by purchasers to finalize PO details before submitting for approval.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `id` | string (UUID) | Purchase order ID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Body
+  ```json
+  {
+    "vendor_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "vendor_name": "ABC Food Supplies Co., Ltd.",
+    "delivery_date": "2026-05-06",
+    "currency_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+    "currency_code": "THB",
+    "exchange_rate": 1,
+    "description": "PO for kitchen supplies May 2026",
+    "details": {
+      "add": [
+        {
+          "product_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "product_name": "Rice Jasmine 5kg",
+          "order_unit_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+          "order_qty": 10.5,
+          "unit_price": 250.00
+        }
+      ],
+      "update": [],
+      "remove": []
+    }
+  }
+  ```
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d"
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Invalid data or user does not have permission to save |
+  | 401 | Missing or invalid bearer token |
+  | 404 | Purchase order not found or not in progress |
+
+  > Service-layer errors propagate via TCP; see micro-business for full list.
+}
+
+params:path {
+  id: {{po_id}}
+}

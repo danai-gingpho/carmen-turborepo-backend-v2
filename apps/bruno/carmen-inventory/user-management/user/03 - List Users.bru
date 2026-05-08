@@ -1,0 +1,90 @@
+meta {
+  name: Get all user in tenant user
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/api/{{bu_code}}/users
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get All Users in Tenant
+  แสดงรายการผู้ใช้ทั้งหมดในหน่วยธุรกิจปัจจุบัน ใช้สำหรับการจัดการสิทธิ์เข้าถึงของพนักงาน การมอบหมายบทบาท และการกำหนดค่าเวิร์กโฟลว์การอนุมัติ
+
+  Lists all users assigned to the current business unit (tenant), used for administrative purposes such as managing staff access, assigning roles, and configuring approval workflows.
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `page` | number | No | 1 | Page number |
+  | `perpage` | number | No | 10 | Items per page |
+  | `filter` | string | No | — | Filter expression (e.g. `department_id\|string:<uuid>`) |
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  > Permission key not found in seed; review needed.
+
+  ### Sample Response
+  ```json
+  {
+    "data": [
+      {
+        "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+        "username": "john.doe",
+        "email": "john.doe@carmensoftware.com",
+        "firstname": "John",
+        "middlename": "William",
+        "lastname": "Doe",
+        "is_active": true
+      }
+    ],
+    "paginate": {
+      "page": 1,
+      "perpage": 10,
+      "pages": 5,
+      "total": 42,
+      "prev": null,
+      "next": 2
+    },
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Bearer token is missing or invalid |
+}
+
+params:query {
+  filter: department_id|string:280ac0fb-8eed-4bea-900d-59158a185718
+}

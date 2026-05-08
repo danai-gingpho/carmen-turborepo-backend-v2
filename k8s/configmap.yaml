@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: service-discovery
+  namespace: carmen-backend
+data:
+  NODE_ENV: "production"
+  # Service hostnames (k8s service names)
+  GATEWAY_SERVICE_HOST: "backend-gateway"
+  BUSINESS_SERVICE_HOST: "micro-business"
+  BUSINESS_SERVICE_TCP_PORT: "5020"
+  BUSINESS_SERVICE_HTTP_PORT: "6020"
+  CLUSTER_SERVICE_HOST: "micro-cluster"
+  CLUSTER_SERVICE_TCP_PORT: "5014"
+  CLUSTER_SERVICE_HTTP_PORT: "6014"
+  FILE_SERVICE_HOST: "micro-file"
+  FILE_SERVICE_TCP_PORT: "5007"
+  FILE_SERVICE_HTTP_PORT: "6007"
+  KEYCLOAK_API_SERVICE_HOST: "micro-keycloak-api"
+  KEYCLOAK_API_SERVICE_TCP_PORT: "5013"
+  KEYCLOAK_API_SERVICE_HTTP_PORT: "6013"
+  NOTIFICATION_SERVICE_HOST: "micro-notification"
+  NOTIFICATION_SERVICE_TCP_PORT: "5006"
+  NOTIFICATION_SERVICE_HTTP_PORT: "6006"
+  REPORT_SERVICE_HOST: "micro-report.carmen-report.svc.cluster.local"
+  REPORT_SERVICE_TCP_PORT: "5015"
+  REPORT_SERVICE_HTTP_PORT: "6015"
+  REPORT_RENDER_HOST: "micro-report.carmen-report.svc.cluster.local"
+  REPORT_RENDER_TCP_PORT: "8001"

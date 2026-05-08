@@ -1,0 +1,118 @@
+meta {
+  name: Create with files purchase-request-comment
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/{{bu_code}}/purchase-request-comment/{{purchase_request_id}}
+  body: multipartForm
+  auth: bearer
+}
+
+params:query {
+  ~version: latest
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {}
+}
+
+body:multipart-form {
+  message: Comment with attached photos
+  type: user
+  files: @file(/Users/samutpra/Pictures/logo.png)
+  files: @file(/Users/samutpra/Pictures/logo_CARMEN_Classic-Blue_low-res.png)
+}
+
+vars:pre-request {
+  purchase_request_id: 5d5fa453-f687-4fcd-bbdb-5956f7e810b3
+}
+
+docs {
+  ## Create Purchase Request Comment (with file uploads)
+  สร้างความคิดเห็นใหม่สำหรับ purchase-request พร้อมแนบไฟล์ใน request เดียว
+  ไม่ต้อง upload file แยกก่อน
+
+  `purchase_request_id` ระบุผ่าน URL path parameter (ไม่ใช่ body field)
+
+  ### Path Parameters
+  | Name | Type | Description |
+  |------|------|-------------|
+  | `bu_code` | string | Business unit code |
+  | `purchase_request_id` | string (UUID) | Purchase Request UUID |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+  | `Content-Type` | Yes | `multipart/form-data` |
+
+  ### Permissions
+  - **Permission key**: `procurement.purchase_request:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Body (multipart/form-data)
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | `message` | text | No | ข้อความคอมเมนต์ ≤ 4000 ตัวอักษร |
+  | `type` | text | No | `user` \| `system` (default: `user`) |
+  | `files` | binary (repeatable) | No | ไฟล์แนบ |
+
+  ต้องส่งอย่างน้อยหนึ่งใน `message` หรือ `files`
+
+  ### Constraints
+  - max 10 files per request
+  - max 10 MB per file
+  - allowed mime: image/jpeg, image/png, image/webp, image/gif, application/pdf
+
+  ### Gateway behavior
+  1. Upload ทุกไฟล์ไป S3 ผ่าน `file.upload`
+  2. หาก upload ใดล้มเหลว — rollback (ลบไฟล์ที่ upload สำเร็จออกจาก S3) แล้วตอบ 502
+  3. Forward `{ purchase_request_id, message, type, attachments: [...] }` ไปยัง business service
+  4. หาก business service ตอบ error — rollback ลบไฟล์ที่ upload ไปแล้วออกจาก S3
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4d",
+      "purchase_request_id": "019638a6-2a00-7c4f-8e46-9b7a52c80c4e",
+      "attachments": [
+        {
+          "fileName": "photo.jpg",
+          "fileToken": "019638a6-2a00-7c4f-8e46-9b7a52c80c4f/019638a6-2a00-7c4f-8e46-9b7a52c80c50",
+          "fileUrl": "",
+          "contentType": "image/jpeg",
+          "size": 204800
+        }
+      ]
+    },
+    "paginate": null,
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  Note: `fileUrl` ใน response จะว่าง — frontend ต้องเรียก
+  `GET /api/{bu_code}/documents/presigned-url/{fileToken}` เพื่อแสดงไฟล์
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 400 | Neither message nor files provided |
+  | 401 | Missing or invalid bearer token |
+  | 403 | User lacks permission |
+  | 502 | S3 upload failure |
+}

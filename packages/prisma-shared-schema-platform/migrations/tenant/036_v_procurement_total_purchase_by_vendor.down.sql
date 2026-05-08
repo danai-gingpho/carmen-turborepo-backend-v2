@@ -1,0 +1,1 @@
+DROP VIEW IF EXISTS v_procurement_total_purchase_by_vendor;

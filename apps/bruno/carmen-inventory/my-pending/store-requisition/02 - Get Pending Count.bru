@@ -1,0 +1,66 @@
+meta {
+  name: Find all pending store requisitions count my-pending
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/my-pending/store-requisition/pending
+  body: none
+  auth: bearer
+}
+
+headers {
+  x-app-id: {{x_app_id}}
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+query {
+  ~version: 
+}
+
+docs {
+  ## Get Count of All Pending Store Requisitions
+  ดึงจำนวนใบเบิกสินค้าที่รอดำเนินการของผู้ใช้ปัจจุบัน ใช้สำหรับแสดงป้ายแจ้งเตือนบนแดชบอร์ดและติดตามปริมาณงาน Returns only items pending the requesting user's action / แสดงเฉพาะรายการที่รอการดำเนินการของผู้ใช้ปัจจุบัน
+
+  Returns the count of store requisitions currently awaiting the user's action in the approval pipeline, used for dashboard badge notifications and workload tracking.
+
+  ### Query Parameters
+  | Name | Type | Required | Default | Description |
+  |------|------|----------|---------|-------------|
+  | `version` | string | No | latest | API version |
+
+  ### Headers
+  | Name | Required | Description |
+  |------|----------|-------------|
+  | `Authorization` | Yes | `Bearer {{access_token}}` |
+  | `x-app-id` | Yes | `{{x_app_id}}` |
+
+  ### Permissions
+  - **Permission key**: `inventory_management.store_requisition:view`
+  - **Roles**: Requestor, HOD, Purchase, Approval
+
+  ### Sample Response
+  ```json
+  {
+    "data": {
+      "pending": 8
+    },
+    "paginate": null,
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "timestamp": "2026-04-29T08:30:00.000Z"
+  }
+  ```
+
+  ### Error Responses
+  | Status | When |
+  |--------|------|
+  | 401 | Missing or invalid Bearer token |
+  | 403 | User lacks `inventory_management.store_requisition:view` permission |
+  | 404 | No pending store requisitions found |
+}
